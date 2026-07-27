@@ -1,0 +1,10 @@
+{
+  "name": "MoveIn",
+  "short_name": "MoveIn",
+  "description": "Everything after the keys.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fbfaf6",
+  "theme_color": "#17324a",
+  "icons": [{ "src": "/movein-icon.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }]
+}

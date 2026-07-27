@@ -5,4 +5,8 @@ export const newsletterSubscribers = sqliteTable("newsletter_subscribers", {
   email: text("email").notNull().unique(),
   source: text("source").notNull().default("homepage"),
   createdAt: integer("created_at", { mode: "timestamp" }).notNull().defaultNow(),
+  audience: text("audience"),
+  moveMonth: text("move_month"),
+  state: text("state"),
+  consentAt: integer("consent_at", { mode: "timestamp" }),
 });
