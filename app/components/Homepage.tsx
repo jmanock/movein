@@ -14,20 +14,14 @@ export function Homepage() {
     <section className="hero section-pad">
       <div className="shell hero-grid">
         <div className="hero-copy">
-          <span className="brand-kicker">MoveIn <i>Everything after the keys.</i></span>
-          <h1>You have the keys.<br /><em>Now what?</em></h1>
+          <h1><span>You have the keys.</span><br /><em>Now what?</em></h1>
           <p className="hero-lede">MoveIn helps homeowners and renters figure out what to do next, from the first day through the first year.</p>
           <div className="hero-actions"><Link className="button" href="/timeline" onClick={() => trackEvent("homepage_cta_click", { cta: "timeline" })}>Start My Move Timeline <ArrowRight size={17} aria-hidden="true" /></Link><Link className="text-link" href="/florida" onClick={() => trackEvent("homepage_cta_click", { cta: "florida" })}>Explore the Florida Guide <ArrowRight size={17} aria-hidden="true" /></Link></div>
           <div className="trust-row"><span><Check size={16} /> No account required</span><span><Check size={16} /> Progress saves on your device</span></div>
         </div>
-        <div className="move-map">
-          <Image className="move-map-photo" src="/images/homepage/new-home-keys-moving-boxes.webp" alt="House key beside a moving box in a bright home entryway" fill preload sizes="(max-width: 700px) calc(100vw - 28px), (max-width: 1080px) 590px, 550px" />
-          <div className="move-map-scrim" aria-hidden="true" />
-          <div className="map-path" />
-          <div className="map-key"><span><Icon name="KeyRound" size={24} /></span><b>Keys in hand</b><small>Your timeline begins</small></div>
-          {timelineStages.slice(0, 5).map((stage, index) => <div className={`map-stop stop-${index + 1}`} key={stage.slug}><span>{index + 1}</span><p>{stage.shortLabel}</p></div>)}
-          <div className="map-home"><Icon name="House" size={33} /><b>Feeling at home</b></div>
-        </div>
+        <figure className="hero-art">
+          <Image className="hero-art-image" src="/images/homepage/movein-branded-hero.webp" alt="MoveIn — Everything after the keys, with a moving box, house key, and path toward home" width={1200} height={630} quality={88} preload fetchPriority="high" sizes="(max-width: 700px) calc(100vw - 28px), (max-width: 1080px) calc(100vw - 40px), 700px" />
+        </figure>
       </div>
     </section>
 

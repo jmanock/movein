@@ -15,7 +15,9 @@ export function NewsletterForm() {
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const form = new FormData(event.currentTarget);
+    if (status === "loading") return;
+    const formElement = event.currentTarget;
+    const form = new FormData(formElement);
     const payload = Object.fromEntries(form.entries());
     const nextErrors: { email?: string; audience?: string } = {};
     if (!/^\S+@\S+\.\S+$/.test(String(payload.email ?? "").trim())) nextErrors.email = "Enter a valid email address.";
@@ -32,21 +34,21 @@ export function NewsletterForm() {
     setMessage("Saving your preferences…");
     try {
       const response = await fetch("/api/newsletter", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...payload, startedAt: startedAt.current || Date.now() - 1000 }) });
-      const result = await response.json() as { error?: string };
-      if (!response.ok) throw new Error(result.error ?? "Please try again.");
+      if (!response.ok) throw new Error("newsletter_request_failed");
       setStatus("success");
       setMessage("You’re in. We’ll help you know what to do next.");
-      event.currentTarget.reset();
+      formElement.reset();
+      startedAt.current = 0;
       trackEvent("newsletter_submit", { form: "primary" });
       trackEvent("newsletter_success", { form: "primary" });
-    } catch (error) {
+    } catch {
       setStatus("error");
-      setMessage(error instanceof Error ? error.message : "We couldn’t save that. Please try again.");
+      setMessage("We couldn’t save your preferences right now. Please try again in a moment.");
       trackEvent("newsletter_error", { form: "primary", reason: "request" });
     }
   }
 
-  return <form className="newsletter-form" onSubmit={submit} noValidate onFocusCapture={() => { if (!startedAt.current) startedAt.current = Date.now(); }} aria-describedby={`${privacyId} ${statusId}`}>
+  return <form className="newsletter-form" onSubmit={submit} noValidate onFocusCapture={() => { if (!startedAt.current) startedAt.current = Date.now(); }} aria-describedby={`${privacyId} ${statusId}`} aria-busy={status === "loading"}>
     <div className="honeypot" aria-hidden="true"><label>Website<input name="website" tabIndex={-1} autoComplete="off" /></label></div>
     <div className="field-row"><label>Email <span aria-hidden="true">*</span><input name="email" type="email" autoComplete="email" required placeholder="you@example.com" aria-invalid={!!errors.email} aria-describedby={errors.email ? `${statusId} email-error` : statusId} />{errors.email && <span className="field-error" id="email-error">{errors.email}</span>}</label><label>I’m a… <span aria-hidden="true">*</span><select name="audience" required defaultValue="" aria-invalid={!!errors.audience} aria-describedby={errors.audience ? `${statusId} audience-error` : statusId}><option value="" disabled>Choose one</option><option value="homeowner">Homeowner</option><option value="renter">Renter</option><option value="planning">Still planning</option></select>{errors.audience && <span className="field-error" id="audience-error">{errors.audience}</span>}</label></div>
     <div className="field-row"><label>Move month <input name="moveMonth" type="month" /></label><label>State <input name="state" maxLength={30} autoComplete="address-level1" placeholder="Florida" /></label></div>

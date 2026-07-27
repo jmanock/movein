@@ -19,7 +19,11 @@ test("homepage renders the MoveIn decision path", async () => {
   assert.match(homepage, /Explore the Florida Guide/);
   assert.doesNotMatch(page, /Welcome Home Florida/);
   assert.match(homepage, /next\/image/);
-  assert.match(homepage, /new-home-keys-moving-boxes\.webp/);
+  assert.match(homepage, /movein-branded-hero\.webp/);
+  assert.match(homepage, /width=\{1200\} height=\{630\}/);
+  assert.match(homepage, /preload/);
+  assert.match(homepage, /fetchPriority="high"/);
+  assert.doesNotMatch(homepage, /className="brand-kicker">MoveIn/);
 });
 
 test("pathway cards render mapped, high-contrast icons instead of empty boxes", async () => {
@@ -156,6 +160,9 @@ test("newsletter provides accessible errors and preserves form values on failure
   assert.match(form, /aria-describedby/);
   assert.match(form, /role=\{status === "error" \? "alert" : "status"\}/);
   assert.match(form, /disabled=\{status === "loading"\}/);
+  assert.match(form, /const formElement = event\.currentTarget/);
+  assert.match(form, /formElement\.reset\(\)/);
+  assert.doesNotMatch(form, /event\.currentTarget\.reset\(\)/);
   assert.match(form, /Practical reminders only\. Unsubscribe anytime\./);
 });
 

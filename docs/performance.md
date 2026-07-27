@@ -35,7 +35,7 @@ Lighthouse was run against the local optimized production server with its simula
 
 | Route | Performance | Accessibility | Best practices | SEO | FCP | LCP | TBT | CLS |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| `/` | 83 | 100 | 100 | 100 | 0.8 s | 4.7 s | 20 ms | 0 |
+| `/` | 96 | 100 | 100 | 100 | 0.8 s | 2.8 s | 10 ms | 0 |
 | `/florida/hurricane-preparation` | 98 | 100 | 100 | 100 | 0.8 s | 2.5 s | 10 ms | 0 |
 
-The accessibility figures include the contrast-token correction made after the first audit. The homepage lab LCP remains a follow-up item; its zero CLS and low blocking time indicate a stable, responsive page, but real-user field data should determine whether further hero simplification is warranted.
+The accessibility figures include the contrast-token correction made after the first audit. The branded homepage illustration is now the measured LCP element, is discoverable in the initial document, is eagerly loaded, and has stable intrinsic dimensions. Its simulated-mobile LCP improved from 4.7 seconds to 2.8 seconds; field data should determine whether additional compression is worthwhile.

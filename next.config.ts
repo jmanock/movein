@@ -4,6 +4,7 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   compress: true,
   serverExternalPackages: ["better-sqlite3"],
+  images: { formats: ["image/avif", "image/webp"], qualities: [75, 88] },
   async redirects() {
     return [
       { source: "/florida/getting-started", destination: "/florida/moving-to-florida-checklist", permanent: true },
