@@ -44,9 +44,9 @@ Copy `.env.example` when a local override is useful. Never commit the SQLite dat
 
 - `/` — national MoveIn homepage
 - `/timeline` and `/timeline/[stage]` — persistent move timeline
-- `/homeowners`, `/renters`, `/checklists`, `/resources` — user-intent hubs
+- `/homeowners`, `/renters`, `/checklists`, `/resources` — user-intent hubs with substantial linked guides
 - `/florida` and `/florida/[guide]` — Welcome Home Florida regional experience
-- `/welcome/[campaign]` — reusable postcard and QR campaign landing pages
+- `/welcome/[campaign]` — whitelisted, noindex postcard and QR campaign landing pages canonicalized to useful guides
 - `/blog`, `/about`, `/contact` — editorial and company pages
 - `/privacy`, `/terms`, `/disclosure` — policy pages
 - `/sitemap.xml`, `/robots.txt` — search engine discovery
@@ -71,3 +71,9 @@ Use `ecosystem.config.cjs` to manage the process with PM2 and proxy Nginx to `12
 - `docs/domain-migration.md` — `movein.guide` DNS, canonical, Search Console, and redirects
 - `docs/content-migration.md` — old-to-new content disposition
 - `docs/analytics-events.md` — privacy-safe event contract
+- `docs/seo.md` — canonicals, campaign indexing rules, structured data, sitemap, and social images
+- `docs/content-strategy.md` — topic clusters, editorial standards, and duplication safeguards
+- `docs/image-manifest.md` — asset sources, licensing status, alt text, dimensions, and replacement guidance
+- `docs/search-launch-checklist.md` — Search Console and indexing handoff
+- `docs/accessibility.md` — implemented safeguards and manual regression checks
+- `docs/performance.md` — image, rendering, and Core Web Vitals approach

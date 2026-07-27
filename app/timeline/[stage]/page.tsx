@@ -10,8 +10,8 @@ export function generateStaticParams() { return timelineStages.map((stage) => ({
 export async function generateMetadata({ params }: { params: Promise<{ stage: string }> }): Promise<Metadata> {
   const { stage: slug } = await params;
   const stage = getStage(slug);
-  if (!stage) return {};
-  return pageMetadata(`${stage.label} Move-In Checklist`, stage.intro, `/timeline/${stage.slug}`);
+  if (!stage) notFound();
+  return pageMetadata(`${stage.label} Move-In Checklist`, stage.intro, `/timeline/${stage.slug}`, "/og/timeline");
 }
 
 export default async function TimelineStagePage({ params }: { params: Promise<{ stage: string }> }) {

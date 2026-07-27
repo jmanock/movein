@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Homepage } from "./components/Homepage";
+import { JsonLd } from "./components/JsonLd";
 import { DEFAULT_DESCRIPTION, pageMetadata, SITE_URL } from "./lib/metadata";
 
 export const metadata: Metadata = pageMetadata("MoveIn | New Home and Move-In Guides", DEFAULT_DESCRIPTION, "/");
@@ -13,5 +14,5 @@ const structuredData = {
 };
 
 export default function HomePage() {
-  return <><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} /><Homepage /></>;
+  return <><JsonLd data={structuredData} /><Homepage /></>;
 }

@@ -93,14 +93,16 @@ After DNS points to the Droplet, use Certbot or the team's normal ACME client to
 
 ```bash
 cd /var/www/movein
-git fetch origin
-git checkout main
-git pull --ff-only
+git pull --ff-only origin main
+source ~/.bashrc
+nvm use 22
 npm ci
 npm run lint
 npm test
 npm run build
-pm2 reload movein --update-env
+pm2 restart movein --update-env
+pm2 save
+BASE_URL=http://127.0.0.1:3006 npm run check:links
 ```
 
 Verify:

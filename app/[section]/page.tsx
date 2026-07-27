@@ -13,20 +13,21 @@ export async function generateMetadata({ params }: { params: Promise<{ section: 
   const { section } = await params;
   if (section in sectionPages) {
     const page = sectionPages[section as keyof typeof sectionPages];
-    return pageMetadata(page.title, page.description, `/${section}`);
+    const socialCards: Record<string, string> = { homeowners: "/og/homeowners", renters: "/og/renters", checklists: "/og/checklists" };
+    return pageMetadata(page.title, page.description, `/${section}`, socialCards[section]);
   }
   if (section in legalPages) {
     const page = legalPages[section as keyof typeof legalPages];
     return pageMetadata(page.title, page.intro, `/${section}`);
   }
-  return {};
+  notFound();
 }
 
 export default async function SectionPage({ params }: { params: Promise<{ section: string }> }) {
   const { section } = await params;
   if (section in sectionPages) {
     const page = sectionPages[section as keyof typeof sectionPages];
-    return <main id="main-content"><PageHero eyebrow={page.eyebrow} title={page.title} description={page.description}>{section === "contact" ? <a className="button" href="mailto:hello@movein.guide"><Mail size={17} /> Email hello@movein.guide</a> : <Link className="button" href="/timeline">Start My Timeline <ArrowRight size={17} /></Link>}</PageHero><section className="section-pad"><div className="shell content-grid">{page.cards.map((card, index) => <ContentCard key={card} title={card} description={section === "about" ? ["Simple priorities and comfortable pacing.", "Independent guidance without pressure.", "A foundation built for useful recommendations later.", "MoveIn starts nationally with Florida as its deepest regional guide."][index] : "A focused guide with practical next steps, helpful context, and records worth keeping."} href={section === "homeowners" || section === "renters" || section === "checklists" ? `/timeline/${index < 2 ? "first-24-hours" : index < 5 ? "first-week" : "first-month"}` : undefined} />)}</div></section></main>;
+    return <main id="main-content"><PageHero eyebrow={page.eyebrow} title={page.title} description={page.description}>{section === "contact" ? <a className="button" href="mailto:hello@movein.guide"><Mail size={17} aria-hidden="true" /> Email hello@movein.guide</a> : <Link className="button" href="/timeline">Start My Timeline <ArrowRight size={17} aria-hidden="true" /></Link>}</PageHero><section className="section-pad"><div className="shell content-grid">{page.cards.map((card) => <ContentCard key={card.title} title={card.title} description={card.description} href={"href" in card ? card.href : undefined} />)}</div></section></main>;
   }
   if (section in legalPages) {
     const page = legalPages[section as keyof typeof legalPages];

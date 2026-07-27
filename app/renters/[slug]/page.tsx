@@ -4,18 +4,18 @@ import { GuidePage } from "../../components/GuidePage";
 import { getGuide, getGuides } from "../../data/guides";
 import { pageMetadata } from "../../lib/metadata";
 
-export function generateStaticParams() { return getGuides("florida").map(({ slug }) => ({ slug })); }
+export function generateStaticParams() { return getGuides("renters").map(({ slug }) => ({ slug })); }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const guide = getGuide("florida", slug);
+  const guide = getGuide("renters", slug);
   if (!guide) notFound();
-  return pageMetadata(guide.title, guide.description, `/florida/${guide.slug}`, "/og/florida");
+  return pageMetadata(guide.title, guide.description, `/renters/${slug}`, "/og/renters");
 }
 
-export default async function FloridaGuidePage({ params }: { params: Promise<{ slug: string }> }) {
+export default async function RenterGuide({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const guide = getGuide("florida", slug);
+  const guide = getGuide("renters", slug);
   if (!guide) notFound();
   return <GuidePage guide={guide} />;
 }

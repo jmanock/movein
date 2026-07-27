@@ -23,7 +23,11 @@ function CampaignTracker() {
     const campaignKeys = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "campaign"];
     const values = campaignKeys.flatMap((key) => current.searchParams.has(key) ? [[key, current.searchParams.get(key)!] as const] : []);
     if (values.length) sessionStorage.setItem("movein.campaign", JSON.stringify(Object.fromEntries(values)));
-    if (pathname.startsWith("/welcome/")) trackEvent("qr_campaign_visit", { campaign: pathname.split("/").pop() ?? "unknown" });
+    if (pathname.startsWith("/welcome/")) {
+      const campaign = pathname.split("/").pop() ?? "unknown";
+      trackEvent("qr_campaign_visit", { campaign });
+      trackEvent("campaign_landing_visit", { campaign });
+    }
 
     const onClick = (event: MouseEvent) => {
       const anchor = (event.target as HTMLElement).closest("a");
@@ -43,6 +47,12 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const pathname = usePathname();
 
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => { if (event.key === "Escape") setMenuOpen(false); };
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, []);
+
   const toggleTheme = () => {
     const next = document.documentElement.dataset.theme !== "dark";
     document.documentElement.dataset.theme = next ? "dark" : "light";
@@ -59,8 +69,8 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
             {primaryNavigation.map((item) => <Link key={item.href} href={item.href} onClick={() => setMenuOpen(false)} aria-current={pathname === item.href ? "page" : undefined}>{item.label}</Link>)}
           </nav>
           <div className="nav-actions">
-            <button className="icon-btn" onClick={toggleTheme} aria-label="Toggle color theme"><Moon size={18} /></button>
-            <Link className="button button-small" href="/timeline" onClick={() => trackEvent("timeline_start", { source: "header" })}>Start My Timeline <ArrowUpRight size={16} /></Link>
+            <button className="icon-btn" onClick={toggleTheme} aria-label="Toggle color theme"><Moon size={18} aria-hidden="true" /></button>
+            <Link className="button button-small" href="/timeline" onClick={() => trackEvent("timeline_start", { source: "header" })}>Start My Timeline <ArrowUpRight size={16} aria-hidden="true" /></Link>
             <button className="menu-btn" onClick={() => setMenuOpen(!menuOpen)} aria-expanded={menuOpen} aria-controls="primary-navigation" aria-label="Toggle navigation">{menuOpen ? <X /> : <Menu />}</button>
           </div>
         </div>
@@ -71,7 +81,7 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
           <div><Brand /><p>Everything after the keys.</p><span>Practical guidance for homeowners and renters.</span></div>
           <div><h3>Get started</h3><Link href="/timeline">My Move Timeline</Link><Link href="/homeowners">Homeowners</Link><Link href="/renters">Renters</Link><Link href="/florida">Florida Guide</Link></div>
           <div><h3>Explore</h3><Link href="/checklists">Checklists</Link><Link href="/resources">Resources</Link><Link href="/about">About</Link><Link href="/contact">Contact</Link></div>
-          <div><h3>MoveIn</h3><p>movein.guide</p><Link href="/privacy">Privacy</Link><Link href="/terms">Terms</Link><Link href="/disclosure">Disclosure</Link></div>
+          <div><h3>MoveIn</h3><p>movein.guide</p><Link href="/editorial-policy">Editorial policy</Link><Link href="/privacy">Privacy</Link><Link href="/terms">Terms</Link><Link href="/disclosure">Disclosure</Link></div>
         </div>
         <div className="shell footer-disclaimer">MoveIn provides general educational information and is not a substitute for professional legal, financial, insurance, safety, construction, or real estate advice.</div>
         <div className="shell footer-bottom"><span>© {new Date().getFullYear()} MoveIn</span><span>Everything after the keys.</span></div>

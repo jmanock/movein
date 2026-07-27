@@ -24,7 +24,11 @@ export function TimelineExperience({ stages, activeStage }: { stages: TimelineSt
     const next = { ...completion, [id]: !completion[id] };
     setCompletion(next);
     saveCompletion(localStorage, next);
-    if (next[id]) trackEvent("timeline_task_complete", { task_id: id });
+    trackEvent("checklist_interaction", { task_id: id, complete: next[id] });
+    if (next[id]) {
+      trackEvent("timeline_task_complete", { task_id: id });
+      if (calculateProgress(ids, next).percentage === 100) trackEvent("timeline_completion", { scope: activeStage ?? "all" });
+    }
   };
 
   const reset = () => {

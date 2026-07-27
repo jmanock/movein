@@ -6,6 +6,8 @@ import test from "node:test";
 import { validateNewsletterPayload } from "../app/lib/newsletter.ts";
 import { calculateProgress } from "../app/lib/progress.ts";
 import { clearCompletion, loadCompletion, saveCompletion, TIMELINE_STORAGE_KEY } from "../app/lib/timelineStorage.ts";
+import { guides } from "../app/data/guides.ts";
+import { entryCards } from "../app/data/site.ts";
 
 const read = (path) => readFile(new URL(path, import.meta.url), "utf8");
 
@@ -16,6 +18,15 @@ test("homepage renders the MoveIn decision path", async () => {
   assert.match(homepage, /Start My Move Timeline/);
   assert.match(homepage, /Explore the Florida Guide/);
   assert.doesNotMatch(page, /Welcome Home Florida/);
+  assert.match(homepage, /next\/image/);
+  assert.match(homepage, /new-home-keys-moving-boxes\.webp/);
+});
+
+test("pathway cards render mapped, high-contrast icons instead of empty boxes", async () => {
+  const [iconComponent, css] = await Promise.all([read("../app/components/Icon.tsx"), read("../app/globals.css")]);
+  for (const card of entryCards) assert.match(iconComponent, new RegExp(`\\b${card.icon}\\b`));
+  assert.match(css, /\.path-icon[^}]*background:\s*var\(--card-accent\)/s);
+  assert.match(css, /\.path-icon[^}]*color:\s*#fff/s);
 });
 
 test("primary navigation uses real routes and has an accessible mobile control", async () => {
@@ -74,6 +85,78 @@ test("metadata and discovery files use the movein.guide canonical", async () => 
   assert.match(robots, /sitemap\.xml/);
   assert.match(manifest, /"name": "MoveIn"/);
   assert.doesNotMatch(`${metadata}${manifest}`, /welcomehomeflorida|welcome-home-florida/i);
+});
+
+test("guide metadata titles, descriptions, and canonical paths are unique", () => {
+  assert.equal(new Set(guides.map((guide) => guide.title)).size, guides.length);
+  assert.equal(new Set(guides.map((guide) => guide.description)).size, guides.length);
+  assert.equal(new Set(guides.map((guide) => `/${guide.category}/${guide.slug}`)).size, guides.length);
+  for (const guide of guides) {
+    assert.ok(guide.steps.length >= 4);
+    assert.ok(guide.related.length >= 3);
+    assert.ok(guide.description.length >= 80);
+  }
+});
+
+test("sitemap includes useful guides and excludes campaign and redirect duplicates", async () => {
+  const sitemap = await read("../app/sitemap.ts");
+  assert.match(sitemap, /guides\.map/);
+  assert.doesNotMatch(sitemap, /welcome\//);
+  assert.doesNotMatch(sitemap, /hurricane-prep["'`]/);
+  assert.match(sitemap, /changeFrequency/);
+  assert.match(sitemap, /priority/);
+});
+
+test("campaign pages are whitelisted, noindexed, canonicalized, and return 404 for unknown slugs", async () => {
+  const [campaign, proxy] = await Promise.all([read("../app/welcome/[campaign]/page.tsx"), read("../proxy.ts")]);
+  assert.match(campaign, /generateStaticParams/);
+  assert.match(campaign, /Object\.keys\(campaigns\)/);
+  assert.match(campaign, /robots: \{ index: false, follow: true/);
+  assert.match(campaign, /canonical: "\/timeline\/first-week"/);
+  assert.match(campaign, /canonical: "\/florida\/moving-to-florida-checklist"/);
+  assert.match(campaign, /if \(!page\) notFound\(\)/);
+  assert.match(proxy, /NextResponse\.rewrite\(notFoundUrl, \{ status: 404 \}\)/);
+});
+
+test("guide pages expose visible breadcrumbs and valid reusable JSON-LD", async () => {
+  const [guidePage, jsonLd] = await Promise.all([read("../app/components/GuidePage.tsx"), read("../app/components/JsonLd.tsx")]);
+  assert.match(guidePage, /Breadcrumbs/);
+  assert.match(guidePage, /BreadcrumbList/);
+  assert.match(guidePage, /Article/);
+  assert.match(guidePage, /HowTo/);
+  assert.match(jsonLd, /JSON\.stringify/);
+  assert.match(jsonLd, /replaceAll\("<"/);
+});
+
+test("dynamic content routes reject unknown slugs", async () => {
+  const routes = await Promise.all([
+    read("../app/checklists/[slug]/page.tsx"),
+    read("../app/homeowners/[slug]/page.tsx"),
+    read("../app/renters/[slug]/page.tsx"),
+    read("../app/florida/[slug]/page.tsx"),
+    read("../app/timeline/[stage]/page.tsx"),
+  ]);
+  for (const route of routes) assert.match(route, /notFound\(\)/);
+  for (const route of routes) assert.doesNotMatch(route, /dynamicParams = false/);
+});
+
+test("standard Node production scripts contain no Cloudflare or Vinext coupling", async () => {
+  const [pkg, lock, api, db] = await Promise.all([read("../package.json"), read("../package-lock.json"), read("../app/api/newsletter/route.ts"), read("../db/index.ts")]);
+  const packageData = JSON.parse(pkg);
+  assert.equal(packageData.scripts.dev, "next dev");
+  assert.equal(packageData.scripts.build, "next build");
+  assert.equal(packageData.scripts.start, "next start");
+  assert.equal(packageData.engines.node, ">=22.13.0");
+  assert.doesNotMatch(`${pkg}${lock}${api}${db}`, /cloudflare:|wrangler|vinext|@cloudflare/i);
+});
+
+test("newsletter provides accessible errors and preserves form values on failure", async () => {
+  const form = await read("../app/components/NewsletterForm.tsx");
+  assert.match(form, /aria-invalid/);
+  assert.match(form, /aria-describedby/);
+  assert.match(form, /role=\{status === "error" \? "alert" : "status"\}/);
+  assert.match(form, /disabled=\{status === "loading"\}/);
+  assert.match(form, /Practical reminders only\. Unsubscribe anytime\./);
 });
 
 test("documents important legacy redirects", async () => {

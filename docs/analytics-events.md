@@ -10,13 +10,20 @@ Never include email addresses, move dates, names, street addresses, free-form fo
 | `entry_card_select` | Homepage intent card | `path` |
 | `timeline_start` | Header or homepage timeline CTA | `source` |
 | `timeline_task_complete` | Visitor checks a task | `task_id` |
+| `timeline_completion` | All tasks in the current timeline scope are complete | `scope` |
 | `timeline_reset` | Visitor resets progress | `scope` |
+| `checklist_interaction` | Visitor checks or unchecks a timeline task | `task_id`, `complete` |
 | `florida_guide_visit` | Florida guide CTA or card | `source`, `guide` |
 | `checklist_download` | Print or download action | `checklist_id` |
 | `newsletter_submit` | Successful newsletter save | `form` only |
+| `newsletter_success` | Successful newsletter save | `form` only |
+| `newsletter_error` | Client validation or request failure | `form`, non-sensitive `reason` |
 | `outbound_resource_click` | Non-affiliate external resource | `label`, `destination_host` |
+| `outbound_official_resource_click` | Visitor opens a government or other official source | `label`, `destination_host` |
+| `related_guide_click` | Visitor opens a related internal guide | `path` |
 | `affiliate_link_click` | Clearly labeled affiliate link | `label`, `destination_host` |
 | `qr_campaign_visit` | `/welcome/[campaign]` load | `campaign` |
+| `campaign_landing_visit` | Whitelisted campaign landing page load | `campaign` |
 
 ## Campaign parameters
 
