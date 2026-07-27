@@ -1,0 +1,5 @@
+import type { Metadata } from "next";
+import { PageHero } from "../components/PageHero";
+import { pageMetadata } from "../lib/metadata";
+export const metadata: Metadata = pageMetadata("Terms", "Terms for using MoveIn utility lookup information.", "/terms");
+export default function TermsPage() { return <main id="main-content"><PageHero eyebrow="Policy" title="Terms" description="MoveIn provides researched starting points, not a property-specific service determination." /><section className="section"><article className="shell prose"><p><strong>Last updated:</strong> July 27, 2026</p><p>Provider availability, contacts, boundaries, rates, and requirements can change and may differ by exact address. Verify every critical detail with the official provider or government agency.</p><p>MoveIn is not responsible for opening, transferring, billing, interrupting, or restoring utility service. Do not rely on MoveIn for emergency dispatch; call 911 for immediate danger and use the provider’s official emergency channel for utility incidents.</p><p>By using the site, you agree that the information is general and may be incomplete.</p></article></section></main>; }

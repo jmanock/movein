@@ -1,39 +1,26 @@
-# Search and metadata architecture
+# SEO architecture
 
-MoveIn uses `https://movein.guide` as its only canonical origin. The App Router metadata helper in `app/lib/metadata.ts` supplies page-specific titles, descriptions, canonical URLs, Open Graph fields, X card fields, and 1200 × 630 images.
+`https://movein.guide` is the only canonical origin. Static content pages have self-referencing canonicals. Query-parameter lookup pages are not created; `/lookup` is noindexed and successful results use `/lookup/[zip]`.
 
-## Indexable page rules
+## ZIP indexing
 
-- Canonical hubs, timeline stages, substantive guide pages, policy pages, and trust pages are indexable.
-- API and Open Graph image endpoints are not listed in the sitemap.
-- Redirect sources are excluded from the sitemap.
-- `/welcome/[campaign]` supports only the two checked-in campaign identifiers. Both pages emit `noindex,follow` and canonicalize to the substantive destination page. Unknown campaign identifiers return 404.
-- Query parameters do not change the canonical URL. Tracking parameters remain useful for attribution without creating indexable copies.
-- New city, county, campaign, or keyword variants must not be added unless the page has distinct, maintained public value.
+- A ZIP must be `verified`, contain substantial reviewed records, and have `is_indexable=1` to be indexable.
+- Partial, pending, empty, or editorially thin ZIP pages emit `noindex,follow` and stay out of the sitemap.
+- Unknown and malformed ZIP routes return 404.
+- The launch sitemap contains only approved pilot ZIPs 32801 and 34741. The other pilot ZIPs remain useful but noindexed while coverage is partial.
+- Do not generate thousands of pages from ZIP lists. A new page needs meaningful data, current sources, and visible address-confirmation guidance.
+
+## Campaign and duplicate URLs
+
+Campaign pages are retired and redirected to the homepage. No `/welcome/[campaign]` pages are generated, submitted, or canonicalized as copies. Tracking parameters do not alter canonical URLs.
 
 ## Structured data
 
-- Homepage: `Organization` and `WebSite`.
-- Guide pages: `BreadcrumbList` and `Article`.
-- Checklist pages: visible steps are also represented as `HowTo`.
-- FAQ schema is emitted only when the matching questions and answers are visible on the page.
-- JSON is serialized through `app/components/JsonLd.tsx`, which escapes `<` before insertion.
+- Homepage: `WebSite` and `Organization`.
+- FAQ: `FAQPage` matching visible questions and answers.
+- No fake `LocalBusiness`, reviews, ratings, products, contractors, or claimed service territories.
+- Dataset schema is omitted until the public dataset and licensing record justify it.
 
-Do not add reviews, ratings, local-business claims, credentials, partnerships, or services that are not real and visible.
+## Discovery
 
-## Sitemap and robots
-
-`app/sitemap.ts` lists canonical public pages with differentiated priorities and update frequencies. Campaign pages, API routes, Open Graph endpoints, redirects, and unknown dynamic parameters are excluded. `app/robots.ts` allows normal crawling and points to `https://movein.guide/sitemap.xml`.
-
-Run the production server and use `npm run check:links` to verify every sitemap URL returns 200.
-
-## Social images
-
-- Homepage default: `/images/seo/movein-social-card.jpg`
-- Timeline: `/og/timeline`
-- Homeowners: `/og/homeowners`
-- Renters: `/og/renters`
-- Florida: `/og/florida`
-- Checklists: `/og/checklists`
-
-The dynamic image route accepts only those identifiers and returns 404 for others.
+`robots.txt` allows public pages, disallows `/api/`, and points to the canonical sitemap. The sitemap excludes API routes, redirects, `/lookup`, campaign routes, and noindexed ZIPs. Run the link checker against the production server before release.

@@ -1,7 +1,7 @@
 {
   "name": "MoveIn",
   "short_name": "MoveIn",
-  "description": "Everything after the keys.",
+  "description": "Find possible Florida utility providers by ZIP code, then confirm your exact address.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#fbfaf6",

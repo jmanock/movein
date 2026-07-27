@@ -1,0 +1,22 @@
+provider_slug,contact_type,label,phone
+sanford-water,customer_service,Utility customer service,(407) 688-5100
+sanford-water,emergency,After-hours utility assistance,(407) 688-5100
+sanford-sewer,customer_service,Utility customer service,(407) 688-5100
+sanford-sewer,emergency,After-hours utility assistance,(407) 688-5100
+sanford-solid-waste,customer_service,Solid Waste Division,(407) 688-5089
+ouc-electric,customer_service,Customer service and self-service,(407) 423-9018
+ouc-electric,outage,Report an electric outage,(407) 423-9018
+ouc-water,customer_service,Customer service,(407) 423-9018
+deland-water,customer_service,Utility Billing,(386) 626-7051
+deland-water,emergency,Water emergency,(386) 626-7203
+deland-sewer,customer_service,Utility Billing,(386) 626-7051
+deland-sewer,emergency,Wastewater emergency,(386) 626-7251
+deland-solid-waste,customer_service,Utility Billing,(386) 626-7051
+seco-electric,customer_service,Member services,(352) 793-3801
+seco-electric,outage,Report or check an outage,(352) 793-3801
+kua-electric,customer_service,Customer service,(407) 933-9800
+kua-electric,outage,Immediate assistance,(407) 933-7777
+toho-water,customer_service,Customer call center,(407) 944-5000
+toho-water,emergency,Water emergency,(407) 944-5000
+toho-sewer,customer_service,Customer call center,(407) 944-5000
+toho-sewer,emergency,Sewer emergency,(407) 944-5000

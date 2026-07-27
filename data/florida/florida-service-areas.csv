@@ -1,0 +1,23 @@
+provider_slug,zip_code,coverage_type,coverage_notes,confidence_level,is_primary
+sanford-water,32771,possible,Possible provider for some Sanford addresses; confirm water service by exact address.,high,0
+sanford-sewer,32771,possible,Possible provider for some Sanford addresses; sewer or septic varies by property.,high,0
+sanford-solid-waste,32771,address_required,City service depends on whether the address is inside the service area.,high,0
+fcc-broadband-map,32771,address_required,Internet providers and technology vary building by building; use the FCC address search.,high,0
+seminole-government,32771,address_required,Use county and city sites to confirm which local agency serves the property.,high,0
+ouc-electric,32801,possible,OUC serves Orlando but utility territory can split ZIP codes; confirm the address.,high,0
+ouc-water,32801,possible,OUC provides water in Orlando and parts of Orange County; confirm the address.,high,0
+fcc-broadband-map,32801,address_required,Internet providers and technology vary building by building; use the FCC address search.,high,0
+orange-government,32801,address_required,Use county and city sites to confirm which local agency serves the property.,high,0
+deland-water,32720,possible,Possible city water provider; confirm that the property is in the DeLand service area.,high,0
+deland-sewer,32720,address_required,Sewer service or septic status varies by property; confirm the exact address.,high,0
+deland-solid-waste,32720,address_required,City garbage service applies within city limits; confirm the exact address.,high,0
+fcc-broadband-map,32720,address_required,Internet providers and technology vary building by building; use the FCC address search.,high,0
+volusia-government,32720,address_required,Use county and city sites to confirm which local agency serves the property.,high,0
+seco-electric,34748,possible,SECO serves parts of Lake County; confirm this address on the official territory tool.,medium,0
+fcc-broadband-map,34748,address_required,Internet providers and technology vary building by building; use the FCC address search.,high,0
+lake-government,34748,address_required,Use county and city sites to confirm which local agency serves the property.,high,0
+kua-electric,34741,possible,KUA serves the Kissimmee area; confirm the property on its official territory map.,high,0
+toho-water,34741,possible,Toho is a possible water provider; confirm the address in its service area.,high,0
+toho-sewer,34741,address_required,Toho is a possible wastewater provider; sewer or septic varies by property.,high,0
+fcc-broadband-map,34741,address_required,Internet providers and technology vary building by building; use the FCC address search.,high,0
+osceola-government,34741,address_required,Use county and city sites to confirm which local agency serves the property.,high,0

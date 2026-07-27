@@ -1,18 +1,8 @@
-import {
-  Backpack, Building2, Bug, CalendarDays, Car, CheckCircle2, ClipboardCheck,
-  CloudRainWind, Droplets, FileText, House, KeyRound, Landmark, Map, MapPinned,
-  PackageOpen, Palmtree, PawPrint, PlugZap, ReceiptText, Shield, ShieldCheck,
-  Sparkles, Sun, Umbrella, Waves, Wifi, Wrench, type LucideIcon,
-} from "lucide-react";
+import { Building2, Droplets, Flame, House, Info, Landmark, MapPin, Recycle, ShieldCheck, Wifi, Zap, type LucideIcon } from "lucide-react";
 
-const icons: Record<string, LucideIcon> = {
-  Backpack, Building2, Bug, CalendarDays, Car, CheckCircle2, ClipboardCheck,
-  CloudRainWind, Droplets, FileText, House, KeyRound, Landmark, Map, MapPinned,
-  PackageOpen, Palmtree, PawPrint, PlugZap, ReceiptText, Shield, ShieldCheck,
-  Sparkles, Sun, Umbrella, Waves, Wifi, Wrench,
-};
+const icons: Record<string, LucideIcon> = { Building2, Droplets, Flame, House, Info, Landmark, MapPin, Recycle, ShieldCheck, Wifi, Zap };
 
 export function Icon({ name, size = 22 }: { name: string; size?: number }) {
-  const Component = icons[name] ?? CheckCircle2;
-  return <Component size={size} strokeWidth={1.8} aria-hidden="true" />;
+  const Component = icons[name] ?? Info;
+  return <Component size={size} strokeWidth={1.9} aria-hidden="true" />;
 }

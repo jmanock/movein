@@ -9,9 +9,15 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "test": "npm run build && node --test tests/rendered-html.test.mjs",
+    "test": "node --test tests/*.test.mjs",
     "lint": "eslint",
-    "check:links": "node scripts/check-internal-links.mjs"
+    "check:links": "node scripts/check-internal-links.mjs",
+    "db:generate": "node scripts/db-generate.mjs",
+    "db:migrate": "node scripts/db-migrate.mjs",
+    "db:seed": "node scripts/import-florida-data.mjs",
+    "data:validate": "node scripts/validate-provider-data.mjs",
+    "data:coverage": "node scripts/report-data-coverage.mjs",
+    "data:stale": "node scripts/report-stale-data.mjs"
   },
   "dependencies": {
     "better-sqlite3": "13.0.1",

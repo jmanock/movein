@@ -1,0 +1,10 @@
+import type { Metadata } from "next";
+import { Icon } from "../components/Icon";
+import { PageHero } from "../components/PageHero";
+import { ZipLookupForm } from "../components/ZipLookupForm";
+import { pageMetadata } from "../lib/metadata";
+
+export const metadata: Metadata = pageMetadata("Learn Your Area", "Use a Florida ZIP code to find verified local service and government starting points.", "/learn-your-area");
+const available = [["Zap", "Utilities", "Possible electric, water, sewer, gas, and outage contacts."], ["Wifi", "Internet", "An official address-level broadband lookup."], ["Recycle", "Trash and recycling", "Local agency details when they are verified."], ["Landmark", "County and city", "Official government starting points for location-specific questions."]];
+const official = [{ name: "Emergency planning", href: "https://www.floridadisaster.org/" }, { name: "USPS change of address", href: "https://moversguide.usps.com/" }, { name: "Florida driver and vehicle services", href: "https://www.flhsmv.gov/" }, { name: "Find a Florida public library", href: "https://dos.fl.gov/library-archives/library-development/find-a-library/" }];
+export default function LearnAreaPage() { return <main id="main-content"><PageHero eyebrow="Local starting points" title="Learn the services connected to your ZIP." description="The pilot starts with five Central Florida counties and expands only as records are verified."><ZipLookupForm /></PageHero><section className="section"><div className="shell"><div className="simple-grid">{available.map(([icon, title, description]) => <article className="info-card" key={title}><span className="service-icon"><Icon name={icon} /></span><h2>{title}</h2><p>{description}</p></article>)}</div></div></section><section className="section subtle"><div className="shell official-links"><div className="section-heading"><span className="eyebrow">Useful statewide links</span><h2>Official Florida and federal resources.</h2></div>{official.map((item) => <a key={item.href} href={item.href} target="_blank" rel="noopener noreferrer">{item.name}</a>)}</div></section></main>; }

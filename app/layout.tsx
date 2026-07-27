@@ -1,15 +1,14 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist } from "next/font/google";
 import { SiteChrome } from "./components/SiteChrome";
 import { DEFAULT_DESCRIPTION, SITE_URL } from "./lib/metadata";
 import "./globals.css";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"], display: "swap" });
-const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"], display: "swap" });
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: { default: "MoveIn | New Home and Move-In Guides", template: "%s | MoveIn" },
+  title: { default: "MoveIn | Find Florida Utilities by ZIP Code", template: "%s | MoveIn" },
   description: DEFAULT_DESCRIPTION,
   applicationName: "MoveIn",
   authors: [{ name: "MoveIn", url: SITE_URL }],
@@ -19,5 +18,5 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="en" suppressHydrationWarning><head><script dangerouslySetInnerHTML={{ __html: "try{document.documentElement.dataset.theme=localStorage.getItem('movein.theme')==='dark'?'dark':'light'}catch(e){}" }} /></head><body className={`${geistSans.variable} ${geistMono.variable}`}><a className="skip-link" href="#main-content">Skip to content</a><SiteChrome>{children}</SiteChrome></body></html>;
+  return <html lang="en"><body className={geistSans.variable}><a className="skip-link" href="#main-content">Skip to content</a><SiteChrome>{children}</SiteChrome></body></html>;
 }

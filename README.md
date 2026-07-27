@@ -1,79 +1,82 @@
 # MoveIn
 
-MoveIn is a mobile-first Next.js guide for everything after the keys. It helps homeowners and renters work through practical next steps from before move-in through the first year. Welcome Home Florida is the platform's first regional guide.
+MoveIn is a focused Florida utility and local-services lookup. A visitor enters a five-digit ZIP code, sees reviewed possible providers and official starting points, and is reminded to confirm the exact street address.
+
+The first usable dataset is intentionally limited to pilot records in Seminole, Orange, Volusia, Lake, and Osceola counties. It does not claim statewide coverage.
 
 ## Stack
 
-- Next.js 16 App Router, React 19, and TypeScript
-- Standard long-running Node.js server (`next start`)
-- Tailwind CSS entrypoint plus project CSS in `app/globals.css`
-- File-backed SQLite through `better-sqlite3` for newsletter subscribers
-- Lucide icons and vendor-neutral analytics events
+- Next.js 16 App Router, React 19, TypeScript, and Node.js 22
+- Standard `next start` server behind PM2 and Nginx on port 3006
+- SQLite through `better-sqlite3`
+- Explicit SQL migrations and idempotent CSV imports
+- Server-rendered lookup pages and a controlled JSON API
 
-The application uses the conventional Next.js development, build, and production commands.
+## Local setup
 
-## Local development
-
-Requirements: Node.js 22.13 or newer.
+Node.js 22.13 or newer is required.
 
 ```bash
 npm install
+npm run db:migrate
+npm run db:seed
 npm run dev
 ```
 
-Useful checks:
+Checks:
 
 ```bash
+npm run data:validate
+npm run data:coverage
+npm run data:stale
 npm run lint
 npm test
 npm run build
 PORT=3006 npm run start
 ```
 
-## Environment variables
+## Environment
 
-`DATABASE_PATH` is optional. It defaults to `./data/movein.sqlite`, relative to the application directory. When set, it must be an absolute path. For production, point it at persistent storage owned by the PM2 application user:
+`DATABASE_PATH` is optional in development and defaults to `./data/movein.sqlite`. In production it must be an absolute path on persistent storage, such as:
 
 ```bash
 DATABASE_PATH=/var/lib/movein/movein.sqlite
 ```
 
-Copy `.env.example` when a local override is useful. Never commit the SQLite database or secrets.
+`STALE_AFTER_DAYS` is an optional CLI-only value for `npm run data:stale`; it defaults to 180.
 
-## Routes
+## Product routes
 
-- `/` — national MoveIn homepage
-- `/timeline` and `/timeline/[stage]` — persistent move timeline
-- `/homeowners`, `/renters`, `/checklists`, `/resources` — user-intent hubs with substantial linked guides
-- `/florida` and `/florida/[guide]` — Welcome Home Florida regional experience
-- `/welcome/[campaign]` — whitelisted, noindex postcard and QR campaign landing pages canonicalized to useful guides
-- `/blog`, `/about`, `/contact` — editorial and company pages
-- `/privacy`, `/terms`, `/disclosure` — policy pages
-- `/sitemap.xml`, `/robots.txt` — search engine discovery
+- `/` — primary ZIP lookup
+- `/lookup/[zip]` — server-rendered result page
+- `/api/lookup?zip=32771` — controlled JSON lookup
+- `/homeowners`, `/renters` — concise setup guidance
+- `/learn-your-area`, `/resources`, `/faq`
+- `/data-sources`, `/corrections`
+- `/about`, `/contact`, `/privacy`, `/terms`, `/disclosure`, `/editorial-policy`
 
-Timeline progress remains device-local under `movein.timeline.v1`. Newsletter records are stored in SQLite.
+Retired timeline, checklist, Florida Guide, campaign, and guide-detail routes redirect only where a clear replacement exists. The newsletter endpoint and public email collection were removed.
 
-## DigitalOcean production
+## Data workflow
 
-The conventional production flow is:
+Edit the reviewed CSV files in `data/florida`, then run:
 
 ```bash
-npm ci
-npm run build
-PORT=3006 DATABASE_PATH=/var/lib/movein/movein.sqlite npm run start
+npm run data:validate
+npm run db:migrate
+npm run db:seed
+npm run data:coverage
 ```
 
-Use `ecosystem.config.cjs` to manage the process with PM2 and proxy Nginx to `127.0.0.1:3006`. Full commands, permissions, Nginx configuration, TLS notes, health checks, and rollback steps are in `docs/deployment.md`.
+The seed is idempotent. It updates known rows without deleting unrelated or retired production data. See `docs/database.md`, `docs/florida-data-acquisition.md`, and `docs/data-verification.md` before adding coverage.
 
 ## Documentation
 
-- `docs/deployment.md` — DigitalOcean, PM2, Nginx, TLS, updates, and rollback
-- `docs/domain-migration.md` — `movein.guide` DNS, canonical, Search Console, and redirects
-- `docs/content-migration.md` — old-to-new content disposition
-- `docs/analytics-events.md` — privacy-safe event contract
-- `docs/seo.md` — canonicals, campaign indexing rules, structured data, sitemap, and social images
-- `docs/content-strategy.md` — topic clusters, editorial standards, and duplication safeguards
-- `docs/image-manifest.md` — asset sources, licensing status, alt text, dimensions, and replacement guidance
-- `docs/search-launch-checklist.md` — Search Console and indexing handoff
-- `docs/accessibility.md` — implemented safeguards and manual regression checks
-- `docs/performance.md` — image, rendering, and Core Web Vitals approach
+- `docs/rebuild-plan.md` — audit and product decisions
+- `docs/removed-features.md` — kept, simplified, removed, and archived behavior
+- `docs/database.md` — schema, migrations, backups, and rollback
+- `docs/florida-data-acquisition.md` — county-by-county research process
+- `docs/data-verification.md` — source and confidence rules
+- `docs/deployment.md` — DigitalOcean, PM2, Nginx, and release commands
+- `docs/seo.md` — canonicals, ZIP indexing, sitemap, and structured data
+- `docs/privacy.md` — application data-handling notes

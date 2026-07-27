@@ -7,10 +7,13 @@ const nextConfig: NextConfig = {
   images: { formats: ["image/avif", "image/webp"], qualities: [75, 88] },
   async redirects() {
     return [
-      { source: "/florida/getting-started", destination: "/florida/moving-to-florida-checklist", permanent: true },
-      { source: "/florida/homeowners", destination: "/florida/new-florida-homeowner-guide", permanent: true },
-      { source: "/florida/renters", destination: "/renters/renter-move-in-checklist", permanent: true },
-      { source: "/florida/hurricane-prep", destination: "/florida/hurricane-preparation", permanent: true },
+      { source: "/timeline/:path*", destination: "/homeowners", permanent: true },
+      { source: "/checklists/:path*", destination: "/resources", permanent: true },
+      { source: "/florida/:path*", destination: "/learn-your-area", permanent: true },
+      { source: "/welcome/:path*", destination: "/", permanent: true },
+      { source: "/homeowners/:path+", destination: "/homeowners", permanent: true },
+      { source: "/renters/:path+", destination: "/renters", permanent: true },
+      { source: "/blog", destination: "/resources", permanent: true },
     ];
   },
 };
