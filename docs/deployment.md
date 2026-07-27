@@ -1,32 +1,137 @@
-# Deployment and custom-domain operations
+# DigitalOcean deployment
 
-## Release checklist
+This application runs as a standard Next.js Node server behind Nginx.
 
-1. Install dependencies with the committed lockfile.
-2. Run `npm run lint`, `npm test`, and `npm run build`.
-3. If `db/schema.ts` changed, run `npm run db:generate`, inspect the SQL, and commit the migration.
-4. Confirm `.openai/hosting.json` contains only the Sites project ID and logical `DB`/R2 bindings.
-5. Commit and push the exact validated source revision to the Sites source repository.
-6. Package the built `dist` output, hosting metadata, and migrations with the Sites packaging helper.
-7. Save one Sites version using the pushed revision and package.
-8. Deploy the saved version with the existing access policy and monitor it to a terminal result.
-9. Verify the homepage, timeline completion, Florida guide, policy pages, sitemap, robots file, and a newsletter submission.
+## Server prerequisites
+
+- Ubuntu DigitalOcean Droplet
+- Node.js 22.13 or newer
+- Git, Nginx, PM2, and build tools for native Node packages
+- Repository: `https://github.com/jmanock/movein.git`
+- Application port: `3006`
+- Domain: `movein.guide`
+
+Install the usual Ubuntu prerequisites as a sudo-capable administrator:
+
+```bash
+sudo apt update
+sudo apt install -y git nginx build-essential python3
+sudo npm install -g pm2
+```
+
+Install Node 22 using the team's normal supported method and confirm `node --version` reports at least `v22.13.0`.
+
+## First release
+
+Example application path:
+
+```bash
+sudo mkdir -p /var/www/movein /var/lib/movein
+sudo chown -R "$USER":"$USER" /var/www/movein /var/lib/movein
+git clone https://github.com/jmanock/movein.git /var/www/movein
+cd /var/www/movein
+npm ci
+npm run lint
+npm test
+npm run build
+```
+
+The PM2 application user must have read/write access to `/var/lib/movein`. Start the checked-in process definition:
+
+```bash
+cd /var/www/movein
+pm2 start ecosystem.config.cjs
+pm2 save
+pm2 startup
+```
+
+Run the final command printed by `pm2 startup` so the process returns after a reboot.
+
+The equivalent direct smoke-test command is:
+
+```bash
+PORT=3006 DATABASE_PATH=/var/lib/movein/movein.sqlite npm run start
+```
+
+## Nginx reverse proxy
+
+Create `/etc/nginx/sites-available/movein.guide`:
+
+```nginx
+server {
+    listen 80;
+    listen [::]:80;
+    server_name movein.guide www.movein.guide;
+
+    client_max_body_size 2m;
+
+    location / {
+        proxy_pass http://127.0.0.1:3006;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_read_timeout 60s;
+    }
+}
+```
+
+Enable and validate it:
+
+```bash
+sudo ln -s /etc/nginx/sites-available/movein.guide /etc/nginx/sites-enabled/movein.guide
+sudo nginx -t
+sudo systemctl reload nginx
+```
+
+After DNS points to the Droplet, use Certbot or the team's normal ACME client to issue a certificate and redirect HTTP to HTTPS. Keep the upstream on loopback; only Nginx should be internet-facing.
+
+## Updates
+
+```bash
+cd /var/www/movein
+git fetch origin
+git checkout main
+git pull --ff-only
+npm ci
+npm run lint
+npm test
+npm run build
+pm2 reload movein --update-env
+```
+
+Verify:
+
+```bash
+curl -I http://127.0.0.1:3006/
+curl -I https://movein.guide/
+curl -I https://movein.guide/timeline
+curl -I https://movein.guide/florida
+curl -I https://movein.guide/robots.txt
+curl -I https://movein.guide/sitemap.xml
+pm2 logs movein --lines 100
+```
+
+## SQLite operations
+
+- Production path: `/var/lib/movein/movein.sqlite`
+- The application creates the directory and schema when permissions allow.
+- Back up the database file and its `-wal`/`-shm` companions together, or use SQLite's online backup tooling.
+- Do not run multiple PM2 instances against a single local SQLite database. The checked-in configuration uses one forked instance.
+- If horizontal scaling is later required, migrate the small `db/index.ts` adapter to managed PostgreSQL before adding application instances.
 
 ## Runtime configuration
 
-- Required D1 binding: `DB`
-- Required application environment variables: none
-- Optional future integrations: email provider and analytics variables are intentionally not defined until a provider is selected
+- `PORT=3006` — supplied by PM2; required for the specified deployment
+- PM2 passes `-H 127.0.0.1` to `next start`, keeping the application on the Nginx loopback upstream
+- `NODE_ENV=production` — supplied by PM2
+- `DATABASE_PATH=/var/lib/movein/movein.sqlite` — recommended persistent production path; when set, this must be absolute
 
-## Connect movein.guide
-
-1. Add `movein.guide` in Sites custom-domain settings.
-2. Copy the exact DNS records supplied by Sites into the authoritative DNS provider.
-3. Wait for domain validation and TLS issuance; do not repeatedly remove and re-add records.
-4. Verify HTTPS, canonical tags, Open Graph image, `/sitemap.xml`, `/robots.txt`, and D1-backed signup on the custom host.
-5. Add the new domain to Search Console and submit the sitemap.
-6. Apply and test the redirects in `docs/domain-migration.md`.
+No third-party email or analytics credentials are currently required.
 
 ## Rollback
 
-Redeploy the prior saved Sites version. If the issue is custom-domain-only, keep the production version and temporarily restore the last known-good domain mapping. Preserve newsletter data; a code rollback should not drop or recreate the production database.
+Check out the previous known-good commit, run `npm ci && npm run build`, then `pm2 reload movein --update-env`. Do not delete or replace the SQLite database during an application rollback.

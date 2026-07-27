@@ -1,15 +1,16 @@
 # MoveIn
 
-MoveIn is a mobile-first guide for everything after the keys. It helps homeowners and renters work through practical next steps from before move-in through the first year. Welcome Home Florida is the platform's first regional guide.
+MoveIn is a mobile-first Next.js guide for everything after the keys. It helps homeowners and renters work through practical next steps from before move-in through the first year. Welcome Home Florida is the platform's first regional guide.
 
 ## Stack
 
-- Next.js App Router with TypeScript and React
-- Vinext/Vite output for Cloudflare Workers
+- Next.js 16 App Router, React 19, and TypeScript
+- Standard long-running Node.js server (`next start`)
 - Tailwind CSS entrypoint plus project CSS in `app/globals.css`
-- Cloudflare D1 with Drizzle schema and migrations for newsletter subscribers
-- Sites deployment metadata in `.openai/hosting.json`
-- Lucide icons; no analytics or email-vendor SDK is required
+- File-backed SQLite through `better-sqlite3` for newsletter subscribers
+- Lucide icons and vendor-neutral analytics events
+
+The application uses the conventional Next.js development, build, and production commands.
 
 ## Local development
 
@@ -20,20 +21,24 @@ npm install
 npm run dev
 ```
 
-The local development server provides a simulated D1 binding. Useful checks:
+Useful checks:
 
 ```bash
-npm run build
 npm run lint
 npm test
-npm run db:generate
+npm run build
+PORT=3006 npm run start
 ```
 
 ## Environment variables
 
-No application environment variables are required for this version. The logical D1 binding is `DB` and is declared in `.openai/hosting.json`. The hosting platform provides the production database binding.
+`DATABASE_PATH` is optional. It defaults to `./data/movein.sqlite`, relative to the application directory. When set, it must be an absolute path. For production, point it at persistent storage owned by the PM2 application user:
 
-When an email provider or analytics platform is added later, keep vendor credentials in hosted runtime configuration and document matching non-secret key names in `.env.example`. Do not commit secrets.
+```bash
+DATABASE_PATH=/var/lib/movein/movein.sqlite
+```
+
+Copy `.env.example` when a local override is useful. Never commit the SQLite database or secrets.
 
 ## Routes
 
@@ -46,15 +51,23 @@ When an email provider or analytics platform is added later, keep vendor credent
 - `/privacy`, `/terms`, `/disclosure` — policy pages
 - `/sitemap.xml`, `/robots.txt` — search engine discovery
 
-Timeline progress is intentionally device-local under `movein.timeline.v1`. Newsletter records are durable in D1.
+Timeline progress remains device-local under `movein.timeline.v1`. Newsletter records are stored in SQLite.
 
-## Production deployment
+## DigitalOcean production
 
-Build the exact source intended for release, save the source revision, package the Vinext worker output plus `.openai` metadata and migrations, then publish the saved version through Sites. See `docs/deployment.md` for the release and custom-domain checklist.
+The conventional production flow is:
+
+```bash
+npm ci
+npm run build
+PORT=3006 DATABASE_PATH=/var/lib/movein/movein.sqlite npm run start
+```
+
+Use `ecosystem.config.cjs` to manage the process with PM2 and proxy Nginx to `127.0.0.1:3006`. Full commands, permissions, Nginx configuration, TLS notes, health checks, and rollback steps are in `docs/deployment.md`.
 
 ## Documentation
 
-- `docs/domain-migration.md` — `movein.guide` DNS, canonical, Search Console, redirect, and rollback plan
+- `docs/deployment.md` — DigitalOcean, PM2, Nginx, TLS, updates, and rollback
+- `docs/domain-migration.md` — `movein.guide` DNS, canonical, Search Console, and redirects
 - `docs/content-migration.md` — old-to-new content disposition
 - `docs/analytics-events.md` — privacy-safe event contract
-- `docs/deployment.md` — production and custom-domain operations

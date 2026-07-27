@@ -1,5 +1,7 @@
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
+import { mkdtemp, readFile, rm } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import test from "node:test";
 import { validateNewsletterPayload } from "../app/lib/newsletter.ts";
 import { calculateProgress } from "../app/lib/progress.ts";
@@ -46,6 +48,23 @@ test("validates newsletter fields and spam signals", () => {
   const valid = validateNewsletterPayload({ email: " A@Example.com ", audience: "renter", moveMonth: "2026-09", state: " Florida ", startedAt: 1 }, now);
   assert.equal(valid.ok, true);
   assert.equal(valid.ok && valid.email, "a@example.com");
+});
+
+test("persists newsletter subscribers with the Node SQLite adapter", async () => {
+  const directory = await mkdtemp(join(tmpdir(), "movein-db-"));
+  const path = join(directory, "newsletter.sqlite");
+  process.env.DATABASE_PATH = path;
+  const { getDatabase } = await import(`../db/index.ts?test=${Date.now()}`);
+  const database = getDatabase();
+  database.prepare("INSERT INTO newsletter_subscribers (email, source, audience) VALUES (?, ?, ?)")
+    .run("test@example.com", "test", "homeowner");
+  const subscriber = database.prepare("SELECT email, audience FROM newsletter_subscribers WHERE email = ?")
+    .get("test@example.com");
+  assert.deepEqual(subscriber, { email: "test@example.com", audience: "homeowner" });
+  database.close();
+  globalThis.moveInDatabase = undefined;
+  delete process.env.DATABASE_PATH;
+  await rm(directory, { recursive: true, force: true });
 });
 
 test("metadata and discovery files use the movein.guide canonical", async () => {
