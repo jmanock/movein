@@ -7,7 +7,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const pages = [
     ["", 1, "weekly"], ["homeowners", .8, "monthly"], ["renters", .8, "monthly"],
     ["learn-your-area", .85, "monthly"], ["resources", .7, "monthly"], ["faq", .7, "monthly"],
-    ["data-sources", .55, "monthly"], ["corrections", .45, "yearly"], ["about", .45, "yearly"],
+    ["data-sources", .55, "monthly"], ["about", .45, "yearly"],
     ["contact", .35, "yearly"], ["privacy", .3, "yearly"], ["terms", .3, "yearly"],
     ["disclosure", .3, "yearly"], ["editorial-policy", .4, "yearly"],
   ] as const;

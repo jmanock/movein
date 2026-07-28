@@ -52,7 +52,7 @@ DATABASE_PATH=/var/lib/movein/movein.sqlite
 - `/api/lookup?zip=32771` — controlled JSON lookup
 - `/homeowners`, `/renters` — concise setup guidance
 - `/learn-your-area`, `/resources`, `/faq`
-- `/data-sources`, `/corrections`
+- `/data-sources`, `/corrections` — correction submissions are reviewed before public data changes
 - `/about`, `/contact`, `/privacy`, `/terms`, `/disclosure`, `/editorial-policy`
 
 Retired timeline, checklist, Florida Guide, campaign, and guide-detail routes redirect only where a clear replacement exists. The newsletter endpoint and public email collection were removed.
@@ -68,7 +68,7 @@ npm run db:seed
 npm run data:coverage
 ```
 
-The seed is idempotent. It updates known rows without deleting unrelated or retired production data. See `docs/database.md`, `docs/florida-data-acquisition.md`, and `docs/data-verification.md` before adding coverage.
+The seed is idempotent. It updates known rows without deleting unrelated or retired production data. Run migrations before deploying so the correction-review table and ZIP verification date are present. See `docs/database.md`, `docs/florida-data-acquisition.md`, and `docs/data-verification.md` before adding coverage.
 
 ## Documentation
 
@@ -77,6 +77,8 @@ The seed is idempotent. It updates known rows without deleting unrelated or reti
 - `docs/database.md` — schema, migrations, backups, and rollback
 - `docs/florida-data-acquisition.md` — county-by-county research process
 - `docs/data-verification.md` — source and confidence rules
+- `docs/pilot-data-report.md` — current pilot coverage, gaps, and next verification work
+- `docs/image-manifest.md` — homepage image provenance, optimization, and replacement guidance
 - `docs/deployment.md` — DigitalOcean, PM2, Nginx, and release commands
 - `docs/seo.md` — canonicals, ZIP indexing, sitemap, and structured data
 - `docs/privacy.md` — application data-handling notes

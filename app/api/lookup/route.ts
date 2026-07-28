@@ -11,7 +11,13 @@ export async function GET(request: Request) {
   try {
     const result = getLookupResult(zip);
     if (!result) return Response.json({ error: "We could not find that ZIP code. Check the number and try again." }, { status: 404 });
-    return Response.json(result, { headers: { "Cache-Control": "public, max-age=300, s-maxage=3600, stale-while-revalidate=86400" } });
+    const providers = result.providers;
+    return Response.json({ zipCode: result.zipCode, city: result.city, county: result.county, state: result.state,
+      stateName: result.stateName, status: result.status, lastUpdated: result.lastUpdated, disclaimer: result.disclaimer, providers: {
+      electricity: providers.electricity ?? [], water: providers.water ?? [], sewer: providers.sewer ?? [],
+      naturalGas: providers["natural-gas"] ?? [], internet: providers.internet ?? [],
+      trashRecycling: providers["trash-recycling"] ?? [], localInformation: providers["local-government"] ?? [],
+    } }, { headers: { "Cache-Control": "public, max-age=300, s-maxage=3600, stale-while-revalidate=86400" } });
   } catch (error) {
     console.error("ZIP lookup failed", error instanceof Error ? error.message : "unknown");
     return Response.json({ error: "We could not complete the lookup right now. Please try again." }, { status: 500 });

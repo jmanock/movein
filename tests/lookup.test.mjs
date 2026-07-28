@@ -14,6 +14,9 @@ for (const script of ["scripts/db-migrate.mjs", "scripts/import-florida-data.mjs
 }
 const { getLookupResult, isValidZip } = await import("../db/lookup.ts");
 const { GET } = await import("../app/api/lookup/route.ts");
+const { POST } = await import("../app/api/corrections/route.ts");
+const { getDatabase } = await import("../db/index.ts");
+const { validateCorrection } = await import("../app/lib/corrections.ts");
 const read = (path) => readFile(new URL(path, import.meta.url), "utf8");
 
 after(async () => {
@@ -29,12 +32,22 @@ test("accepts exactly five numeric digits", () => {
 });
 
 test("returns grouped verified results with multiple possible providers", () => {
+  const database = getDatabase();
+  const categoryId = database.prepare("SELECT id FROM provider_categories WHERE slug='electricity'").get().id;
+  const stateId = database.prepare("SELECT id FROM states WHERE code='FL'").get().id;
+  const zipId = database.prepare("SELECT id FROM zip_codes WHERE zip_code='34741'").get().id;
+  const inserted = database.prepare(`INSERT INTO providers (name, slug, category_id, state_id, official_website, status, is_verified, last_verified_at)
+    VALUES ('Test Alternate Electric', 'test-alternate-electric', ?, ?, 'https://example.gov/electric', 'verified', 1, '2026-07-27')`).run(categoryId, stateId);
+  database.prepare(`INSERT INTO service_areas (provider_id, zip_code_id, coverage_type, coverage_notes, confidence_level)
+    VALUES (?, ?, 'possible', 'Test fixture used only in the temporary database.', 'high')`).run(inserted.lastInsertRowid, zipId);
+  database.prepare(`INSERT INTO data_sources (provider_id, source_name, source_url, source_type, retrieved_at)
+    VALUES (?, 'Test source', 'https://example.gov/electric', 'test', '2026-07-27')`).run(inserted.lastInsertRowid);
   const result = getLookupResult("34741");
   assert.equal(result?.city, "Kissimmee");
   assert.equal(result?.county, "Osceola");
   assert.equal(result?.status, "verified");
   assert.equal(result?.isIndexable, true);
-  assert.ok(result.providers.electricity.length >= 1);
+  assert.ok(result.providers.electricity.length >= 2);
   assert.ok(result.providers.water.length >= 1);
   assert.ok(result.providers.sewer.length >= 1);
   assert.ok(Object.values(result.providers).flat().length >= 5);
@@ -47,7 +60,7 @@ test("returns partial data without fabricated fallback categories", () => {
   assert.equal(result?.isIndexable, false);
   assert.ok(result.providers.water.length > 0);
   assert.equal(result.providers["natural-gas"], undefined);
-  assert.match(result.disclaimer, /possible providers/i);
+  assert.match(result.disclaimer, /exact street address/i);
 });
 
 test("returns null for an unknown ZIP", () => {
@@ -70,8 +83,23 @@ test("API controls invalid, unknown, and successful responses", async () => {
   assert.equal(unknown.status, 404);
   const valid = await GET(new Request("http://localhost/api/lookup?zip=32720"));
   assert.equal(valid.status, 200);
-  assert.equal((await valid.json()).status, "partial");
+  const payload = await valid.json();
+  assert.equal(payload.status, "partial");
+  assert.ok(Array.isArray(payload.providers.naturalGas));
+  assert.ok(Array.isArray(payload.providers.trashRecycling));
+  assert.equal("isIndexable" in payload, false);
   assert.match(valid.headers.get("cache-control"), /s-maxage/);
+});
+
+test("correction validation and API return controlled responses", async () => {
+  assert.ok(validateCorrection({ zipCode: "bad" }).errors.zipCode);
+  const invalid = await POST(new Request("http://localhost/api/corrections", { method: "POST", headers: { "content-type": "application/json", "x-real-ip": "198.51.100.5" }, body: JSON.stringify({}) }));
+  assert.equal(invalid.status, 400);
+  const validBody = { zipCode: "32771", category: "water", providerName: "City water record", details: "The official contact page has a newer phone number.", sourceUrl: "https://sanfordfl.gov/", replyEmail: "", website: "", startedAt: Date.now() - 2000 };
+  const valid = await POST(new Request("http://localhost/api/corrections", { method: "POST", headers: { "content-type": "application/json", "x-real-ip": "198.51.100.6" }, body: JSON.stringify(validBody) }));
+  assert.equal(valid.status, 201);
+  assert.equal((await valid.json()).ok, true);
+  assert.equal(getDatabase().prepare("SELECT COUNT(*) AS count FROM correction_submissions WHERE zip_code='32771'").get().count, 1);
 });
 
 test("CSV validation catches no errors in the pilot dataset", () => {
@@ -128,6 +156,31 @@ test("mobile layout and accessible focus treatment are preserved", async () => {
   assert.match(css, /\.zip-controls \{ grid-template-columns: 1fr; \}/);
   assert.match(css, /:focus-visible/);
   assert.match(css, /prefers-reduced-motion/);
+});
+
+test("results show every service category and an explicit missing-data state", async () => {
+  const results = await read("../app/components/LookupResults.tsx");
+  assert.match(results, /We are still verifying this service for your ZIP code/);
+  for (const category of ["electricity", "water", "sewer", "natural-gas", "internet", "trash-recycling"]) assert.match(results, new RegExp(category));
+  assert.match(results, /Report incorrect information/);
+});
+
+test("corrections use a validated form with loading and duplicate-submit protection", async () => {
+  const [page, form, route] = await Promise.all([read("../app/corrections/page.tsx"), read("../app/components/CorrectionForm.tsx"), read("../app/api/corrections/route.ts")]);
+  assert.match(page, /noindex: true/);
+  assert.match(form, /if \(pending\) return/);
+  assert.match(form, /Submitting…/);
+  assert.match(form, /aria-live="polite"/);
+  assert.match(route, /VALUES \(\?, \?, \?, \?, \?, \?\)/);
+});
+
+test("homepage hero uses an optimized decorative Next image without layout shift", async () => {
+  const page = await read("../app/page.tsx");
+  assert.match(page, /from "next\/image"/);
+  assert.match(page, /width=\{1600\}/);
+  assert.match(page, /height=\{880\}/);
+  assert.match(page, /sizes="100vw"/);
+  assert.match(page, /preload/);
 });
 
 test("standard Node scripts and dependencies have no Cloudflare coupling", async () => {

@@ -31,13 +31,13 @@ export type LookupResult = {
   disclaimer: string;
 };
 
-type LocationRow = { zip_code: string; city: string | null; county: string | null; state: string; state_name: string; status: LookupStatus; is_indexable: number };
+type LocationRow = { zip_code: string; city: string | null; county: string | null; state: string; state_name: string; status: LookupStatus; is_indexable: number; last_verified_at: string | null };
 type ProviderRow = { provider_id: number; name: string; slug: string; category_slug: string; description: string | null; official_website: string; service_notes: string | null; coverage_type: CoverageType; coverage_notes: string; confidence_level: string; is_verified: number; last_verified_at: string | null };
 
 export function getLookupResult(zipCode: string): LookupResult | null {
   const database = getDatabase();
   if (!lookupSchemaExists(database)) throw new Error("LOOKUP_DATABASE_NOT_MIGRATED");
-  const location = database.prepare(`SELECT z.zip_code, ci.name AS city, c.name AS county, s.code AS state, s.name AS state_name, z.status, z.is_indexable
+  const location = database.prepare(`SELECT z.zip_code, ci.name AS city, c.name AS county, s.code AS state, s.name AS state_name, z.status, z.is_indexable, z.last_verified_at
     FROM zip_codes z JOIN states s ON s.id=z.state_id LEFT JOIN counties c ON c.id=z.county_id LEFT JOIN cities ci ON ci.id=z.primary_city_id
     WHERE z.zip_code=? AND z.is_active=1`).get(zipCode) as LocationRow | undefined;
   if (!location) return null;
@@ -61,13 +61,13 @@ export function getLookupResult(zipCode: string): LookupResult | null {
   return {
     zipCode: location.zip_code, city: location.city, county: location.county, state: location.state,
     stateName: location.state_name, status: location.status, isIndexable: Boolean(location.is_indexable), providers,
-    lastUpdated: dates.at(-1) ?? null,
-    disclaimer: "ZIP codes do not match utility territories exactly. These are possible providers or official starting points; confirm service for your exact address.",
+    lastUpdated: location.last_verified_at ?? dates.at(-1) ?? null,
+    disclaimer: "Provider availability can vary by exact street address. Confirm service directly with the provider before opening or transferring an account.",
   };
 }
 
 export function coverageLabel(type: CoverageType) {
-  return ({ primary: "Primary provider", possible: "Possible provider", address_required: "Confirm by address", varies: "Coverage varies", unverified: "Not currently verified" } as const)[type];
+  return ({ primary: "Primary provider", possible: "Possible provider", address_required: "Address confirmation required", varies: "Coverage varies", unverified: "Not yet verified" } as const)[type];
 }
 
 export function isValidZip(value: string) {

@@ -25,9 +25,9 @@ const importData = database.transaction(() => {
   const upsertState = database.prepare("INSERT INTO states (code, name, is_active) VALUES (?, ?, 1) ON CONFLICT(code) DO UPDATE SET name=excluded.name, is_active=1");
   const upsertCounty = database.prepare("INSERT INTO counties (state_id, name) VALUES ((SELECT id FROM states WHERE code=?), ?) ON CONFLICT(state_id, name) DO NOTHING");
   const upsertCity = database.prepare("INSERT INTO cities (state_id, county_id, name, slug) VALUES ((SELECT id FROM states WHERE code=?), (SELECT c.id FROM counties c JOIN states s ON s.id=c.state_id WHERE s.code=? AND c.name=?), ?, ?) ON CONFLICT(state_id, county_id, name) DO UPDATE SET slug=excluded.slug");
-  const upsertZip = database.prepare(`INSERT INTO zip_codes (zip_code, state_id, county_id, primary_city_id, status, is_indexable, is_active, locality_source_url)
-    VALUES (?, (SELECT id FROM states WHERE code=?), (SELECT c.id FROM counties c JOIN states s ON s.id=c.state_id WHERE s.code=? AND c.name=?), (SELECT ci.id FROM cities ci JOIN states s ON s.id=ci.state_id JOIN counties c ON c.id=ci.county_id WHERE s.code=? AND c.name=? AND ci.name=?), ?, ?, 1, ?)
-    ON CONFLICT(zip_code) DO UPDATE SET state_id=excluded.state_id, county_id=excluded.county_id, primary_city_id=excluded.primary_city_id, status=excluded.status, is_indexable=excluded.is_indexable, is_active=1, locality_source_url=excluded.locality_source_url`);
+  const upsertZip = database.prepare(`INSERT INTO zip_codes (zip_code, state_id, county_id, primary_city_id, status, is_indexable, is_active, last_verified_at, locality_source_url)
+    VALUES (?, (SELECT id FROM states WHERE code=?), (SELECT c.id FROM counties c JOIN states s ON s.id=c.state_id WHERE s.code=? AND c.name=?), (SELECT ci.id FROM cities ci JOIN states s ON s.id=ci.state_id JOIN counties c ON c.id=ci.county_id WHERE s.code=? AND c.name=? AND ci.name=?), ?, ?, 1, ?, ?)
+    ON CONFLICT(zip_code) DO UPDATE SET state_id=excluded.state_id, county_id=excluded.county_id, primary_city_id=excluded.primary_city_id, status=excluded.status, is_indexable=excluded.is_indexable, is_active=1, last_verified_at=excluded.last_verified_at, locality_source_url=excluded.locality_source_url`);
   const upsertCategory = database.prepare("INSERT INTO provider_categories (slug, name, display_order) VALUES (?, ?, ?) ON CONFLICT(slug) DO UPDATE SET name=excluded.name, display_order=excluded.display_order");
   const upsertProvider = database.prepare(`INSERT INTO providers (slug, name, category_id, state_id, description, official_website, service_notes, status, is_verified, last_verified_at)
     VALUES (?, ?, (SELECT id FROM provider_categories WHERE slug=?), (SELECT id FROM states WHERE code=?), ?, ?, ?, ?, ?, ?)
@@ -45,7 +45,7 @@ const importData = database.transaction(() => {
     upsertState.run(row.state_code, row.state_name);
     upsertCounty.run(row.state_code, row.county_name);
     upsertCity.run(row.state_code, row.state_code, row.county_name, row.city_name, slugify(row.city_name));
-    upsertZip.run(row.zip_code, row.state_code, row.state_code, row.county_name, row.state_code, row.county_name, row.city_name, row.status, Number(row.is_indexable), row.locality_source_url);
+    upsertZip.run(row.zip_code, row.state_code, row.state_code, row.county_name, row.state_code, row.county_name, row.city_name, row.status, Number(row.is_indexable), row.last_verified_at || null, row.locality_source_url);
   }
   for (const row of categoryRows) upsertCategory.run(...row);
   for (const row of providerRows) upsertProvider.run(row.slug, row.name, row.category_slug, row.state_code, row.description, row.official_website, row.service_notes, row.status, Number(row.is_verified), row.last_verified_at || null);

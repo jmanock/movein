@@ -1,6 +1,6 @@
-zip_code,state_code,state_name,county_name,city_name,status,is_indexable,locality_source_url
-32771,FL,Florida,Seminole,Sanford,partial,0,https://sanfordfl.gov/contact-us/
-32801,FL,Florida,Orange,Orlando,verified,1,https://www.orlando.gov/Home
-32720,FL,Florida,Volusia,DeLand,partial,0,https://deland.org/476/Billing-Information
-34748,FL,Florida,Lake,Leesburg,partial,0,https://www.leesburgflorida.gov/
-34741,FL,Florida,Osceola,Kissimmee,verified,1,https://kua.com/about-kua/service-territory/
+zip_code,state_code,state_name,county_name,city_name,status,is_indexable,last_verified_at,locality_source_url
+32771,FL,Florida,Seminole,Sanford,partial,0,2026-07-27,https://sanfordfl.gov/contact-us/
+32801,FL,Florida,Orange,Orlando,verified,1,2026-07-27,https://www.orlando.gov/Home
+32720,FL,Florida,Volusia,DeLand,partial,0,2026-07-27,https://deland.org/476/Billing-Information
+34748,FL,Florida,Lake,Leesburg,partial,0,2026-07-27,https://www.leesburgflorida.gov/
+34741,FL,Florida,Osceola,Kissimmee,verified,1,2026-07-27,https://kua.com/about-kua/service-territory/

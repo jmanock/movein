@@ -12,4 +12,17 @@ const rows = database.prepare(`SELECT c.name AS county, z.zip_code AS zip, z.sta
 console.table(rows);
 const totals = database.prepare("SELECT status, COUNT(*) AS zip_count FROM zip_codes WHERE is_active=1 GROUP BY status ORDER BY status").all();
 console.table(totals);
+const categories = database.prepare(`SELECT pc.name AS category, COUNT(DISTINCT p.id) AS providers,
+  COUNT(DISTINCT sa.zip_code_id) AS supported_zips FROM provider_categories pc
+  LEFT JOIN providers p ON p.category_id=pc.id AND p.status!='inactive'
+  LEFT JOIN service_areas sa ON sa.provider_id=p.id GROUP BY pc.id ORDER BY pc.display_order`).all();
+console.table(categories);
+const missing = database.prepare(`SELECT z.zip_code AS zip,
+  GROUP_CONCAT(pc.name, ', ') AS categories_needing_verification
+  FROM zip_codes z CROSS JOIN provider_categories pc
+  LEFT JOIN service_areas sa ON sa.zip_code_id=z.id
+    AND sa.provider_id IN (SELECT id FROM providers WHERE category_id=pc.id AND status!='inactive')
+  WHERE z.is_active=1 AND pc.slug!='local-government' AND sa.id IS NULL
+  GROUP BY z.id ORDER BY z.zip_code`).all();
+console.table(missing);
 database.close();
