@@ -19,13 +19,14 @@ npm run lint
 npm test
 npm run build
 DATABASE_PATH=/var/lib/movein/movein.sqlite npm run db:migrate
-DATABASE_PATH=/var/lib/movein/movein.sqlite npm run db:seed
+DATABASE_PATH=/var/lib/movein/movein.sqlite npm run data:import -- --dry-run --confirm-verified
+DATABASE_PATH=/var/lib/movein/movein.sqlite npm run data:import -- --confirm-verified
 DATABASE_PATH=/var/lib/movein/movein.sqlite npm run data:coverage
 pm2 restart movein --update-env
 pm2 save
 ```
 
-The exact direct smoke-test command is:
+Migration 003 and the reviewed import are required for this release. The confirmation flag is intentional: it prevents silent changes to previously verified records. The exact direct smoke-test command is:
 
 ```bash
 PORT=3006 DATABASE_PATH=/var/lib/movein/movein.sqlite npm run start -- -H 127.0.0.1

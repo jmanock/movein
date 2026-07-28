@@ -2,8 +2,8 @@ provider_slug,source_name,source_url,source_type,retrieved_at,notes
 sanford-water,City of Sanford Water and Sewer Utilities,https://sanfordfl.gov/government/public-works-utilities/water_and_sewer/,municipal-utility,2026-07-27,Official page describes the service area and address availability check.
 sanford-sewer,City of Sanford Water and Sewer Utilities,https://sanfordfl.gov/government/public-works-utilities/water_and_sewer/,municipal-utility,2026-07-27,Official page describes wastewater service and address availability checks.
 sanford-solid-waste,City of Sanford Public Works and Utilities,https://sanfordfl.gov/government/public-works-utilities/,municipal-government,2026-07-27,Official page lists solid waste service and contact information.
-ouc-electric,OUC service territory and contact pages,https://www.ouc.com/about/newsroom/,utility,2026-07-27,Official page describes Orlando and surrounding service territory.
-ouc-water,OUC Water Services,https://www.ouc.com/about/water-services/,utility,2026-07-27,Official page states water service in Orlando and portions of Orange County.
+ouc-electric,OUC Start Stop or Move Service,https://www.ouc.com/account/start-stop-move/,utility,2026-07-28,Official page provides service-area confirmation and start or transfer instructions.
+ouc-water,OUC Water Services,https://www.ouc.com/about/water-services/,utility,2026-07-28,Official page states water service in Orlando and portions of Orange County.
 deland-water,City of DeLand Billing Information,https://deland.org/476/Billing-Information,municipal-utility,2026-07-27,Official billing page lists water contacts and emergency number.
 deland-sewer,City of DeLand Billing Information,https://deland.org/476/Billing-Information,municipal-utility,2026-07-27,Official billing page lists sewer billing and emergency number.
 deland-solid-waste,City of DeLand Billing Information,https://deland.org/476/Billing-Information,municipal-government,2026-07-27,Official page says city-limit properties receive garbage collection.
@@ -17,3 +17,29 @@ orange-government,Orange County Government,https://www.ocfl.net/,county-governme
 volusia-government,Volusia County Government,https://www.volusia.org/,county-government,2026-07-27,Official county website.
 lake-government,Lake County Government,https://www.lakecountyfl.gov/,county-government,2026-07-27,Official county website.
 osceola-government,Osceola County Government,https://www.osceola.org/,county-government,2026-07-27,Official county website.
+florida-psc-electric-finder,Florida PSC Find Your Utility Service Territories,https://www.floridapsc.com/find-utility-service,state-government,2026-07-28,Official state territory lookup; service areas remain approximate and require address confirmation.
+florida-psc-gas-finder,Florida PSC Find Your Utility Service Territories,https://www.floridapsc.com/find-utility-service,state-government,2026-07-28,Official state natural-gas territory lookup; presence on the map does not guarantee a connection.
+lake-mary-water,City of Lake Mary Utility Customer Service,https://www.lakemaryfl.com/178/Utility-Customer-Service,municipal-utility,2026-07-28,Official page lists water services contact and hours.
+lake-mary-sewer,City of Lake Mary Utility Customer Service,https://www.lakemaryfl.com/178/Utility-Customer-Service,municipal-utility,2026-07-28,Official page lists wastewater service and warns users to confirm service.
+lake-mary-trash,City of Lake Mary Garbage Recycling and Yard Waste,https://www.lakemaryfl.com/180/Garbage-Recycling-Yard-Waste-Info,municipal-government,2026-07-28,Official page describes city-billed residential collection.
+winter-park-electric,City of Winter Park Utility Billing,https://cityofwinterpark.org/departments/finance/utility-billing/,municipal-utility,2026-07-28,Official page lists electric service start and customer contacts.
+winter-park-water,City of Winter Park Utility Billing,https://cityofwinterpark.org/departments/finance/utility-billing/,municipal-utility,2026-07-28,Official page lists water utility service and customer contacts.
+winter-park-sewer,City of Winter Park Utility Billing,https://cityofwinterpark.org/departments/finance/utility-billing/,municipal-utility,2026-07-28,Official page lists wastewater utility service and customer contacts.
+winter-park-trash,City of Winter Park Utility Billing,https://cityofwinterpark.org/departments/finance/utility-billing/,municipal-government,2026-07-28,Official page links city service areas and collection days.
+apopka-water,City of Apopka New Service,https://www.apopka.gov/335/New-Service,municipal-utility,2026-07-28,Official page states that Apopka provides water and that service varies by property.
+apopka-sewer,City of Apopka New Service,https://www.apopka.gov/335/New-Service,municipal-utility,2026-07-28,Official page states that Apopka provides sewer and that service varies by property.
+apopka-trash,City of Apopka Utility FAQ,https://www.apopka.gov/322/Frequently-Asked-Questions,municipal-government,2026-07-28,Official FAQ says the City provides sanitation inside city limits.
+daytona-water,City of Daytona Beach Utility Billing,https://www.codb.us/utilitybilling,municipal-utility,2026-07-28,Official page provides start transfer phone and billing hours.
+daytona-sewer,City of Daytona Beach Utility Billing,https://www.codb.us/utilitybilling,municipal-utility,2026-07-28,Official page provides utility start and transfer information.
+daytona-trash,City of Daytona Beach Staff Directory,https://www.codb.us/contactus,municipal-government,2026-07-28,Official directory lists garbage collection and solid waste contacts.
+clermont-water,City of Clermont Utility Billing,https://www.clermontfl.gov/285/Utility-Billing,municipal-utility,2026-07-28,Official page states that water service varies and may be provided by others.
+clermont-sewer,City of Clermont Utility Billing,https://www.clermontfl.gov/285/Utility-Billing,municipal-utility,2026-07-28,Official page states that sewer service varies and may be provided by others.
+clermont-trash,City of Clermont Utility Billing,https://www.clermontfl.gov/285/Utility-Billing,municipal-government,2026-07-28,Official page describes garbage service and address-level uncertainty.
+mount-dora-electric,City of Mount Dora Apply for Utility Service,https://www.mountdora.gov/1080/Apply-for-Utility-Service,municipal-utility,2026-07-28,Official page lists electric service among City-provided utilities.
+mount-dora-water,City of Mount Dora Apply for Utility Service,https://www.mountdora.gov/1080/Apply-for-Utility-Service,municipal-utility,2026-07-28,Official page lists water service and account contact.
+mount-dora-sewer,City of Mount Dora Apply for Utility Service,https://www.mountdora.gov/1080/Apply-for-Utility-Service,municipal-utility,2026-07-28,Official page lists sewer service and account contact.
+mount-dora-trash,City of Mount Dora Apply for Utility Service,https://www.mountdora.gov/1080/Apply-for-Utility-Service,municipal-government,2026-07-28,Official page lists sanitation service among City utilities.
+st-cloud-trash,City of St. Cloud Solid Waste,https://www.stcloudfl.gov/1742/Solid-Waste,municipal-government,2026-07-28,Official page gives residential collection contacts and distinguishes county customers.
+ouc-electric,City of St. Cloud adopted budget utility description,https://www.stcloudfl.gov/DocumentCenter/View/34277/Accessible-Final-FY-23-24-Budget-Book-,municipal-government,2026-07-28,Official City document states that OUC operates and manages the St. Cloud electric system.
+toho-water,City of St. Cloud Toho Water Customer Service,https://stcloudfl.gov/1684/About-Us,municipal-government,2026-07-28,Official City page directs St. Cloud water customers to Toho and lists account service contact details.
+toho-sewer,City of St. Cloud Toho Water Customer Service,https://stcloudfl.gov/1684/About-Us,municipal-government,2026-07-28,Official City page directs St. Cloud sewer concerns to Toho and lists account service contact details.

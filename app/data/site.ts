@@ -22,8 +22,8 @@ export const categoryLabels: Record<string, string> = {
 };
 
 export const pilotCounties = ["Seminole", "Orange", "Volusia", "Lake", "Osceola"] as const;
-export const indexablePilotZips = ["32801", "34741"] as const;
-export const supportedPilotZips = ["32771", "32801", "32720", "34748", "34741"] as const;
+export const indexablePilotZips = ["32801", "32789", "32757", "34741", "34769"] as const;
+export const supportedPilotZips = ["32771", "32746", "32801", "32789", "32703", "32720", "32114", "34748", "34711", "32757", "34741", "34769"] as const;
 
 export const faqItems = [
   ["How do I find my electric company?", "Enter your ZIP code for possible providers, then confirm your street address on the utility’s official website or by phone. Electric territories can split a ZIP code."],

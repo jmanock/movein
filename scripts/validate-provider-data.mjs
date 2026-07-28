@@ -10,6 +10,8 @@ const [zips, providers, areas, contacts, sources] = await Promise.all([
 const errors = [];
 const warnings = [];
 const validCategories = new Set(["electricity", "water", "sewer", "natural-gas", "internet", "trash-recycling", "local-government"]);
+const validConfidence = new Set(["verified", "probable", "partial", "pending", "conflicting"]);
+const validAvailability = new Set(["confirmed", "primary_municipal", "possible", "multiple_possible", "address_required", "varies", "unverified", "not_generally_available"]);
 const unique = (rows, key, label) => {
   const seen = new Set();
   for (const row of rows) {
@@ -25,6 +27,8 @@ const providerSet = new Set(providers.map((row) => row.slug));
 for (const row of zips) {
   if (!/^\d{5}$/.test(row.zip_code)) errors.push(`Invalid ZIP '${row.zip_code}'`);
   if (!['verified', 'partial', 'pending'].includes(row.status)) errors.push(`Invalid ZIP status at row ${row.__row}`);
+  if (!validConfidence.has(row.confidence_status)) errors.push(`Invalid ZIP confidence at row ${row.__row}`);
+  if (!row.jurisdiction_notes) errors.push(`ZIP ${row.zip_code} lacks jurisdiction notes`);
   if (!row.last_verified_at) errors.push(`ZIP ${row.zip_code} lacks a verification date`);
   if (!/^https:\/\//.test(row.locality_source_url)) errors.push(`ZIP ${row.zip_code} lacks an HTTPS locality source`);
 }
@@ -32,6 +36,8 @@ for (const row of providers) {
   if (!validCategories.has(row.category_slug)) errors.push(`Provider ${row.slug} has unknown category '${row.category_slug}'`);
   if (!isHttpsUrl(row.official_website)) errors.push(`Provider ${row.slug} lacks a valid HTTPS official website`);
   if (!row.last_verified_at) errors.push(`Provider ${row.slug} lacks a verification date`);
+  for (const field of ["start_service_url", "address_check_url", "outage_url"]) if (row[field] && !isHttpsUrl(row[field])) errors.push(`Provider ${row.slug} has invalid ${field}`);
+  if (!row.provider_type) errors.push(`Provider ${row.slug} lacks a provider type`);
   const identity = `${row.state_code}|${row.category_slug}|${row.name.trim().toLowerCase()}`;
   if (providerIdentities.has(identity)) errors.push(`Duplicate provider identity '${row.name}' in ${row.category_slug}`);
   providerIdentities.add(identity);
@@ -41,6 +47,9 @@ for (const row of areas) {
   if (!zipSet.has(row.zip_code)) errors.push(`Unknown ZIP ${row.zip_code} in service areas`);
   if (!providerSet.has(row.provider_slug)) errors.push(`Unknown provider ${row.provider_slug} in service areas`);
   if (!['primary', 'possible', 'address_required', 'varies', 'unverified'].includes(row.coverage_type)) errors.push(`Invalid coverage type at row ${row.__row}`);
+  if (!validAvailability.has(row.service_availability)) errors.push(`Invalid service availability at row ${row.__row}`);
+  if (!['0', '1'].includes(row.requires_address_confirmation)) errors.push(`Invalid address-confirmation flag at row ${row.__row}`);
+  if (!row.jurisdiction_notes) errors.push(`Service area at row ${row.__row} lacks jurisdiction notes`);
   const key = `${row.provider_slug}|${row.zip_code}`;
   if (areaKeys.has(key)) errors.push(`Duplicate service-area link '${key}'`);
   areaKeys.add(key);
@@ -61,7 +70,7 @@ for (const zip of zipSet) if (!linkedZips.has(zip)) errors.push(`ZIP ${zip} has 
 const linkedProviders = new Set(areas.map((row) => row.provider_slug));
 for (const slug of providerSet) if (!linkedProviders.has(slug)) errors.push(`Provider ${slug} has no service-area links`);
 const contacted = new Set(contacts.map((row) => row.provider_slug));
-for (const row of providers) if (!contacted.has(row.slug) && !['internet', 'local-government'].includes(row.category_slug)) warnings.push(`No phone number for ${row.slug}`);
+for (const row of providers) if (!contacted.has(row.slug) && row.provider_type !== "official_lookup" && !['internet', 'local-government'].includes(row.category_slug)) warnings.push(`No phone number for ${row.slug}`);
 if (warnings.length) console.warn(`Warnings:\n- ${warnings.join("\n- ")}`);
 if (errors.length) { console.error(`Validation failed:\n- ${errors.join("\n- ")}`); process.exitCode = 1; }
 else console.log(`Validated ${zips.length} ZIPs, ${providers.length} providers, ${areas.length} service-area links, ${contacts.length} contacts, and ${sources.length} sources.`);

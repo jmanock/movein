@@ -31,7 +31,7 @@ test("accepts exactly five numeric digits", () => {
   for (const value of ["3277", "327711", "32A71", " 32771 ", ""]) assert.equal(isValidZip(value), false);
 });
 
-test("returns grouped verified results with multiple possible providers", () => {
+test("returns grouped verified results with multiple possible electric and water providers", () => {
   const database = getDatabase();
   const categoryId = database.prepare("SELECT id FROM provider_categories WHERE slug='electricity'").get().id;
   const stateId = database.prepare("SELECT id FROM states WHERE code='FL'").get().id;
@@ -42,13 +42,20 @@ test("returns grouped verified results with multiple possible providers", () => 
     VALUES (?, ?, 'possible', 'Test fixture used only in the temporary database.', 'high')`).run(inserted.lastInsertRowid, zipId);
   database.prepare(`INSERT INTO data_sources (provider_id, source_name, source_url, source_type, retrieved_at)
     VALUES (?, 'Test source', 'https://example.gov/electric', 'test', '2026-07-27')`).run(inserted.lastInsertRowid);
+  const waterCategoryId = database.prepare("SELECT id FROM provider_categories WHERE slug='water'").get().id;
+  const alternateWater = database.prepare(`INSERT INTO providers (name, slug, category_id, state_id, official_website, status, is_verified, last_verified_at, provider_type)
+    VALUES ('Test Alternate Water', 'test-alternate-water', ?, ?, 'https://example.gov/water', 'verified', 1, '2026-07-27', 'municipal')`).run(waterCategoryId, stateId);
+  database.prepare(`INSERT INTO service_areas (provider_id, zip_code_id, coverage_type, coverage_notes, confidence_level, service_availability, requires_address_confirmation, jurisdiction_notes)
+    VALUES (?, ?, 'possible', 'Test fixture used only in the temporary database.', 'high', 'multiple_possible', 1, 'Confirm by address.')`).run(alternateWater.lastInsertRowid, zipId);
+  database.prepare(`INSERT INTO data_sources (provider_id, source_name, source_url, source_type, retrieved_at)
+    VALUES (?, 'Test water source', 'https://example.gov/water', 'test', '2026-07-27')`).run(alternateWater.lastInsertRowid);
   const result = getLookupResult("34741");
   assert.equal(result?.city, "Kissimmee");
   assert.equal(result?.county, "Osceola");
   assert.equal(result?.status, "verified");
   assert.equal(result?.isIndexable, true);
   assert.ok(result.providers.electricity.length >= 2);
-  assert.ok(result.providers.water.length >= 1);
+  assert.ok(result.providers.water.length >= 2);
   assert.ok(result.providers.sewer.length >= 1);
   assert.ok(Object.values(result.providers).flat().length >= 5);
   assert.equal(result.providers.electricity[0].coverageLabel, "Possible provider");
@@ -59,12 +66,27 @@ test("returns partial data without fabricated fallback categories", () => {
   assert.equal(result?.status, "partial");
   assert.equal(result?.isIndexable, false);
   assert.ok(result.providers.water.length > 0);
-  assert.equal(result.providers["natural-gas"], undefined);
+  assert.equal(result.providers["natural-gas"].length, 1);
+  assert.equal(result.providers["natural-gas"][0].providerType, "official_lookup");
+  assert.match(result.providers["natural-gas"][0].coverageNotes, /confirm/i);
   assert.match(result.disclaimer, /exact street address/i);
 });
 
 test("returns null for an unknown ZIP", () => {
   assert.equal(getLookupResult("99999"), null);
+});
+
+test("returns a known empty ZIP as pending and never indexable", () => {
+  const database = getDatabase();
+  const stateId = database.prepare("SELECT id FROM states WHERE code='FL'").get().id;
+  const countyId = database.prepare("SELECT id FROM counties WHERE state_id=? AND name='Seminole'").get(stateId).id;
+  const cityId = database.prepare("SELECT id FROM cities WHERE state_id=? AND name='Sanford'").get(stateId).id;
+  database.prepare(`INSERT INTO zip_codes (zip_code, state_id, county_id, primary_city_id, status, confidence_status, is_active, is_indexable, last_verified_at, jurisdiction_notes)
+    VALUES ('32772', ?, ?, ?, 'pending', 'pending', 1, 0, '2026-07-28', 'Research fixture only.')`).run(stateId, countyId, cityId);
+  const result = getLookupResult("32772");
+  assert.equal(result?.status, "pending");
+  assert.equal(result?.isIndexable, false);
+  assert.equal(Object.values(result.providers).flat().length, 0);
 });
 
 test("formats phone links and exposes official source URLs", () => {
@@ -95,7 +117,7 @@ test("correction validation and API return controlled responses", async () => {
   assert.ok(validateCorrection({ zipCode: "bad" }).errors.zipCode);
   const invalid = await POST(new Request("http://localhost/api/corrections", { method: "POST", headers: { "content-type": "application/json", "x-real-ip": "198.51.100.5" }, body: JSON.stringify({}) }));
   assert.equal(invalid.status, 400);
-  const validBody = { zipCode: "32771", category: "water", providerName: "City water record", details: "The official contact page has a newer phone number.", sourceUrl: "https://sanfordfl.gov/", replyEmail: "", website: "", startedAt: Date.now() - 2000 };
+  const validBody = { zipCode: "32771", issueType: "incorrect-phone", category: "water", providerName: "City water record", details: "The official contact page has a newer phone number.", sourceUrl: "https://sanfordfl.gov/", replyEmail: "", website: "", startedAt: Date.now() - 2000 };
   const valid = await POST(new Request("http://localhost/api/corrections", { method: "POST", headers: { "content-type": "application/json", "x-real-ip": "198.51.100.6" }, body: JSON.stringify(validBody) }));
   assert.equal(valid.status, 201);
   assert.equal((await valid.json()).ok, true);
@@ -105,7 +127,23 @@ test("correction validation and API return controlled responses", async () => {
 test("CSV validation catches no errors in the pilot dataset", () => {
   const result = spawnSync(process.execPath, ["scripts/validate-provider-data.mjs"], { cwd: root, encoding: "utf8" });
   assert.equal(result.status, 0, result.stderr);
-  assert.match(result.stdout, /Validated 5 ZIPs/);
+  assert.match(result.stdout, /Validated 12 ZIPs/);
+});
+
+test("data operations support duplicate checks, a research queue, and a non-writing import preview", () => {
+  for (const [script, expected] of [
+    ["scripts/report-duplicates.mjs", /No duplicates across 12 ZIPs/],
+    ["scripts/generate-research-queue.mjs", /Wrote \d+ research tasks/],
+  ]) {
+    const result = spawnSync(process.execPath, [script], { cwd: root, env: { ...process.env, RESEARCH_QUEUE_PATH: join(temporaryDirectory, "research-queue.csv") }, encoding: "utf8" });
+    assert.equal(result.status, 0, `${script} failed: ${result.stderr}`);
+    assert.match(result.stdout, expected);
+  }
+  const before = getDatabase().prepare("SELECT COUNT(*) AS count FROM providers").get().count;
+  const dryRun = spawnSync(process.execPath, ["scripts/import-florida-data.mjs", "--dry-run", "--confirm-verified"], { cwd: root, env: process.env, encoding: "utf8" });
+  assert.equal(dryRun.status, 0, dryRun.stderr);
+  assert.match(dryRun.stdout, /Dry run: 12 ZIPs, 41 providers/);
+  assert.equal(getDatabase().prepare("SELECT COUNT(*) AS count FROM providers").get().count, before);
 });
 
 test("homepage makes one accessible ZIP lookup the primary action", async () => {
@@ -137,11 +175,11 @@ test("FAQ content is visible and its schema mirrors the same data", async () => 
 
 test("SEO includes only approved verified ZIP pages", async () => {
   const [sitemap, data, lookupPage] = await Promise.all([read("../app/sitemap.ts"), read("../app/data/site.ts"), read("../app/lookup/[zip]/page.tsx")]);
-  assert.match(data, /indexablePilotZips = \["32801", "34741"\]/);
+  assert.match(data, /indexablePilotZips = \["32801", "32789", "32757", "34741", "34769"\]/);
   assert.match(sitemap, /indexablePilotZips\.map/);
   assert.match(lookupPage, /noindex: !result\.isIndexable \|\| result\.status !== "verified"/);
   assert.match(lookupPage, /if \(!result\) notFound\(\)/);
-  assert.doesNotMatch(sitemap, /32771|32720|34748|welcome\//);
+  assert.doesNotMatch(sitemap, /32771|32720|34748|32746|32703|32114|34711|welcome\//);
 });
 
 test("unsupported dynamic ZIP routes are rewritten with a real 404", async () => {
@@ -163,6 +201,11 @@ test("results show every service category and an explicit missing-data state", a
   assert.match(results, /We are still verifying this service for your ZIP code/);
   for (const category of ["electricity", "water", "sewer", "natural-gas", "internet", "trash-recycling"]) assert.match(results, new RegExp(category));
   assert.match(results, /Report incorrect information/);
+  assert.match(results, /Check availability at your address/);
+  assert.match(results, /Availability and speeds vary by exact street address/);
+  assert.match(results, /Trash service may be arranged by your city, county, HOA, landlord, or private hauler/);
+  assert.match(results, /View outage information/);
+  assert.match(results, /Verified \{formatDate\(provider\.lastVerifiedAt\)\}/);
 });
 
 test("corrections use a validated form with loading and duplicate-submit protection", async () => {
@@ -171,7 +214,8 @@ test("corrections use a validated form with loading and duplicate-submit protect
   assert.match(form, /if \(pending\) return/);
   assert.match(form, /Submitting…/);
   assert.match(form, /aria-live="polite"/);
-  assert.match(route, /VALUES \(\?, \?, \?, \?, \?, \?\)/);
+  assert.match(route, /workflow_status/);
+  assert.match(form, /correctionIssueTypes/);
 });
 
 test("homepage hero uses an optimized decorative Next image without layout shift", async () => {

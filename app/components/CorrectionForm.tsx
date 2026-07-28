@@ -1,7 +1,7 @@
 "use client";
 
 import { FormEvent, useRef, useState } from "react";
-import { correctionCategories } from "../lib/corrections";
+import { correctionCategories, correctionIssueTypes } from "../lib/corrections";
 
 type FieldErrors = Record<string, string>;
 
@@ -29,8 +29,9 @@ export function CorrectionForm({ initialZip = "" }: { initialZip?: string }) {
   const error = (name: string) => errors[name] ? <small className="field-error" id={`${name}-error`}>{errors[name]}</small> : null;
   return <form className="correction-form" onSubmit={submit} onFocus={() => { if (!startedAt.current) startedAt.current = Date.now(); }} noValidate>
     <div className="form-row"><label>ZIP code<input name="zipCode" inputMode="numeric" autoComplete="postal-code" maxLength={5} defaultValue={initialZip} aria-invalid={Boolean(errors.zipCode)} aria-describedby={errors.zipCode ? "zipCode-error" : undefined} required /></label>{error("zipCode")}</div>
-    <div className="form-row"><label>Service category<select name="category" defaultValue="" aria-invalid={Boolean(errors.category)} aria-describedby={errors.category ? "category-error" : undefined} required><option value="" disabled>Select a category</option>{correctionCategories.map(([slug, label]) => <option key={slug} value={slug}>{label}</option>)}</select></label>{error("category")}</div>
-    <div className="form-row"><label>Provider or record name<input name="providerName" maxLength={120} placeholder="Example: Missing water provider" aria-invalid={Boolean(errors.providerName)} aria-describedby={errors.providerName ? "providerName-error" : undefined} required /></label>{error("providerName")}</div>
+    <div className="form-row"><label>Issue type<select name="issueType" defaultValue="" aria-invalid={Boolean(errors.issueType)} aria-describedby={errors.issueType ? "issueType-error" : undefined} required><option value="" disabled>Select an issue</option>{correctionIssueTypes.map(([slug, label]) => <option key={slug} value={slug}>{label}</option>)}</select></label>{error("issueType")}</div>
+    <div className="form-row"><label>Service category <span>(optional)</span><select name="category" defaultValue="" aria-invalid={Boolean(errors.category)} aria-describedby={errors.category ? "category-error" : undefined}><option value="">Select a category</option>{correctionCategories.map(([slug, label]) => <option key={slug} value={slug}>{label}</option>)}</select></label>{error("category")}</div>
+    <div className="form-row"><label>Provider name <span>(optional)</span><input name="providerName" maxLength={120} placeholder="Example: City water utility" aria-invalid={Boolean(errors.providerName)} aria-describedby={errors.providerName ? "providerName-error" : undefined} /></label>{error("providerName")}</div>
     <div className="form-row"><label>What should be corrected?<textarea name="details" rows={6} maxLength={2000} placeholder="Tell us what is incorrect or missing. Do not include account numbers or passwords." aria-invalid={Boolean(errors.details)} aria-describedby={errors.details ? "details-error" : undefined} required /></label>{error("details")}</div>
     <div className="form-row"><label>Official source URL <span>(optional)</span><input name="sourceUrl" type="url" inputMode="url" placeholder="https://…" maxLength={500} aria-invalid={Boolean(errors.sourceUrl)} aria-describedby={errors.sourceUrl ? "sourceUrl-error" : undefined} /></label>{error("sourceUrl")}</div>
     <div className="form-row"><label>Reply email <span>(optional)</span><input name="replyEmail" type="email" autoComplete="email" maxLength={254} aria-invalid={Boolean(errors.replyEmail)} aria-describedby={errors.replyEmail ? "replyEmail-error" : undefined} /></label>{error("replyEmail")}</div>

@@ -20,3 +20,33 @@ toho-water,customer_service,Customer call center,(407) 944-5000
 toho-water,emergency,Water emergency,(407) 944-5000
 toho-sewer,customer_service,Customer call center,(407) 944-5000
 toho-sewer,emergency,Sewer emergency,(407) 944-5000
+lake-mary-water,customer_service,Utility customer service,(407) 585-1400
+lake-mary-water,emergency,After-hours water assistance,(407) 665-6650
+lake-mary-sewer,customer_service,Utility customer service,(407) 585-1400
+lake-mary-sewer,emergency,After-hours utility assistance,(407) 665-6650
+lake-mary-trash,customer_service,Utility customer service,(407) 585-1400
+winter-park-electric,customer_service,Utility Billing,(407) 599-3220
+winter-park-electric,outage,Report a power outage,(877) 811-8700
+winter-park-water,customer_service,Utility Billing,(407) 599-3220
+winter-park-water,emergency,Water or sewer problem,(407) 599-3566
+winter-park-sewer,customer_service,Utility Billing,(407) 599-3220
+winter-park-sewer,emergency,Water or sewer problem,(407) 599-3566
+winter-park-trash,customer_service,Missed collection,(407) 774-0800
+apopka-water,customer_service,Utility Billing,(407) 703-1727
+apopka-water,emergency,After-hours water or sewer emergency,(407) 703-1757
+apopka-sewer,customer_service,Utility Billing,(407) 703-1727
+apopka-sewer,emergency,After-hours water or sewer emergency,(407) 703-1757
+apopka-trash,customer_service,Public Services,(407) 703-1731
+daytona-water,customer_service,Utility Billing,(386) 671-8100
+daytona-water,emergency,24-hour utility emergency,(386) 671-8815
+daytona-sewer,customer_service,Utility Billing,(386) 671-8100
+daytona-sewer,emergency,24-hour utility emergency,(386) 671-8815
+daytona-trash,customer_service,Garbage collection,(386) 671-8675
+clermont-water,customer_service,Utility Billing,(352) 241-7320
+clermont-sewer,customer_service,Utility Billing,(352) 241-7320
+clermont-trash,customer_service,Utility Billing,(352) 241-7320
+mount-dora-electric,customer_service,Utility Customer Service,(352) 735-7105
+mount-dora-water,customer_service,Utility Customer Service,(352) 735-7105
+mount-dora-sewer,customer_service,Utility Customer Service,(352) 735-7105
+mount-dora-trash,customer_service,Utility Customer Service,(352) 735-7105
+st-cloud-trash,customer_service,Solid Waste Division,(407) 957-7289

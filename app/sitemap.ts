@@ -3,7 +3,7 @@ import { indexablePilotZips } from "./data/site";
 import { SITE_URL } from "./lib/metadata";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const lastModified = new Date("2026-07-27");
+  const lastModified = new Date("2026-07-28");
   const pages = [
     ["", 1, "weekly"], ["homeowners", .8, "monthly"], ["renters", .8, "monthly"],
     ["learn-your-area", .85, "monthly"], ["resources", .7, "monthly"], ["faq", .7, "monthly"],

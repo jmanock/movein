@@ -7,11 +7,11 @@ export const DEFAULT_DESCRIPTION = "Enter a Florida ZIP code to find possible el
 export function pageMetadata(title: string, description: string, path = "/", options: { noindex?: boolean } = {}): Metadata {
   const canonical = new URL(path, SITE_URL).toString();
   const fullTitle = title.includes("MoveIn") ? title : `${title} | MoveIn`;
-  const image = new URL("/images/seo/movein-social-card.jpg", SITE_URL).toString();
+  const image = new URL("/images/seo/movein-social-card-v2.png", SITE_URL).toString();
   return {
     title: { absolute: fullTitle }, description, alternates: { canonical },
     robots: options.noindex ? { index: false, follow: true } : undefined,
-    openGraph: { title: fullTitle, description, type: "website", url: canonical, siteName: SITE_NAME, images: [{ url: image, width: 1200, height: 630, alt: "MoveIn — Everything after the keys." }] },
+    openGraph: { title: fullTitle, description, type: "website", url: canonical, siteName: SITE_NAME, images: [{ url: image, width: 1200, height: 630, alt: "MoveIn — Find essential services for your new place." }] },
     twitter: { card: "summary_large_image", title: fullTitle, description, images: [image] },
   };
 }

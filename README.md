@@ -2,7 +2,7 @@
 
 MoveIn is a focused Florida utility and local-services lookup. A visitor enters a five-digit ZIP code, sees reviewed possible providers and official starting points, and is reminded to confirm the exact street address.
 
-The first usable dataset is intentionally limited to pilot records in Seminole, Orange, Volusia, Lake, and Osceola counties. It does not claim statewide coverage.
+The reviewed dataset contains 12 representative pilot ZIPs in Seminole, Orange, Volusia, Lake, and Osceola counties. It does not claim countywide or statewide coverage.
 
 ## Stack
 
@@ -27,8 +27,15 @@ Checks:
 
 ```bash
 npm run data:validate
+npm run data:duplicates
+npm run data:import -- --dry-run
+npm run data:import -- --confirm-verified
 npm run data:coverage
 npm run data:stale
+npm run data:missing
+npm run data:research-queue
+npm run data:links
+npm run data:report
 npm run lint
 npm test
 npm run build
@@ -68,7 +75,7 @@ npm run db:seed
 npm run data:coverage
 ```
 
-The seed is idempotent. It updates known rows without deleting unrelated or retired production data. Run migrations before deploying so the correction-review table and ZIP verification date are present. See `docs/database.md`, `docs/florida-data-acquisition.md`, and `docs/data-verification.md` before adding coverage.
+The seed is idempotent and non-deleting. A changed verified row is refused unless the reviewer supplies `--confirm-verified`; use `--dry-run` first. Run migrations before importing. See `docs/database.md`, `docs/data-methodology.md`, and `docs/provider-verification.md` before adding coverage.
 
 ## Documentation
 
@@ -77,6 +84,12 @@ The seed is idempotent. It updates known rows without deleting unrelated or reti
 - `docs/database.md` — schema, migrations, backups, and rollback
 - `docs/florida-data-acquisition.md` — county-by-county research process
 - `docs/data-verification.md` — source and confidence rules
+- `docs/current-data-audit.md` — pre-expansion inventory and risks
+- `docs/data-methodology.md` — approximation, source hierarchy, confidence, and updates
+- `docs/provider-verification.md` — category-specific acceptance rules
+- `docs/florida-research-plan.md` — expansion priorities and queue workflow
+- `docs/data-coverage-report.md` — generated internal coverage summary
+- `docs/corrections-workflow.md` — private review lifecycle
 - `docs/pilot-data-report.md` — current pilot coverage, gaps, and next verification work
 - `docs/image-manifest.md` — homepage image provenance, optimization, and replacement guidance
 - `docs/deployment.md` — DigitalOcean, PM2, Nginx, and release commands

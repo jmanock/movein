@@ -1,0 +1,37 @@
+zip_code,city,county,missing_category,current_status,priority,suggested_official_source,last_researched_date,research_notes
+32757,Mount Dora,Lake,internet,verified,4,https://broadbandmap.fcc.gov/home,,Confirm exact-address boundaries; do not assign from ZIP alone.
+32757,Mount Dora,Lake,natural-gas,verified,5,https://www.floridapsc.com/find-utility-service,,Confirm exact-address boundaries; do not assign from ZIP alone.
+34711,Clermont,Lake,electricity,partial,1,https://www.floridapsc.com/find-utility-service,,Confirm exact-address boundaries; do not assign from ZIP alone.
+34711,Clermont,Lake,internet,partial,4,https://broadbandmap.fcc.gov/home,,Confirm exact-address boundaries; do not assign from ZIP alone.
+34711,Clermont,Lake,natural-gas,partial,5,https://www.floridapsc.com/find-utility-service,,Confirm exact-address boundaries; do not assign from ZIP alone.
+34748,Leesburg,Lake,water,partial,2,Official city or county utility department,,Confirm exact-address boundaries; do not assign from ZIP alone.
+34748,Leesburg,Lake,sewer,partial,2,Official city or county utility department,,Confirm exact-address boundaries; do not assign from ZIP alone.
+34748,Leesburg,Lake,trash-recycling,partial,3,Official city or county solid-waste department,,Confirm exact-address boundaries; do not assign from ZIP alone.
+34748,Leesburg,Lake,internet,partial,4,https://broadbandmap.fcc.gov/home,,Confirm exact-address boundaries; do not assign from ZIP alone.
+34748,Leesburg,Lake,natural-gas,partial,5,https://www.floridapsc.com/find-utility-service,,Confirm exact-address boundaries; do not assign from ZIP alone.
+32703,Apopka,Orange,electricity,partial,1,https://www.floridapsc.com/find-utility-service,,Confirm exact-address boundaries; do not assign from ZIP alone.
+32703,Apopka,Orange,internet,partial,4,https://broadbandmap.fcc.gov/home,,Confirm exact-address boundaries; do not assign from ZIP alone.
+32703,Apopka,Orange,natural-gas,partial,5,https://www.floridapsc.com/find-utility-service,,Confirm exact-address boundaries; do not assign from ZIP alone.
+32789,Winter Park,Orange,internet,verified,4,https://broadbandmap.fcc.gov/home,,Confirm exact-address boundaries; do not assign from ZIP alone.
+32789,Winter Park,Orange,natural-gas,verified,5,https://www.floridapsc.com/find-utility-service,,Confirm exact-address boundaries; do not assign from ZIP alone.
+32801,Orlando,Orange,sewer,verified,2,Official city or county utility department,,Confirm exact-address boundaries; do not assign from ZIP alone.
+32801,Orlando,Orange,trash-recycling,verified,3,Official city or county solid-waste department,,Confirm exact-address boundaries; do not assign from ZIP alone.
+32801,Orlando,Orange,internet,verified,4,https://broadbandmap.fcc.gov/home,,Confirm exact-address boundaries; do not assign from ZIP alone.
+32801,Orlando,Orange,natural-gas,verified,5,https://www.floridapsc.com/find-utility-service,,Confirm exact-address boundaries; do not assign from ZIP alone.
+34741,Kissimmee,Osceola,trash-recycling,verified,3,Official city or county solid-waste department,,Confirm exact-address boundaries; do not assign from ZIP alone.
+34741,Kissimmee,Osceola,internet,verified,4,https://broadbandmap.fcc.gov/home,,Confirm exact-address boundaries; do not assign from ZIP alone.
+34741,Kissimmee,Osceola,natural-gas,verified,5,https://www.floridapsc.com/find-utility-service,,Confirm exact-address boundaries; do not assign from ZIP alone.
+34769,St. Cloud,Osceola,internet,verified,4,https://broadbandmap.fcc.gov/home,,Confirm exact-address boundaries; do not assign from ZIP alone.
+34769,St. Cloud,Osceola,natural-gas,verified,5,https://www.floridapsc.com/find-utility-service,,Confirm exact-address boundaries; do not assign from ZIP alone.
+32746,Lake Mary,Seminole,electricity,partial,1,https://www.floridapsc.com/find-utility-service,,Confirm exact-address boundaries; do not assign from ZIP alone.
+32746,Lake Mary,Seminole,internet,partial,4,https://broadbandmap.fcc.gov/home,,Confirm exact-address boundaries; do not assign from ZIP alone.
+32746,Lake Mary,Seminole,natural-gas,partial,5,https://www.floridapsc.com/find-utility-service,,Confirm exact-address boundaries; do not assign from ZIP alone.
+32771,Sanford,Seminole,electricity,partial,1,https://www.floridapsc.com/find-utility-service,,Confirm exact-address boundaries; do not assign from ZIP alone.
+32771,Sanford,Seminole,internet,partial,4,https://broadbandmap.fcc.gov/home,,Confirm exact-address boundaries; do not assign from ZIP alone.
+32771,Sanford,Seminole,natural-gas,partial,5,https://www.floridapsc.com/find-utility-service,,Confirm exact-address boundaries; do not assign from ZIP alone.
+32114,Daytona Beach,Volusia,electricity,partial,1,https://www.floridapsc.com/find-utility-service,,Confirm exact-address boundaries; do not assign from ZIP alone.
+32114,Daytona Beach,Volusia,internet,partial,4,https://broadbandmap.fcc.gov/home,,Confirm exact-address boundaries; do not assign from ZIP alone.
+32114,Daytona Beach,Volusia,natural-gas,partial,5,https://www.floridapsc.com/find-utility-service,,Confirm exact-address boundaries; do not assign from ZIP alone.
+32720,DeLand,Volusia,electricity,partial,1,https://www.floridapsc.com/find-utility-service,,Confirm exact-address boundaries; do not assign from ZIP alone.
+32720,DeLand,Volusia,internet,partial,4,https://broadbandmap.fcc.gov/home,,Confirm exact-address boundaries; do not assign from ZIP alone.
+32720,DeLand,Volusia,natural-gas,partial,5,https://www.floridapsc.com/find-utility-service,,Confirm exact-address boundaries; do not assign from ZIP alone.

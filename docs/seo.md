@@ -7,7 +7,7 @@
 - A ZIP must be `verified`, contain substantial reviewed records, and have `is_indexable=1` to be indexable.
 - Partial, pending, empty, or editorially thin ZIP pages emit `noindex,follow` and stay out of the sitemap.
 - Unknown and malformed ZIP routes return 404.
-- The launch sitemap contains only approved pilot ZIPs 32801 and 34741. The other pilot ZIPs remain useful but noindexed while coverage is partial.
+- The sitemap contains only approved useful ZIPs 32801, 32789, 32757, 34741, and 34769. The other pilot ZIPs remain useful but noindexed while coverage is partial.
 - Do not generate thousands of pages from ZIP lists. A new page needs meaningful data, current sources, and visible address-confirmation guidance.
 
 ## Campaign and duplicate URLs

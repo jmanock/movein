@@ -1,25 +1,25 @@
 # Florida pilot data report
 
-Last reviewed: July 27, 2026
+Last reviewed: July 28, 2026
 
-The launch dataset intentionally supports one reviewed ZIP in each pilot county. It is a workflow test, not a claim of countywide or statewide coverage.
+The launch dataset intentionally supports a small reviewed sample across five Central Florida pilot counties. It is a workflow test, not a claim of countywide or statewide coverage. The generated `docs/data-coverage-report.md` is the reproducible source for current gaps and queue priorities.
 
-- Supported ZIP codes: 32771, 32801, 32720, 34748, 34741
-- Fully verified ZIP codes: 32801, 34741
-- Partially verified ZIP codes: 32771, 32720, 34748
+- Supported ZIP codes: 32114, 32703, 32720, 32746, 32757, 32771, 32789, 32801, 34711, 34741, 34748, 34769
+- Fully verified and editorially approved ZIP codes: 32757, 32789, 32801, 34741, 34769
+- Partially verified ZIP codes: 32114, 32703, 32720, 32746, 32771, 34711, 34748
 - Pending ZIP codes: none in the current pilot
 
 | County | ZIP | Primary city | Status | Known gaps |
 | --- | --- | --- | --- | --- |
-| Seminole | 32771 | Sanford | Partial | Electricity, natural gas |
-| Orange | 32801 | Orlando | Verified | Sewer, natural gas, trash/recycling |
-| Volusia | 32720 | DeLand | Partial | Electricity, natural gas |
-| Lake | 34748 | Leesburg | Partial | Water, sewer, natural gas, trash/recycling |
-| Osceola | 34741 | Kissimmee | Verified | Natural gas, trash/recycling |
+| Seminole | 32771, 32746 | Sanford, Lake Mary | Partial | Electric territory and natural gas need address-level confirmation |
+| Orange | 32801, 32789, 32703 | Orlando, Winter Park, Apopka | Mixed | Apopka electric territory remains unresolved; natural gas varies |
+| Volusia | 32720, 32114 | DeLand, Daytona Beach | Partial | Electric territory and natural gas need address-level confirmation |
+| Lake | 34748, 32757, 34711 | Leesburg, Mount Dora, Clermont | Mixed | Leesburg utility records and Clermont electric territory remain incomplete |
+| Osceola | 34741, 34769 | Kissimmee, St. Cloud | Verified | Trash arrangements and natural gas still require exact-address checks |
 
-Current records include 18 provider or official-resource entries and 22 provider-to-ZIP coverage links. Provider counts by category are: electricity 3, water 4, sewer 3, natural gas 0, internet 1, trash/recycling 2, and local government 5. The internet record deliberately points to the FCC’s address-level broadband map because a ZIP alone cannot establish availability.
+Current records include 41 provider or official-resource entries and 79 provider-to-ZIP coverage links. The shared internet record deliberately points to the FCC’s address-level broadband map because a ZIP alone cannot establish availability. Florida PSC territory finders are also identified as lookup tools rather than asserted providers.
 
-Every public provider record has an official HTTPS website, a verification date, and at least one source. Sources are the official sites of Sanford, Orlando Utilities Commission, Orlando, DeLand, SECO Energy, Leesburg, Kissimmee Utility Authority, Toho Water Authority, Kissimmee, and the FCC. Run `npm run data:validate`, `npm run data:coverage`, and `npm run data:stale` to reproduce the structural checks and coverage report.
+Every public record has an official HTTPS website, a verification date, and at least one source. Run `npm run data:validate`, `npm run data:duplicates`, `npm run data:missing`, `npm run data:coverage`, `npm run data:stale`, and `npm run data:report` to reproduce the checks and report.
 
 ## Source URLs
 

@@ -14,8 +14,9 @@ export async function generateMetadata({ params }: { params: Promise<{ zip: stri
   try {
     const result = getLookupResult(zip);
     if (!result) return pageMetadata("ZIP code not found", "This ZIP code is not in the current MoveIn pilot.", `/lookup/${zip}`, { noindex: true });
-    const title = result.city ? `Electric, Water and Internet Providers in ${result.city}, ${result.state}` : `Utilities for ZIP Code ${zip}`;
-    return pageMetadata(title, `Possible utility and essential-service providers for ZIP code ${zip}. Confirm availability for the exact street address.`, `/lookup/${zip}`, { noindex: !result.isIndexable || result.status !== "verified" });
+    const title = result.city ? `Utilities for ZIP Code ${zip} in ${result.city}, ${result.state}` : `Utilities for ZIP Code ${zip}`;
+    const description = `Find electric, water, internet, trash, and official local service information for ZIP Code ${zip}${result.city ? ` in ${result.city}, ${result.stateName}` : ""}. Confirm availability by address.`;
+    return pageMetadata(title, description, `/lookup/${zip}`, { noindex: !result.isIndexable || result.status !== "verified" });
   } catch {
     return pageMetadata(`Utilities for ZIP Code ${zip}`, "Florida utility lookup results.", `/lookup/${zip}`, { noindex: true });
   }
@@ -26,5 +27,5 @@ export default async function ZipResultPage({ params }: { params: Promise<{ zip:
   if (!isValidZip(zip)) notFound();
   const result = getLookupResult(zip);
   if (!result) notFound();
-  return <main id="main-content"><div className="shell result-page"><Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Lookup", href: "/lookup" }, { label: zip }]} /><LookupResults result={result} /><section className="search-again"><h2>Check another ZIP code</h2><ZipLookupForm compact /></section></div></main>;
+  return <main id="main-content"><div className="shell result-page"><Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Learn Your Area", href: "/learn-your-area" }, { label: `ZIP Code ${zip}` }]} /><LookupResults result={result} /><section className="search-again"><h2>Check another ZIP code</h2><ZipLookupForm compact /></section></div></main>;
 }

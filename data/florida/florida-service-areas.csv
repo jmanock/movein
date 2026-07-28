@@ -1,23 +1,80 @@
-provider_slug,zip_code,coverage_type,coverage_notes,confidence_level,is_primary
-sanford-water,32771,possible,Possible provider for some Sanford addresses; confirm water service by exact address.,high,0
-sanford-sewer,32771,possible,Possible provider for some Sanford addresses; sewer or septic varies by property.,high,0
-sanford-solid-waste,32771,address_required,City service depends on whether the address is inside the service area.,high,0
-fcc-broadband-map,32771,address_required,Internet providers and technology vary building by building; use the FCC address search.,high,0
-seminole-government,32771,address_required,Use county and city sites to confirm which local agency serves the property.,high,0
-ouc-electric,32801,possible,OUC serves Orlando but utility territory can split ZIP codes; confirm the address.,high,0
-ouc-water,32801,possible,OUC provides water in Orlando and parts of Orange County; confirm the address.,high,0
-fcc-broadband-map,32801,address_required,Internet providers and technology vary building by building; use the FCC address search.,high,0
-orange-government,32801,address_required,Use county and city sites to confirm which local agency serves the property.,high,0
-deland-water,32720,possible,Possible city water provider; confirm that the property is in the DeLand service area.,high,0
-deland-sewer,32720,address_required,Sewer service or septic status varies by property; confirm the exact address.,high,0
-deland-solid-waste,32720,address_required,City garbage service applies within city limits; confirm the exact address.,high,0
-fcc-broadband-map,32720,address_required,Internet providers and technology vary building by building; use the FCC address search.,high,0
-volusia-government,32720,address_required,Use county and city sites to confirm which local agency serves the property.,high,0
-seco-electric,34748,possible,SECO serves parts of Lake County; confirm this address on the official territory tool.,medium,0
-fcc-broadband-map,34748,address_required,Internet providers and technology vary building by building; use the FCC address search.,high,0
-lake-government,34748,address_required,Use county and city sites to confirm which local agency serves the property.,high,0
-kua-electric,34741,possible,KUA serves the Kissimmee area; confirm the property on its official territory map.,high,0
-toho-water,34741,possible,Toho is a possible water provider; confirm the address in its service area.,high,0
-toho-sewer,34741,address_required,Toho is a possible wastewater provider; sewer or septic varies by property.,high,0
-fcc-broadband-map,34741,address_required,Internet providers and technology vary building by building; use the FCC address search.,high,0
-osceola-government,34741,address_required,Use county and city sites to confirm which local agency serves the property.,high,0
+provider_slug,zip_code,coverage_type,coverage_notes,confidence_level,is_primary,service_availability,requires_address_confirmation,jurisdiction_notes
+sanford-water,32771,possible,Possible city provider for some Sanford addresses; confirm water service by exact address.,high,0,possible,1,Sanford mailing addresses may be outside the City service area.
+sanford-sewer,32771,possible,Possible city provider for some Sanford addresses; sewer or septic varies by property.,high,0,possible,1,Sanford mailing addresses may use another utility or septic.
+sanford-solid-waste,32771,address_required,City service depends on whether the address is inside the service area.,high,0,address_required,1,Unincorporated and multi-family properties may have different arrangements.
+fcc-broadband-map,32771,address_required,Internet providers and technology vary building by building; use the FCC address search.,high,0,address_required,1,Availability and speeds vary by exact street address.
+seminole-government,32771,address_required,Use county and city sites to confirm which local agency serves the property.,high,0,address_required,1,The mailing city may differ from government jurisdiction.
+florida-psc-electric-finder,32771,address_required,Use the official state territory tool because an electric provider is not yet assigned for this ZIP.,high,0,address_required,1,The tool is a starting point and not a provider assignment.
+florida-psc-gas-finder,32771,address_required,Check the official state territory map and then confirm whether gas service reaches the property.,high,0,address_required,1,Natural gas is not implied to be available.
+lake-mary-water,32746,possible,Possible City of Lake Mary water service; the City says not all Lake Mary addresses are served.,high,0,primary_municipal,1,Confirm the address before applying.
+lake-mary-sewer,32746,address_required,City wastewater service is possible; another utility or septic may apply.,high,0,address_required,1,Confirm sewer connection status for the parcel.
+lake-mary-trash,32746,address_required,City collection is possible for eligible residential accounts.,high,0,address_required,1,City limits and property type affect service.
+fcc-broadband-map,32746,address_required,Use the FCC address search for reported internet providers and technologies.,high,0,address_required,1,Availability and speeds vary by exact street address.
+seminole-government,32746,address_required,Use the county and city sites to confirm jurisdiction.,high,0,address_required,1,The mailing city may differ from government jurisdiction.
+florida-psc-electric-finder,32746,address_required,Use the official state territory tool to identify the possible electric utility.,high,0,address_required,1,The tool is a starting point and not a provider assignment.
+florida-psc-gas-finder,32746,address_required,Check the official state territory map and confirm gas availability by address.,high,0,address_required,1,Natural gas is not implied to be available.
+ouc-electric,32801,possible,OUC serves Orlando but utility territory can split ZIP codes; confirm the address.,high,0,possible,1,The mailing city does not guarantee OUC service.
+ouc-water,32801,possible,OUC provides water in Orlando and parts of Orange County; confirm the address.,high,0,possible,1,Other arrangements may apply outside OUC territory.
+fcc-broadband-map,32801,address_required,Internet providers and technology vary building by building; use the FCC address search.,high,0,address_required,1,Availability and speeds vary by exact street address.
+orange-government,32801,address_required,Use county and city sites to confirm which local agency serves the property.,high,0,address_required,1,The mailing city may differ from government jurisdiction.
+florida-psc-gas-finder,32801,address_required,Check the official state territory map and confirm gas availability by address.,high,0,address_required,1,Natural gas is not implied to be available.
+winter-park-electric,32789,possible,Possible City of Winter Park electric service within the municipal territory.,high,1,primary_municipal,1,Winter Park mailing addresses can fall outside the City electric system.
+winter-park-water,32789,possible,Possible City water service for addresses within its utility territory.,high,0,primary_municipal,1,Confirm the service address before opening an account.
+winter-park-sewer,32789,address_required,City wastewater service depends on the connected property.,high,0,address_required,1,Sewer or septic status must be confirmed by address.
+winter-park-trash,32789,address_required,City collection information applies to eligible properties.,high,0,address_required,1,Property type and jurisdiction affect collection.
+fcc-broadband-map,32789,address_required,Use the FCC address search for reported internet availability.,high,0,address_required,1,Availability and speeds vary by exact street address.
+orange-government,32789,address_required,Use county and city sites to confirm jurisdiction.,high,0,address_required,1,The mailing city may differ from government jurisdiction.
+florida-psc-gas-finder,32789,address_required,Check the official state territory map and confirm gas availability by address.,high,0,address_required,1,Natural gas is not implied to be available.
+apopka-water,32703,possible,Possible City of Apopka water service; the City says service varies by property.,high,0,primary_municipal,1,Confirm the exact service location.
+apopka-sewer,32703,possible,Possible City sewer service; service varies by property location.,high,0,primary_municipal,1,Another utility or septic may apply.
+apopka-trash,32703,address_required,City sanitation applies within Apopka city limits.,high,0,address_required,1,Unincorporated addresses have different arrangements.
+fcc-broadband-map,32703,address_required,Use the FCC address search for reported internet availability.,high,0,address_required,1,Availability and speeds vary by exact street address.
+orange-government,32703,address_required,Use county and city sites to confirm jurisdiction.,high,0,address_required,1,The mailing city may differ from government jurisdiction.
+florida-psc-electric-finder,32703,address_required,Use the official state territory tool to identify the possible electric utility.,high,0,address_required,1,The tool is a starting point and not a provider assignment.
+florida-psc-gas-finder,32703,address_required,Check the official state territory map and confirm gas availability by address.,high,0,address_required,1,Natural gas is not implied to be available.
+deland-water,32720,possible,Possible city water provider; confirm that the property is in the DeLand service area.,high,0,possible,1,The mailing city does not guarantee City service.
+deland-sewer,32720,address_required,Sewer service or septic status varies by property; confirm the exact address.,high,0,address_required,1,Connected sewer service is not ZIP-wide.
+deland-solid-waste,32720,address_required,City garbage service applies within city limits; confirm the exact address.,high,0,address_required,1,Unincorporated and multi-family properties may differ.
+fcc-broadband-map,32720,address_required,Internet providers and technology vary building by building; use the FCC address search.,high,0,address_required,1,Availability and speeds vary by exact street address.
+volusia-government,32720,address_required,Use county and city sites to confirm which local agency serves the property.,high,0,address_required,1,The mailing city may differ from government jurisdiction.
+florida-psc-electric-finder,32720,address_required,Use the official state territory tool to identify the possible electric utility.,high,0,address_required,1,The tool is a starting point and not a provider assignment.
+florida-psc-gas-finder,32720,address_required,Check the official state territory map and confirm gas availability by address.,high,0,address_required,1,Natural gas is not implied to be available.
+daytona-water,32114,possible,Possible City of Daytona Beach water service for addresses in its utility area.,high,0,primary_municipal,1,Confirm City utility eligibility for the exact address.
+daytona-sewer,32114,address_required,City wastewater service is possible for connected properties.,high,0,address_required,1,Sewer or septic status varies by parcel.
+daytona-trash,32114,address_required,City collection information applies to eligible Daytona Beach properties.,high,0,address_required,1,City limits and property type affect collection.
+fcc-broadband-map,32114,address_required,Use the FCC address search for reported internet availability.,high,0,address_required,1,Availability and speeds vary by exact street address.
+volusia-government,32114,address_required,Use county and city sites to confirm jurisdiction.,high,0,address_required,1,The mailing city may differ from government jurisdiction.
+florida-psc-electric-finder,32114,address_required,Use the official state territory tool to identify the possible electric utility.,high,0,address_required,1,The tool is a starting point and not a provider assignment.
+florida-psc-gas-finder,32114,address_required,Check the official state territory map and confirm gas availability by address.,high,0,address_required,1,Natural gas is not implied to be available.
+seco-electric,34748,possible,SECO serves parts of Lake County; confirm this address on the official territory tool.,medium,0,possible,1,Other electric territories may overlap the ZIP.
+fcc-broadband-map,34748,address_required,Internet providers and technology vary building by building; use the FCC address search.,high,0,address_required,1,Availability and speeds vary by exact street address.
+lake-government,34748,address_required,Use county and city sites to confirm which local agency serves the property.,high,0,address_required,1,The mailing city may differ from government jurisdiction.
+florida-psc-electric-finder,34748,address_required,Use the official state territory tool to confirm the electric territory.,high,0,multiple_possible,1,SECO is possible but the address must be checked.
+florida-psc-gas-finder,34748,address_required,Check the official state territory map and confirm gas availability by address.,high,0,address_required,1,Natural gas is not implied to be available.
+clermont-water,34711,possible,Possible City of Clermont water service within its service area.,high,0,primary_municipal,1,The City says Lake County or a private utility may serve some properties.
+clermont-sewer,34711,address_required,Possible City sewer service for connected properties.,high,0,address_required,1,Another utility or septic may apply.
+clermont-trash,34711,address_required,Possible City garbage service for eligible accounts.,high,0,address_required,1,County or private arrangements may apply.
+fcc-broadband-map,34711,address_required,Use the FCC address search for reported internet availability.,high,0,address_required,1,Availability and speeds vary by exact street address.
+lake-government,34711,address_required,Use county and city sites to confirm jurisdiction.,high,0,address_required,1,The mailing city may differ from government jurisdiction.
+florida-psc-electric-finder,34711,address_required,Use the official state territory tool to identify the possible electric utility.,high,0,address_required,1,The tool is a starting point and not a provider assignment.
+florida-psc-gas-finder,34711,address_required,Check the official state territory map and confirm gas availability by address.,high,0,address_required,1,Natural gas is not implied to be available.
+mount-dora-electric,32757,possible,Possible City of Mount Dora electric service for eligible properties.,high,1,primary_municipal,1,The City states utility deposits vary by location.
+mount-dora-water,32757,possible,Possible City water service for eligible properties.,high,0,primary_municipal,1,Confirm service for the exact property.
+mount-dora-sewer,32757,address_required,Possible City sewer service for connected properties.,high,0,address_required,1,Sewer or septic status varies by property.
+mount-dora-trash,32757,address_required,Possible City sanitation service for eligible properties.,high,0,address_required,1,Confirm jurisdiction and account eligibility.
+fcc-broadband-map,32757,address_required,Use the FCC address search for reported internet availability.,high,0,address_required,1,Availability and speeds vary by exact street address.
+lake-government,32757,address_required,Use county and city sites to confirm jurisdiction.,high,0,address_required,1,The mailing city may differ from government jurisdiction.
+florida-psc-gas-finder,32757,address_required,Check the official state territory map and confirm gas availability by address.,high,0,address_required,1,Natural gas is not implied to be available.
+kua-electric,34741,possible,KUA serves the Kissimmee area; confirm the property on its official territory map.,high,0,possible,1,The authority territory does not follow ZIP boundaries.
+toho-water,34741,possible,Toho is a possible water provider; confirm the address in its service area.,high,0,possible,1,Other systems may serve some addresses.
+toho-sewer,34741,address_required,Toho is a possible wastewater provider; sewer or septic varies by property.,high,0,address_required,1,Connected service must be confirmed.
+fcc-broadband-map,34741,address_required,Internet providers and technology vary building by building; use the FCC address search.,high,0,address_required,1,Availability and speeds vary by exact street address.
+osceola-government,34741,address_required,Use county and city sites to confirm which local agency serves the property.,high,0,address_required,1,The mailing city may differ from government jurisdiction.
+florida-psc-gas-finder,34741,address_required,Check the official state territory map and confirm gas availability by address.,high,0,address_required,1,Natural gas is not implied to be available.
+ouc-electric,34769,possible,OUC manages the St. Cloud electric system; confirm the service address.,high,1,primary_municipal,1,The official City source describes the interlocal electric arrangement.
+toho-water,34769,possible,Toho manages St. Cloud water service; confirm availability for the property.,high,0,primary_municipal,1,The City directs customers to Toho for account service.
+toho-sewer,34769,address_required,Toho manages St. Cloud wastewater service for connected properties.,high,0,address_required,1,Sewer or septic status must be confirmed.
+st-cloud-trash,34769,address_required,City residential curbside collection applies to eligible St. Cloud properties.,high,0,address_required,1,County customers have different disposal arrangements.
+fcc-broadband-map,34769,address_required,Use the FCC address search for reported internet availability.,high,0,address_required,1,Availability and speeds vary by exact street address.
+osceola-government,34769,address_required,Use county and city sites to confirm jurisdiction.,high,0,address_required,1,The mailing city may differ from government jurisdiction.
+florida-psc-gas-finder,34769,address_required,Check the official state territory map and confirm gas availability by address.,high,0,address_required,1,Natural gas is not implied to be available.
