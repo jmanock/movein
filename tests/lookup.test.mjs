@@ -61,10 +61,10 @@ test("returns grouped verified results with multiple possible electric and water
   assert.equal(result.providers.electricity[0].coverageLabel, "Possible provider");
 });
 
-test("returns partial data without fabricated fallback categories", () => {
+test("returns mostly verified data without fabricated address-level providers", () => {
   const result = getLookupResult("32771");
-  assert.equal(result?.status, "partial");
-  assert.equal(result?.isIndexable, false);
+  assert.equal(result?.status, "mostly_verified");
+  assert.equal(result?.isIndexable, true);
   assert.ok(result.providers.water.length > 0);
   assert.equal(result.providers["natural-gas"].length, 1);
   assert.equal(result.providers["natural-gas"][0].providerType, "official_lookup");
@@ -106,7 +106,7 @@ test("API controls invalid, unknown, and successful responses", async () => {
   const valid = await GET(new Request("http://localhost/api/lookup?zip=32720"));
   assert.equal(valid.status, 200);
   const payload = await valid.json();
-  assert.equal(payload.status, "partial");
+  assert.equal(payload.status, "mostly_verified");
   assert.ok(Array.isArray(payload.providers.naturalGas));
   assert.ok(Array.isArray(payload.providers.trashRecycling));
   assert.equal("isIndexable" in payload, false);
@@ -122,6 +122,7 @@ test("correction validation and API return controlled responses", async () => {
   assert.equal(valid.status, 201);
   assert.equal((await valid.json()).ok, true);
   assert.equal(getDatabase().prepare("SELECT COUNT(*) AS count FROM correction_submissions WHERE zip_code='32771'").get().count, 1);
+  assert.equal(getDatabase().prepare("SELECT issue_kind FROM correction_submissions WHERE zip_code='32771'").get().issue_kind, "incorrect-phone");
 });
 
 test("CSV validation catches no errors in the pilot dataset", () => {
@@ -135,14 +136,14 @@ test("data operations support duplicate checks, a research queue, and a non-writ
     ["scripts/report-duplicates.mjs", /No duplicates across 12 ZIPs/],
     ["scripts/generate-research-queue.mjs", /Wrote \d+ research tasks/],
   ]) {
-    const result = spawnSync(process.execPath, [script], { cwd: root, env: { ...process.env, RESEARCH_QUEUE_PATH: join(temporaryDirectory, "research-queue.csv") }, encoding: "utf8" });
+    const result = spawnSync(process.execPath, [script], { cwd: root, env: { ...process.env, RESEARCH_QUEUE_PATH: join(temporaryDirectory, "research-queue.csv"), RESEARCH_SUMMARY_PATH: join(temporaryDirectory, "research-summary.md") }, encoding: "utf8" });
     assert.equal(result.status, 0, `${script} failed: ${result.stderr}`);
     assert.match(result.stdout, expected);
   }
   const before = getDatabase().prepare("SELECT COUNT(*) AS count FROM providers").get().count;
   const dryRun = spawnSync(process.execPath, ["scripts/import-florida-data.mjs", "--dry-run", "--confirm-verified"], { cwd: root, env: process.env, encoding: "utf8" });
   assert.equal(dryRun.status, 0, dryRun.stderr);
-  assert.match(dryRun.stdout, /Dry run: 12 ZIPs, 41 providers/);
+  assert.match(dryRun.stdout, /Dry run: 12 ZIPs, 52 providers/);
   assert.equal(getDatabase().prepare("SELECT COUNT(*) AS count FROM providers").get().count, before);
 });
 
@@ -170,16 +171,16 @@ test("FAQ content is visible and its schema mirrors the same data", async () => 
   const [page, data] = await Promise.all([read("../app/faq/page.tsx"), read("../app/data/site.ts")]);
   assert.match(page, /FAQPage/);
   assert.match(page, /faqItems\.map/);
-  assert.match(data, /Can more than one utility serve the same ZIP code/);
+  assert.match(data, /Why can more than one provider appear/);
 });
 
-test("SEO includes only approved verified ZIP pages", async () => {
+test("SEO includes approved verified and mostly verified ZIP pages", async () => {
   const [sitemap, data, lookupPage] = await Promise.all([read("../app/sitemap.ts"), read("../app/data/site.ts"), read("../app/lookup/[zip]/page.tsx")]);
-  assert.match(data, /indexablePilotZips = \["32801", "32789", "32757", "34741", "34769"\]/);
+  assert.match(data, /indexablePilotZips = \["32771", "32746", "32801"/);
   assert.match(sitemap, /indexablePilotZips\.map/);
-  assert.match(lookupPage, /noindex: !result\.isIndexable \|\| result\.status !== "verified"/);
+  assert.match(lookupPage, /\["verified", "mostly_verified"\]\.includes\(result\.status\)/);
   assert.match(lookupPage, /if \(!result\) notFound\(\)/);
-  assert.doesNotMatch(sitemap, /32771|32720|34748|32746|32703|32114|34711|welcome\//);
+  assert.doesNotMatch(sitemap, /welcome\//);
 });
 
 test("unsupported dynamic ZIP routes are rewritten with a real 404", async () => {
@@ -204,8 +205,29 @@ test("results show every service category and an explicit missing-data state", a
   assert.match(results, /Check availability at your address/);
   assert.match(results, /Availability and speeds vary by exact street address/);
   assert.match(results, /Trash service may be arranged by your city, county, HOA, landlord, or private hauler/);
-  assert.match(results, /View outage information/);
+  assert.match(results, /View outage map/);
   assert.match(results, /Verified \{formatDate\(provider\.lastVerifiedAt\)\}/);
+});
+
+test("electric records expose start service, outage contacts, and outage maps", () => {
+  const providers = getLookupResult("32703").providers.electricity;
+  const duke = providers.find((provider) => provider.slug === "duke-electric");
+  assert.ok(duke);
+  assert.match(duke.startServiceUrl, /^https:/);
+  assert.match(duke.outageMapUrl, /^https:/);
+  assert.ok(duke.contacts.some((contact) => contact.type === "outage" && contact.phoneHref.startsWith("tel:")));
+});
+
+test("research automation preserves address-level gaps and link checker has GET fallback", async () => {
+  const queuePath = join(temporaryDirectory, "queue-expanded.csv");
+  const queue = spawnSync(process.execPath, ["scripts/generate-research-queue.mjs"], { cwd: root, env: { ...process.env, RESEARCH_QUEUE_PATH: queuePath, RESEARCH_SUMMARY_PATH: join(temporaryDirectory, "queue.md") }, encoding: "utf8" });
+  assert.equal(queue.status, 0, queue.stderr);
+  const queueText = await readFile(queuePath, "utf8");
+  assert.match(queueText, /sources_reviewed,next_recommended_action/);
+  assert.match(queueText, /Verify a representative street address/);
+  const checker = await read("../scripts/check-provider-links.mjs");
+  assert.match(checker, /HEAD returned \$\{head\.status\}; GET fallback used/);
+  assert.match(checker, /head-blocked-get-reachable/);
 });
 
 test("corrections use a validated form with loading and duplicate-submit protection", async () => {

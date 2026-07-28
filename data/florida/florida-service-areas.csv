@@ -78,3 +78,22 @@ st-cloud-trash,34769,address_required,City residential curbside collection appli
 fcc-broadband-map,34769,address_required,Use the FCC address search for reported internet availability.,high,0,address_required,1,Availability and speeds vary by exact street address.
 osceola-government,34769,address_required,Use county and city sites to confirm jurisdiction.,high,0,address_required,1,The mailing city may differ from government jurisdiction.
 florida-psc-gas-finder,34769,address_required,Check the official state territory map and confirm gas availability by address.,high,0,address_required,1,Natural gas is not implied to be available.
+fpl-electric,32746,possible,FPL may serve portions of this ZIP; confirm the exact address before opening service.,high,0,multiple_possible,1,Seminole County identifies both FPL and Duke Energy in the area.
+duke-electric,32746,possible,Duke Energy may serve portions of this ZIP; confirm the exact address.,high,0,multiple_possible,1,Seminole County identifies both Duke Energy and FPL in the area.
+fpl-electric,32771,possible,FPL may serve portions of Sanford ZIP 32771; confirm the exact address.,high,0,multiple_possible,1,Electric territories do not follow mailing-city or ZIP boundaries.
+duke-electric,32771,possible,Duke Energy may serve portions of Sanford ZIP 32771; confirm the exact address.,high,0,multiple_possible,1,Electric territories do not follow mailing-city or ZIP boundaries.
+duke-electric,32703,possible,Duke Energy is a possible electric provider for Apopka addresses.,high,0,possible,1,Confirm the property on the official start-service flow.
+duke-electric,32720,possible,Duke Energy serves the City of DeLand area; confirm the exact address.,high,0,possible,1,The ZIP includes properties outside city limits.
+fpl-electric,32114,possible,FPL may serve Daytona Beach addresses in this ZIP.,high,0,multiple_possible,1,Volusia County has multiple electric territories; confirm by address.
+duke-electric,34711,possible,Duke Energy may serve portions of Clermont ZIP 34711.,high,0,multiple_possible,1,The City lists Duke and SECO as local electric utilities.
+seco-electric,34711,possible,SECO may serve portions of Clermont ZIP 34711.,high,0,multiple_possible,1,The City lists SECO and Duke as local electric utilities.
+leesburg-water,34748,possible,City of Leesburg water may serve eligible properties.,high,0,primary_municipal,1,Confirm the property is within the City utility territory.
+leesburg-sewer,34748,address_required,City wastewater may serve connected eligible properties.,high,0,address_required,1,Sewer connection or septic status varies by parcel.
+leesburg-trash,34748,address_required,City collection may serve eligible properties within city limits.,high,0,address_required,1,Unincorporated and multi-family properties may differ.
+leesburg-gas,34748,address_required,City natural gas may be available for eligible Leesburg properties.,high,0,address_required,1,Natural gas availability is not ZIP-wide.
+orlando-sewer,32801,address_required,City wastewater may serve connected properties in downtown Orlando.,high,0,primary_municipal,1,The official map is approximate; confirm the parcel.
+orlando-trash,32801,address_required,City residential collection may serve eligible Orlando properties.,high,0,address_required,1,Property type and jurisdiction affect collection.
+kissimmee-trash,34741,address_required,City collection may serve eligible properties inside Kissimmee city limits.,high,0,address_required,1,Unincorporated addresses use a different arrangement.
+lake-apopka-gas,32703,address_required,Lake Apopka Natural Gas District serves parts of Apopka.,high,0,address_required,1,Submit an address inquiry; service is not available everywhere.
+lake-apopka-gas,34711,address_required,Lake Apopka Natural Gas District serves parts of Clermont.,high,0,address_required,1,Submit an address inquiry; service is not available everywhere.
+fpuc-gas,32720,address_required,FPU natural gas territory includes portions of DeLand.,high,0,address_required,1,Confirm gas availability for the exact service address.

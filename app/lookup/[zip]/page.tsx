@@ -15,8 +15,8 @@ export async function generateMetadata({ params }: { params: Promise<{ zip: stri
     const result = getLookupResult(zip);
     if (!result) return pageMetadata("ZIP code not found", "This ZIP code is not in the current MoveIn pilot.", `/lookup/${zip}`, { noindex: true });
     const title = result.city ? `Utilities for ZIP Code ${zip} in ${result.city}, ${result.state}` : `Utilities for ZIP Code ${zip}`;
-    const description = `Find electric, water, internet, trash, and official local service information for ZIP Code ${zip}${result.city ? ` in ${result.city}, ${result.stateName}` : ""}. Confirm availability by address.`;
-    return pageMetadata(title, description, `/lookup/${zip}`, { noindex: !result.isIndexable || result.status !== "verified" });
+    const description = `Find electric, water, internet, trash, outage contacts, and official local service information for ZIP Code ${zip}${result.city ? ` in ${result.city}, ${result.stateName}` : ""}.`;
+    return pageMetadata(title, description, `/lookup/${zip}`, { noindex: !result.isIndexable || !["verified", "mostly_verified"].includes(result.status) });
   } catch {
     return pageMetadata(`Utilities for ZIP Code ${zip}`, "Florida utility lookup results.", `/lookup/${zip}`, { noindex: true });
   }

@@ -52,3 +52,6 @@ No duplicate or source-free records were found. `is_verified` is true for every 
 ## Audit conclusion
 
 The baseline is trustworthy but intentionally small. Expansion should add authoritative municipal records with explicit address/jurisdiction caveats, strengthen action URLs and outage contacts, generate research queues for unresolved categories, and require explicit confirmation before a verified row is changed. No uncertain baseline record should be deleted during that work.
+# July 28, 2026 pilot completion audit
+
+The dataset now contains 12 supported ZIPs, 52 provider/resource records, 98 provider-to-ZIP links, 67 contacts, and 57 official-source records. All electricity, water, sewer, trash, and local-government gaps identified in the previous 36-item queue were resolved with cautious ZIP-to-territory wording. Twenty address-level research tasks remain: 12 internet and 8 natural-gas tasks. They are documented rather than falsely closed because authoritative sources require a street address.

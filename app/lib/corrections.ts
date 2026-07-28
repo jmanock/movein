@@ -6,9 +6,10 @@ export const correctionCategories = [
 ] as const;
 export const correctionIssueTypes = [
   ["wrong-electric-provider", "Wrong electric provider"], ["wrong-water-provider", "Wrong water provider"],
-  ["missing-provider", "Missing provider"], ["incorrect-phone", "Incorrect phone number"],
-  ["broken-website", "Broken website"], ["outdated-outage-number", "Outdated outage number"],
-  ["incorrect-location", "Incorrect city or county"], ["other", "Other issue"],
+  ["wrong-sewer-provider", "Wrong sewer provider"], ["missing-utility", "Missing utility"],
+  ["incorrect-phone", "Incorrect phone number"], ["broken-official-link", "Broken official link"],
+  ["incorrect-location", "Wrong city or county"], ["incorrect-trash", "Incorrect trash information"],
+  ["incorrect-internet", "Incorrect internet listing"], ["other", "Other issue"],
 ] as const;
 
 export type CorrectionInput = {

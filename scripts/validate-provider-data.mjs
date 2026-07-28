@@ -12,6 +12,9 @@ const warnings = [];
 const validCategories = new Set(["electricity", "water", "sewer", "natural-gas", "internet", "trash-recycling", "local-government"]);
 const validConfidence = new Set(["verified", "probable", "partial", "pending", "conflicting"]);
 const validAvailability = new Set(["confirmed", "primary_municipal", "possible", "multiple_possible", "address_required", "varies", "unverified", "not_generally_available"]);
+const pilotCounties = new Set(["Seminole", "Orange", "Volusia", "Lake", "Osceola"]);
+const contactTypes = new Set(["customer_service", "outage", "emergency", "general"]);
+const today = new Date().toISOString().slice(0, 10);
 const unique = (rows, key, label) => {
   const seen = new Set();
   for (const row of rows) {
@@ -25,18 +28,23 @@ const providerIdentities = new Set();
 const zipSet = new Set(zips.map((row) => row.zip_code));
 const providerSet = new Set(providers.map((row) => row.slug));
 for (const row of zips) {
-  if (!/^\d{5}$/.test(row.zip_code)) errors.push(`Invalid ZIP '${row.zip_code}'`);
+  if (!/^3\d{4}$/.test(row.zip_code)) errors.push(`Invalid Florida ZIP '${row.zip_code}'`);
+  if (!pilotCounties.has(row.county_name)) errors.push(`ZIP ${row.zip_code} is outside the five-county pilot`);
+  if (!row.mailing_city_name) errors.push(`ZIP ${row.zip_code} lacks a mailing city`);
+  if (!["incorporated", "unincorporated", "mixed", "unknown"].includes(row.jurisdiction_status)) errors.push(`ZIP ${row.zip_code} has invalid jurisdiction status`);
   if (!['verified', 'partial', 'pending'].includes(row.status)) errors.push(`Invalid ZIP status at row ${row.__row}`);
   if (!validConfidence.has(row.confidence_status)) errors.push(`Invalid ZIP confidence at row ${row.__row}`);
   if (!row.jurisdiction_notes) errors.push(`ZIP ${row.zip_code} lacks jurisdiction notes`);
   if (!row.last_verified_at) errors.push(`ZIP ${row.zip_code} lacks a verification date`);
+  if (row.last_verified_at > today) errors.push(`ZIP ${row.zip_code} has a future verification date`);
   if (!/^https:\/\//.test(row.locality_source_url)) errors.push(`ZIP ${row.zip_code} lacks an HTTPS locality source`);
 }
 for (const row of providers) {
   if (!validCategories.has(row.category_slug)) errors.push(`Provider ${row.slug} has unknown category '${row.category_slug}'`);
   if (!isHttpsUrl(row.official_website)) errors.push(`Provider ${row.slug} lacks a valid HTTPS official website`);
   if (!row.last_verified_at) errors.push(`Provider ${row.slug} lacks a verification date`);
-  for (const field of ["start_service_url", "address_check_url", "outage_url"]) if (row[field] && !isHttpsUrl(row[field])) errors.push(`Provider ${row.slug} has invalid ${field}`);
+  for (const field of ["start_service_url", "address_check_url", "outage_url", "outage_map_url", "collection_info_url"]) if (row[field] && !isHttpsUrl(row[field])) errors.push(`Provider ${row.slug} has invalid ${field}`);
+  if (row.last_verified_at > today) errors.push(`Provider ${row.slug} has a future verification date`);
   if (!row.provider_type) errors.push(`Provider ${row.slug} lacks a provider type`);
   const identity = `${row.state_code}|${row.category_slug}|${row.name.trim().toLowerCase()}`;
   if (providerIdentities.has(identity)) errors.push(`Duplicate provider identity '${row.name}' in ${row.category_slug}`);
@@ -50,6 +58,8 @@ for (const row of areas) {
   if (!validAvailability.has(row.service_availability)) errors.push(`Invalid service availability at row ${row.__row}`);
   if (!['0', '1'].includes(row.requires_address_confirmation)) errors.push(`Invalid address-confirmation flag at row ${row.__row}`);
   if (!row.jurisdiction_notes) errors.push(`Service area at row ${row.__row} lacks jurisdiction notes`);
+  const provider = providers.find((provider) => provider.slug === row.provider_slug);
+  if (["internet", "water", "sewer", "trash-recycling", "natural-gas"].includes(provider?.category_slug) && row.requires_address_confirmation !== "1") errors.push(`Address confirmation must be required for ${row.provider_slug}|${row.zip_code}`);
   const key = `${row.provider_slug}|${row.zip_code}`;
   if (areaKeys.has(key)) errors.push(`Duplicate service-area link '${key}'`);
   areaKeys.add(key);
@@ -57,11 +67,16 @@ for (const row of areas) {
 for (const row of contacts) {
   if (!providerSet.has(row.provider_slug)) errors.push(`Unknown provider ${row.provider_slug} in contacts`);
   if (!/^\(\d{3}\) \d{3}-\d{4}$/.test(row.phone)) errors.push(`Unformatted phone '${row.phone}' at row ${row.__row}`);
+  if (!contactTypes.has(row.contact_type)) errors.push(`Unknown contact type '${row.contact_type}' at row ${row.__row}`);
 }
+const contactKeys = new Set();
+for (const row of contacts) { const key = `${row.provider_slug}|${row.contact_type}|${row.phone}`; if (contactKeys.has(key)) errors.push(`Duplicate contact '${key}'`); contactKeys.add(key); }
 for (const row of sources) {
   if (!providerSet.has(row.provider_slug)) errors.push(`Unknown provider ${row.provider_slug} in sources`);
   if (!isHttpsUrl(row.source_url)) errors.push(`Invalid or non-HTTPS source at row ${row.__row}`);
   if (!row.retrieved_at) errors.push(`Source at row ${row.__row} lacks a retrieved date`);
+  if (row.retrieved_at > today) errors.push(`Source at row ${row.__row} has a future retrieval date`);
+  if (!row.source_name || !row.source_type) errors.push(`Source at row ${row.__row} lacks title or type`);
 }
 const sourced = new Set(sources.map((row) => row.provider_slug));
 for (const slug of providerSet) if (!sourced.has(slug)) errors.push(`Provider ${slug} has no source`);

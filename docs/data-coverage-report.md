@@ -2,19 +2,26 @@
 
 Generated: 2026-07-28
 
+## Readiness
+
+**Ready for limited public pilot promotion.** Address-level internet and gas tasks remain documented; this is not statewide coverage.
+
 ## Coverage
 
-- Total active Florida pilot ZIP codes: 12
-- Verified: 5
-- Partial: 7
-- Pending: 0
+- Total active ZIP codes: 12
+- Verified ZIP codes: 5
+- Mostly verified ZIP codes: 7
+- Partial ZIP codes: 0
+- Pending ZIP codes: 0
 - Records missing sources: 0
-- Non-lookup records missing phone numbers: 5
-- Provider records older than 180 days: 0
-- Duplicate records: 0 after `npm run data:duplicates`
-- Broken official links: 0 URL(s) returned a confirmed 404 or 410 in the latest link check.
+- Records missing phone numbers: 0
+- Records missing verification dates: 0
+- Records older than 180 days: 0
+- Corrections awaiting review: 0
+- Remaining research tasks: 21
+- Official links: reachable: 45, redirected: 6, head-blocked-get-reachable: 1, timeout: 1
 
-## ZIPs by pilot county
+## ZIPs by county
 
 - Lake: 3
 - Orange: 3
@@ -22,37 +29,29 @@ Generated: 2026-07-28
 - Seminole: 2
 - Volusia: 2
 
-## Provider records by category
+## Providers by category
 
-- Electricity: 6
-- Water: 10
-- Sewer: 9
-- Natural gas: 1
+- Electricity: 8
+- Water: 11
+- Sewer: 11
+- Natural gas: 4
 - Internet: 1
-- Trash & recycling: 9
+- Trash & recycling: 12
 - Local information: 5
 
-## Next research tasks
+## Missing categories by ZIP
 
-- Priority 4: 32757 Mount Dora — internet
-- Priority 5: 32757 Mount Dora — natural-gas
-- Priority 1: 34711 Clermont — electricity
-- Priority 4: 34711 Clermont — internet
-- Priority 5: 34711 Clermont — natural-gas
-- Priority 2: 34748 Leesburg — water
-- Priority 2: 34748 Leesburg — sewer
-- Priority 3: 34748 Leesburg — trash-recycling
-- Priority 4: 34748 Leesburg — internet
-- Priority 5: 34748 Leesburg — natural-gas
-- Priority 1: 32703 Apopka — electricity
-- Priority 4: 32703 Apopka — internet
-- Priority 5: 32703 Apopka — natural-gas
-- Priority 4: 32789 Winter Park — internet
-- Priority 5: 32789 Winter Park — natural-gas
-- Priority 2: 32801 Orlando — sewer
-- Priority 3: 32801 Orlando — trash-recycling
-- Priority 4: 32801 Orlando — internet
-- Priority 5: 32801 Orlando — natural-gas
-- Priority 3: 34741 Kissimmee — trash-recycling
+- 32114: internet, natural-gas
+- 32703: internet
+- 32720: internet
+- 32746: internet, natural-gas
+- 32757: internet, natural-gas
+- 32771: internet, natural-gas
+- 32789: internet, natural-gas
+- 32801: internet, natural-gas
+- 34711: internet
+- 34741: internet, natural-gas
+- 34748: internet
+- 34769: internet, natural-gas
 
-The complete queue is in `data/florida/research-queue.csv`. A record remains in the queue until an authoritative source supports a provider-to-area link and an exact-address caveat.
+The remaining rows are retained because ZIP-wide internet and natural-gas assignments cannot be made responsibly without exact-address evidence. See `data/florida/research-queue.csv`.

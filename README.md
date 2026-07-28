@@ -89,7 +89,10 @@ The seed is idempotent and non-deleting. A changed verified row is refused unles
 - `docs/provider-verification.md` — category-specific acceptance rules
 - `docs/florida-research-plan.md` — expansion priorities and queue workflow
 - `docs/data-coverage-report.md` — generated internal coverage summary
+- `docs/research-queue-summary.md` — generated unresolved-task summary
+- `docs/link-validation-report.md` — generated official-link status report
 - `docs/corrections-workflow.md` — private review lifecycle
+- `docs/google-search-launch.md` — canonical, sitemap, and Search Console launch checklist
 - `docs/pilot-data-report.md` — current pilot coverage, gaps, and next verification work
 - `docs/image-manifest.md` — homepage image provenance, optimization, and replacement guidance
 - `docs/deployment.md` — DigitalOcean, PM2, Nginx, and release commands

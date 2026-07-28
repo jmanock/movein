@@ -16,8 +16,8 @@ export async function POST(request: Request) {
   if (!data.startedAt || Date.now() - data.startedAt < 800) return Response.json({ error: "Please take a moment to review the form, then submit it again." }, { status: 429 });
   try {
     getDatabase().prepare(`INSERT INTO correction_submissions
-      (zip_code, issue_type, provider_category, provider_name, issue_details, source_url, reply_email, workflow_status)
-      VALUES (?, ?, ?, ?, ?, ?, ?, 'new')`).run(data.zipCode, data.issueType, data.category || "other", data.providerName, data.details, data.sourceUrl || null, data.replyEmail || null);
+      (zip_code, issue_type, issue_kind, provider_category, provider_name, issue_details, source_url, reply_email, workflow_status)
+      VALUES (?, 'other', ?, ?, ?, ?, ?, ?, 'new')`).run(data.zipCode, data.issueType, data.category || "other", data.providerName, data.details, data.sourceUrl || null, data.replyEmail || null);
     return Response.json({ ok: true, message: "Thanks. Your correction was received and will be reviewed before any public record changes." }, { status: 201 });
   } catch (error) {
     console.error("Correction submission failed", error instanceof Error ? error.message : "unknown");

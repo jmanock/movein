@@ -22,23 +22,22 @@ export const categoryLabels: Record<string, string> = {
 };
 
 export const pilotCounties = ["Seminole", "Orange", "Volusia", "Lake", "Osceola"] as const;
-export const indexablePilotZips = ["32801", "32789", "32757", "34741", "34769"] as const;
+export const indexablePilotZips = ["32771", "32746", "32801", "32789", "32703", "32720", "32114", "34748", "34711", "32757", "34741", "34769"] as const;
 export const supportedPilotZips = ["32771", "32746", "32801", "32789", "32703", "32720", "32114", "34748", "34711", "32757", "34741", "34769"] as const;
 
 export const faqItems = [
   ["How do I find my electric company?", "Enter your ZIP code for possible providers, then confirm your street address on the utility’s official website or by phone. Electric territories can split a ZIP code."],
-  ["Can more than one utility serve the same ZIP code?", "Yes. ZIP codes are mail-delivery areas, not utility boundaries. One ZIP may include municipal utilities, cooperatives, investor-owned utilities, private systems, wells, or septic systems."],
-  ["Why does my provider depend on my exact address?", "Utility territories follow city limits, service maps, infrastructure, and agreements that rarely line up with ZIP boundaries."],
-  ["How do I find my water company?", "Start with the possible water records shown for your ZIP. Confirm with the provider, city, county, landlord, seller, or closing documents. Some homes use a private well."],
-  ["How do I find internet providers at my address?", "Use the FCC National Broadband Map and enter the complete address. Internet availability can differ between neighboring buildings and even between units."],
-  ["When should I transfer utilities?", "Contact each confirmed provider before move-in and ask for the earliest appropriate start date. Do not schedule a shutoff for someone else’s active account."],
-  ["What utilities do renters usually need to set up?", "Your lease should say which services are your responsibility. Common examples are electricity, internet, water, gas, or trash, but arrangements vary."],
-  ["What utilities do homeowners usually need to set up?", "Common services include electricity, water or well systems, sewer or septic, internet, gas where available, and trash collection."],
-  ["How do I find trash and recycling information?", "Check the city or county record shown in results. Collection often depends on city limits, a franchise area, an HOA, or a private hauler."],
+  ["Why can more than one provider appear?", "ZIP codes are mail-delivery areas, not utility boundaries. One ZIP may cross municipal, cooperative, and investor-owned service territories."],
+  ["Why does MoveIn ask for only a ZIP code?", "A ZIP code gives a useful starting point without asking you to share an exact street address. Official provider tools handle the final address check."],
+  ["Why do I still need to verify my street address?", "Utility territories follow infrastructure, city limits, service districts, and property connections that rarely align with a whole ZIP code."],
+  ["How do I find my water and sewer provider?", "Review the possible water and sewer authorities shown, then confirm the parcel. A different utility, private well, or septic system may apply."],
+  ["How do I find trash and recycling service?", "Use the city or county collection link in the result. Responsibility may depend on city limits, property type, an HOA, landlord, or private hauler."],
+  ["Can internet availability vary within one ZIP?", "Yes. Providers, technologies, and speeds can differ by building or unit. Use the official FCC address search and each provider’s availability tool."],
+  ["Is MoveIn a utility provider?", "No. MoveIn is an independent information tool and does not sell, activate, or bill for utility service."],
+  ["Is MoveIn a government website?", "No. MoveIn links to official government and provider sources but is not a government agency and is not endorsed by one."],
   ["Does MoveIn sell my information?", "No. MoveIn does not ask for an email or street address for this lookup and does not sell ZIP searches."],
-  ["Is MoveIn a utility company?", "No. MoveIn is an independent information tool. It does not sell, activate, or bill for utility service."],
-  ["Is MoveIn affiliated with the government?", "No. MoveIn links to official government and provider sources but is not a government agency and is not endorsed by them."],
-  ["Is the information guaranteed to be current?", "No. Records show a verification date, but service areas and contact details can change. Always confirm with the official provider."],
+  ["How often is the data updated?", "Records show when they were last checked. Automated reports flag records older than 180 days, but official details can change sooner, so confirm before opening service."],
   ["How can I report incorrect information?", "Use the Corrections page and include the ZIP code, record, and an official source when possible."],
-  ["Will MoveIn support states outside Florida?", "The database supports multiple states, but the first launch is limited to verified pilot records in five Central Florida counties."],
+  ["Why are only certain Florida counties available?", "The first pilot is deliberately limited to selected ZIP codes in Seminole, Orange, Volusia, Lake, and Osceola counties so each record can be researched carefully."],
+  ["When will more states be added?", "After the Central Florida pilot remains accurate and useful in production. MoveIn will expand only as authoritative records can be verified."],
 ] as const;

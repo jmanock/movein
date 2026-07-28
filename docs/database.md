@@ -19,6 +19,8 @@ Coverage types are `primary`, `possible`, `address_required`, `varies`, and `unv
 
 Migration `003_service_actions_jurisdictions_and_review_workflow.sql` is additive. It adds provider action URLs, hours and type, service availability and jurisdiction notes, ZIP confidence and jurisdiction records, and the five-state correction review workflow. It does not drop or rewrite existing records.
 
+Migration `004_pilot_completion_fields.sql` is additive. It adds USPS mailing-city and incorporated/unincorporated context, outage-map and collection-information actions, and the expanded correction issue taxonomy. Existing legacy correction types remain intact.
+
 ## Commands
 
 ```bash
@@ -37,7 +39,7 @@ Migrations are never run automatically during `next start`. A release operator c
 
 ## Backup and rollback
 
-Before migration, use SQLite's online backup command while PM2 is stopped or copy the database together with its `-wal` and `-shm` files after a clean shutdown. Keep the timestamped backup outside the release directory.
+Before migration, create an online backup outside the release directory: `sqlite3 /var/lib/movein/movein.sqlite ".backup '/var/backups/movein/movein-before-004.sqlite'"`. Verify the backup exists before continuing.
 
 Application rollback: check out the previous commit, rebuild, and restart PM2. Migrations are additive and the older app ignores new columns and tables. A schema rollback should restore the verified pre-migration database backup; do not hand-edit production tables.
 

@@ -13,3 +13,6 @@ Reviewer steps:
 5. Import with `--confirm-verified`, then mark the report resolved only after production verification.
 
 Submissions never update provider rows automatically.
+# July 2026 issue taxonomy
+
+Migration 004 adds `issue_kind` for wrong electric, water, or sewer provider; missing utility; incorrect phone; broken official link; incorrect location; incorrect trash; incorrect internet; and other issues. Legacy `issue_type` remains for backward compatibility. New submissions begin as `new`; only a reviewer may move them through reviewing, accepted, rejected, or resolved. Reports never mutate provider records automatically.

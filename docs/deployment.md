@@ -6,6 +6,12 @@ MoveIn runs as a conventional long-lived Next.js Node server on Ubuntu, managed 
 
 Stop or quiesce the app, create a timestamped SQLite online backup of `/var/lib/movein/movein.sqlite`, and retain it outside `/var/www/movein`. If copying files directly, copy the database and its `-wal` and `-shm` companions together after a clean stop. Confirm the PM2 user owns `/var/lib/movein`.
 
+```bash
+sudo install -d -o "$USER" -g "$USER" /var/backups/movein
+sqlite3 /var/lib/movein/movein.sqlite ".backup '/var/backups/movein/movein-before-004.sqlite'"
+test -s /var/backups/movein/movein-before-004.sqlite
+```
+
 ## Release commands
 
 ```bash
@@ -26,7 +32,7 @@ pm2 restart movein --update-env
 pm2 save
 ```
 
-Migration 003 and the reviewed import are required for this release. The confirmation flag is intentional: it prevents silent changes to previously verified records. The exact direct smoke-test command is:
+Migration 004 and the reviewed import are required for this release. The confirmation flag is intentional: it prevents silent changes to previously verified records. The exact direct smoke-test command is:
 
 ```bash
 PORT=3006 DATABASE_PATH=/var/lib/movein/movein.sqlite npm run start -- -H 127.0.0.1
@@ -61,4 +67,4 @@ Then run `BASE_URL=http://127.0.0.1:3006 npm run check:links`.
 
 ## Rollback
 
-Check out the previous known-good commit, run `npm ci && npm run build`, and restart PM2. Migration 001 is additive, so the prior app can ignore it. If the database itself must be rolled back, stop PM2 and restore the verified pre-migration backup. Never drop tables during an application rollback.
+Check out the previous known-good commit, run `npm ci && npm run build`, and restart PM2. Migration 004 is additive, so the prior app ignores its new columns. If data must be rolled back, stop PM2, move the current database aside, copy `/var/backups/movein/movein-before-004.sqlite` to `/var/lib/movein/movein.sqlite`, confirm ownership, and restart. Never drop tables during an application rollback.

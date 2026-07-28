@@ -15,3 +15,6 @@ Municipal service is linked as `primary_municipal` only as a likely city-system 
 - Trash: distinguish city, county, HOA, landlord, apartment, and private-hauler arrangements.
 
 Run validation, duplicate, missing-data, stale-data, research-queue, and coverage-report commands before review. A verified-row change requires the explicit `--confirm-verified` import flag and a reviewed diff.
+# Pilot completion rule
+
+A provider-to-ZIP link requires an official provider, municipal, county, state, federal, tariff, or territory source and a current retrieval date. Mailing city alone is never evidence. Electricity may list multiple possibilities. Water, sewer, trash, internet, and gas require jurisdiction or exact-address warnings. Internet prices, promotions, rankings, and unsupported speed claims are excluded.

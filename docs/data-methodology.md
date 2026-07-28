@@ -22,3 +22,6 @@ Overall ZIP status is derived at lookup time. A useful verified page needs local
 Records are reviewed at least every 180 days. The stale-data command identifies overdue records. User corrections are stored separately with no automatic production changes; a reviewer must confirm the report against an authoritative source before accepting and importing an update.
 
 MoveIn never asks a visitor to enter a street address into its own lookup. Address confirmation happens on the linked official provider, FCC, PSC, city, or county destination.
+# July 2026 clarification
+
+“Verified” describes the evidence supporting a record, not a guarantee that every address in a ZIP receives service. Internet provider assignments are not made from ZIP codes alone. Natural-gas assignments are included only where a utility or government source establishes a plausible territory, and still require address confirmation. The research queue preserves unresolved address-level work with sources reviewed and next actions.

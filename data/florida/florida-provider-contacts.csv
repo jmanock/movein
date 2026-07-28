@@ -50,3 +50,19 @@ mount-dora-water,customer_service,Utility Customer Service,(352) 735-7105
 mount-dora-sewer,customer_service,Utility Customer Service,(352) 735-7105
 mount-dora-trash,customer_service,Utility Customer Service,(352) 735-7105
 st-cloud-trash,customer_service,Solid Waste Division,(407) 957-7289
+duke-electric,customer_service,Customer service,(800) 700-8744
+duke-electric,outage,Report an electric outage,(800) 228-8485
+fpl-electric,customer_service,Customer service,(888) 988-8249
+fpl-electric,outage,Report an electric outage,(800) 468-8243
+leesburg-water,customer_service,Utility customer service,(352) 728-9800
+leesburg-sewer,customer_service,Utility customer service,(352) 728-9800
+leesburg-trash,customer_service,Utility customer service,(352) 728-9800
+leesburg-gas,customer_service,Utility customer service,(352) 728-9800
+orlando-sewer,customer_service,City customer service,(407) 246-2314
+orlando-sewer,emergency,Stopped sewer or overflow,(407) 246-2213
+orlando-trash,customer_service,City customer service,(407) 246-2314
+kissimmee-trash,customer_service,Solid Waste Division,(407) 518-2507
+lake-apopka-gas,customer_service,Customer service,(407) 656-2734
+lake-apopka-gas,emergency,Gas emergency,(800) 542-3344
+fpuc-gas,customer_service,Customer service,(800) 427-7712
+fpuc-gas,emergency,Gas emergency,(800) 427-7712
