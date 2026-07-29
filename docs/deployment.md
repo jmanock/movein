@@ -12,7 +12,7 @@ sqlite3 /var/lib/movein/movein.sqlite ".backup '/var/backups/movein/movein-befor
 test -s /var/backups/movein/movein-before-004.sqlite
 ```
 
-## Release commands
+## Release commands for this SEO/content release
 
 ```bash
 cd /var/www/movein
@@ -21,18 +21,17 @@ source ~/.bashrc
 nvm use 22
 npm ci
 npm run data:validate
+npm run seo:duplicates
+npm run seo:audit
 npm run lint
 npm test
 npm run build
-DATABASE_PATH=/var/lib/movein/movein.sqlite npm run db:migrate
-DATABASE_PATH=/var/lib/movein/movein.sqlite npm run data:import -- --dry-run --confirm-verified
-DATABASE_PATH=/var/lib/movein/movein.sqlite npm run data:import -- --confirm-verified
 DATABASE_PATH=/var/lib/movein/movein.sqlite npm run data:coverage
 pm2 restart movein --update-env
 pm2 save
 ```
 
-Migration 004 and the reviewed import are required for this release. The confirmation flag is intentional: it prevents silent changes to previously verified records. The exact direct smoke-test command is:
+This release does **not** add a database migration or change seed data, so do not run an import solely for this deployment. Keep the backup step because the production database is persistent and the app reads it during the build/runtime checks. The exact direct smoke-test command is:
 
 ```bash
 PORT=3006 DATABASE_PATH=/var/lib/movein/movein.sqlite npm run start -- -H 127.0.0.1
@@ -63,8 +62,8 @@ curl 'http://127.0.0.1:3006/api/lookup?zip=34741'
 pm2 logs movein --lines 100
 ```
 
-Then run `BASE_URL=http://127.0.0.1:3006 npm run check:links`.
+Then run `SEO_BASE_URL=http://127.0.0.1:3006 npm run seo:audit` and `BASE_URL=http://127.0.0.1:3006 npm run check:links`.
 
 ## Rollback
 
-Check out the previous known-good commit, run `npm ci && npm run build`, and restart PM2. Migration 004 is additive, so the prior app ignores its new columns. If data must be rolled back, stop PM2, move the current database aside, copy `/var/backups/movein/movein-before-004.sqlite` to `/var/lib/movein/movein.sqlite`, confirm ownership, and restart. Never drop tables during an application rollback.
+Check out the previous known-good commit, run `npm ci && npm run build`, and restart PM2. No schema or seed rollback is needed for this release. If unrelated production data must be rolled back, stop PM2, move the current database aside, restore the verified backup to `/var/lib/movein/movein.sqlite`, confirm ownership, and restart. Never drop tables during an application rollback.

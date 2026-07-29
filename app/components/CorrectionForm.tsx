@@ -2,6 +2,7 @@
 
 import { FormEvent, useRef, useState } from "react";
 import { correctionCategories, correctionIssueTypes } from "../lib/corrections";
+import { trackEvent } from "../lib/analytics";
 
 type FieldErrors = Record<string, string>;
 
@@ -21,7 +22,7 @@ export function CorrectionForm({ initialZip = "" }: { initialZip?: string }) {
       const response = await fetch("/api/corrections", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...values, startedAt: startedAt.current }) });
       const payload = await response.json() as { error?: string; message?: string; fields?: FieldErrors };
       if (!response.ok) { setErrors(payload.fields ?? {}); setMessage(payload.error ?? "We could not submit the correction."); return; }
-      form.reset(); setMessage(payload.message ?? "Thanks. Your correction was received."); startedAt.current = 0;
+      form.reset(); setMessage(payload.message ?? "Thanks. Your correction was received."); startedAt.current = 0; trackEvent("correction_submission");
     } catch { setMessage("We could not reach MoveIn. Check your connection and try again."); }
     finally { setPending(false); }
   }

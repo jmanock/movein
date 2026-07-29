@@ -35,6 +35,8 @@ export type LookupResult = {
   county: string | null;
   state: string;
   stateName: string;
+  mailingCityName: string | null;
+  jurisdictionStatus: "incorporated" | "unincorporated" | "mixed" | "unknown";
   status: LookupStatus;
   confidenceStatus: string;
   jurisdictionNotes: string | null;
@@ -45,13 +47,13 @@ export type LookupResult = {
   disclaimer: string;
 };
 
-type LocationRow = { zip_code: string; city: string | null; county: string | null; state: string; state_name: string; status: "verified" | "partial" | "pending"; confidence_status: string | null; jurisdiction_notes: string | null; is_indexable: number; last_verified_at: string | null };
+type LocationRow = { zip_code: string; city: string | null; county: string | null; state: string; state_name: string; mailing_city_name: string | null; jurisdiction_status: LookupResult["jurisdictionStatus"]; status: "verified" | "partial" | "pending"; confidence_status: string | null; jurisdiction_notes: string | null; is_indexable: number; last_verified_at: string | null };
 type ProviderRow = { provider_id: number; name: string; slug: string; category_slug: string; description: string | null; official_website: string; provider_type: string | null; start_service_url: string | null; address_check_url: string | null; outage_url: string | null; outage_map_url: string | null; collection_info_url: string | null; hours: string | null; technology_type: string | null; service_notes: string | null; coverage_type: CoverageType; coverage_notes: string; confidence_level: string; service_availability: string | null; requires_address_confirmation: number; jurisdiction_notes: string | null; is_verified: number; last_verified_at: string | null };
 
 export function getLookupResult(zipCode: string): LookupResult | null {
   const database = getDatabase();
   if (!lookupSchemaExists(database)) throw new Error("LOOKUP_DATABASE_NOT_MIGRATED");
-  const location = database.prepare(`SELECT z.zip_code, ci.name AS city, c.name AS county, s.code AS state, s.name AS state_name, z.status, z.confidence_status, z.jurisdiction_notes, z.is_indexable, z.last_verified_at
+  const location = database.prepare(`SELECT z.zip_code, ci.name AS city, c.name AS county, s.code AS state, s.name AS state_name, z.mailing_city_name, z.jurisdiction_status, z.status, z.confidence_status, z.jurisdiction_notes, z.is_indexable, z.last_verified_at
     FROM zip_codes z JOIN states s ON s.id=z.state_id LEFT JOIN counties c ON c.id=z.county_id LEFT JOIN cities ci ON ci.id=z.primary_city_id
     WHERE z.zip_code=? AND z.is_active=1`).get(zipCode) as LocationRow | undefined;
   if (!location) return null;
@@ -85,11 +87,17 @@ export function getLookupResult(zipCode: string): LookupResult | null {
   const derivedStatus: LookupStatus = providerRows.length === 0 ? "pending" : location.status === "verified" && hasCoreCoverage ? "verified" : hasCoreCoverage ? "mostly_verified" : "partial";
   return {
     zipCode: location.zip_code, city: location.city, county: location.county, state: location.state,
-    stateName: location.state_name, status: derivedStatus, confidenceStatus: derivedStatus === "verified" ? "verified" : location.confidence_status ?? derivedStatus,
+    stateName: location.state_name, mailingCityName: location.mailing_city_name, jurisdictionStatus: location.jurisdiction_status, status: derivedStatus, confidenceStatus: derivedStatus === "verified" ? "verified" : location.confidence_status ?? derivedStatus,
     jurisdictionNotes: location.jurisdiction_notes, isIndexable: Boolean(location.is_indexable) && (derivedStatus === "verified" || derivedStatus === "mostly_verified"), providers,
     lastUpdated: dates.at(-1) ?? location.last_verified_at ?? null, lastLocationReview: location.last_verified_at,
     disclaimer: "Provider availability can vary by exact street address. Confirm service directly with the provider before opening or transferring an account.",
   };
+}
+
+export function getActiveZipCodes() {
+  const database = getDatabase();
+  if (!lookupSchemaExists(database)) throw new Error("LOOKUP_DATABASE_NOT_MIGRATED");
+  return (database.prepare("SELECT zip_code FROM zip_codes WHERE is_active=1 ORDER BY zip_code").all() as Array<{ zip_code: string }>).map((row) => row.zip_code);
 }
 
 export function coverageLabel(type: CoverageType) {

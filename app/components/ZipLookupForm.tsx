@@ -3,6 +3,7 @@
 import { Search } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { FormEvent, KeyboardEvent, useId, useState, useTransition } from "react";
+import { trackEvent } from "../lib/analytics";
 
 export function ZipLookupForm({ compact = false, initialZip = "" }: { compact?: boolean; initialZip?: string }) {
   const router = useRouter();
@@ -12,15 +13,27 @@ export function ZipLookupForm({ compact = false, initialZip = "" }: { compact?: 
   const [error, setError] = useState("");
   const [pending, startTransition] = useTransition();
 
-  function submit(event: FormEvent<HTMLFormElement>) {
+  async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const normalized = zip.trim();
     if (!/^\d{5}$/.test(normalized)) {
       setError("Enter a valid five-digit ZIP code.");
       return;
     }
+    trackEvent("zip_lookup_submitted");
     setError("");
-    startTransition(() => router.push(`/lookup/${normalized}`));
+    try {
+      const response = await fetch(`/api/lookup?zip=${normalized}`);
+      if (!response.ok) {
+        const payload = await response.json() as { error?: string };
+        const outsidePilot = response.status === 404 && /pilot area/i.test(payload.error ?? "");
+        trackEvent(outsidePilot ? "zip_lookup_outside_pilot" : "zip_lookup_unknown");
+        setError(payload.error ?? "We could not find that ZIP code.");
+        return;
+      }
+      trackEvent("zip_lookup_success");
+      startTransition(() => router.push(`/lookup/${normalized}`));
+    } catch { setError("We could not reach MoveIn. Check your connection and try again."); }
   }
 
   function submitWithEnter(event: KeyboardEvent<HTMLInputElement>) {

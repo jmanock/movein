@@ -1,26 +1,15 @@
-# SEO architecture
+# SEO architecture reference
 
-`https://movein.guide` is the only canonical origin. Static content pages have self-referencing canonicals. Query-parameter lookup pages are not created; `/lookup` is noindexed and successful results use `/lookup/[zip]`.
+`https://movein.guide` is the only canonical origin. Static and guide pages use `pageMetadata`; ZIP metadata is database-derived. `/lookup?zip=…` redirects to `/lookup/[zip]`, while correction query strings retain a clean canonical and noindex.
 
 ## ZIP indexing
 
-- A ZIP must be `verified`, contain substantial reviewed records, and have `is_indexable=1` to be indexable.
-- Partial, pending, empty, or editorially thin ZIP pages emit `noindex,follow` and stay out of the sitemap.
-- Unknown and malformed ZIP routes return 404.
-- The sitemap contains only approved useful ZIPs 32801, 32789, 32757, 34741, and 34769. The other pilot ZIPs remain useful but noindexed while coverage is partial.
-- Do not generate thousands of pages from ZIP lists. A new page needs meaningful data, current sources, and visible address-confirmation guidance.
+`app/lib/seo.ts` is the shared gate. A ZIP needs a valid active record, city, county, location review date, editorial `isIndexable` approval, verified/mostly-verified derived status, sources, and sufficient verified real-provider categories. Pending, empty, partial, unknown, and malformed pages are excluded or 404. New database rows therefore update results automatically but never become indexable merely by existing.
 
-## Campaign and duplicate URLs
+## Discovery and duplicates
 
-Campaign pages are retired and redirected to the homepage. No `/welcome/[campaign]` pages are generated, submitted, or canonicalized as copies. Tracking parameters do not alter canonical URLs.
+The XML and HTML sitemaps use the public-page manifest and the quality gate. Campaign routes remain redirects and never become indexable copies. State/county/city templates are deferred. Run `npm run seo:duplicates`, `npm run seo:audit`, then runtime audits with `SEO_BASE_URL` and `BASE_URL`.
 
-## Structured data
+## Performance and privacy
 
-- Homepage: `WebSite` and `Organization`.
-- FAQ: `FAQPage` matching visible questions and answers.
-- No fake `LocalBusiness`, reviews, ratings, products, contractors, or claimed service territories.
-- Dataset schema is omitted until the public dataset and licensing record justify it.
-
-## Discovery
-
-`robots.txt` allows public pages, disallows `/api/`, and points to the canonical sitemap. The sitemap excludes API routes, redirects, `/lookup`, campaign routes, and noindexed ZIPs. Run the link checker against the production server before release.
+Content and ZIP pages remain server components. No maps, carousel, video, animation library, CMS, search engine, or analytics vendor was introduced. A small in-browser event abstraction emits only coarse event names/categories as `movein:analytics` custom events; it sends no network request and includes no ZIP, email, street address, account, correction text, or IP data.

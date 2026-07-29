@@ -171,22 +171,24 @@ test("FAQ content is visible and its schema mirrors the same data", async () => 
   const [page, data] = await Promise.all([read("../app/faq/page.tsx"), read("../app/data/site.ts")]);
   assert.match(page, /FAQPage/);
   assert.match(page, /faqItems\.map/);
-  assert.match(data, /Why can more than one provider appear/);
+  assert.match(data, /Why can more than one provider serve one ZIP code/);
 });
 
-test("SEO includes approved verified and mostly verified ZIP pages", async () => {
+test("SEO includes only ZIP pages that pass the shared database quality gate", async () => {
   const [sitemap, data, lookupPage] = await Promise.all([read("../app/sitemap.ts"), read("../app/data/site.ts"), read("../app/lookup/[zip]/page.tsx")]);
   assert.match(data, /indexablePilotZips = \["32771", "32746", "32801"/);
-  assert.match(sitemap, /indexablePilotZips\.map/);
-  assert.match(lookupPage, /\["verified", "mostly_verified"\]\.includes\(result\.status\)/);
+  assert.match(sitemap, /getIndexableZipResults\(\)\.map/);
+  assert.match(lookupPage, /isZipResultIndexable\(result\)/);
   assert.match(lookupPage, /if \(!result\) notFound\(\)/);
   assert.doesNotMatch(sitemap, /welcome\//);
 });
 
-test("unsupported dynamic ZIP routes are rewritten with a real 404", async () => {
+test("dynamic ZIP routing is database-backed and query URLs become clean canonicals", async () => {
   const proxy = await read("../proxy.ts");
-  assert.match(proxy, /supportedPilotZips/);
-  assert.match(proxy, /NextResponse\.rewrite\(notFoundUrl, \{ status: 404 \}\)/);
+  const seo = await read("../app/lib/seo.ts");
+  assert.doesNotMatch(proxy, /supportedPilotZips/);
+  assert.match(proxy, /NextResponse\.redirect\(cleanUrl, 308\)/);
+  assert.match(seo, /getActiveZipCodes\(\)/);
 });
 
 test("mobile layout and accessible focus treatment are preserved", async () => {

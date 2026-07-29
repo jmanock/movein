@@ -36,6 +36,8 @@ npm run data:missing
 npm run data:research-queue
 npm run data:links
 npm run data:report
+npm run seo:duplicates
+npm run seo:audit
 npm run lint
 npm test
 npm run build
@@ -57,10 +59,10 @@ DATABASE_PATH=/var/lib/movein/movein.sqlite
 - `/` — primary ZIP lookup
 - `/lookup/[zip]` — server-rendered result page
 - `/api/lookup?zip=32771` — controlled JSON lookup
-- `/homeowners`, `/renters` — concise setup guidance
+- `/homeowners`, `/renters` — focused hubs with substantive setup guides
 - `/learn-your-area`, `/resources`, `/faq`
 - `/data-sources`, `/corrections` — correction submissions are reviewed before public data changes
-- `/about`, `/contact`, `/privacy`, `/terms`, `/disclosure`, `/editorial-policy`
+- `/about`, `/contact`, `/privacy`, `/terms`, `/disclosure`, `/editorial-policy`, `/site-map`
 
 Retired timeline, checklist, Florida Guide, campaign, and guide-detail routes redirect only where a clear replacement exists. The newsletter endpoint and public email collection were removed.
 
@@ -97,4 +99,8 @@ The seed is idempotent and non-deleting. A changed verified row is refused unles
 - `docs/image-manifest.md` — homepage image provenance, optimization, and replacement guidance
 - `docs/deployment.md` — DigitalOcean, PM2, Nginx, and release commands
 - `docs/seo.md` — canonicals, ZIP indexing, sitemap, and structured data
+- `docs/seo-audit.md` and `docs/seo-validation-report.md` — baseline findings and generated release checks
+- `docs/seo-strategy.md`, `docs/content-architecture.md`, and `docs/internal-linking.md` — search intent and discovery design
+- `docs/structured-data.md`, `docs/image-seo.md`, and `docs/editorial-policy.md` — implementation and governance
+- `docs/content-duplication-report.md` and `docs/internal-link-report.md` — generated content/link reports
 - `docs/privacy.md` — application data-handling notes

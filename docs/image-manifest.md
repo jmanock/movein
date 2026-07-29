@@ -1,5 +1,14 @@
 # Image manifest
 
+## Default social card
+
+- File: `public/images/seo/movein-og-2026.png`
+- Dimensions: 1200 × 630 pixels.
+- Use: stable sitewide Open Graph/Twitter fallback. Individual routes use the dynamic `/og` endpoint.
+- Origin: generated specifically for MoveIn with OpenAI image generation on July 29, 2026.
+- Prompt summary: premium editorial illustration with exact MoveIn brand text, moving box, key, home, connected path, and the approved navy/blue/aqua/coral/cream palette.
+- Exact text: “MoveIn” and “Find the services for your new place.”
+
 ## Homepage entryway
 
 - File: `public/images/homepage/movein-entryway-v2.webp`

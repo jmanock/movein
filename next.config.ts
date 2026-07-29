@@ -11,8 +11,6 @@ const nextConfig: NextConfig = {
       { source: "/checklists/:path*", destination: "/resources", permanent: true },
       { source: "/florida/:path*", destination: "/learn-your-area", permanent: true },
       { source: "/welcome/:path*", destination: "/", permanent: true },
-      { source: "/homeowners/:path+", destination: "/homeowners", permanent: true },
-      { source: "/renters/:path+", destination: "/renters", permanent: true },
       { source: "/blog", destination: "/resources", permanent: true },
     ];
   },
