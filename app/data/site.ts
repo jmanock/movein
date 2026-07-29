@@ -4,7 +4,7 @@ export const primaryNavigation = [
   { label: "Renters", href: "/renters" },
   { label: "Learn Your Area", href: "/learn-your-area" },
   { label: "Resources", href: "/resources" },
-  { label: "FAQ", href: "/faq" },
+  { label: "Coverage", href: "/coverage" },
 ] as const;
 
 export const serviceTypes = [

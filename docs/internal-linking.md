@@ -6,5 +6,7 @@
 - Footer links expose trust pages and the HTML sitemap without turning the primary navigation into a directory.
 - Link labels describe the destination; repeated “learn more” labels are avoided.
 - Same-county links are database-derived and only include ZIPs that pass the same indexability gate.
+- Homepage links create four explicit paths: homeowner, renter, local lookup, and practical resources.
+- `/coverage` links only to quality-gated ZIP pages. Unsupported ZIPs link to coverage and the general setup guide without producing indexable local copies.
 
 Run `BASE_URL=http://127.0.0.1:3006 npm run check:links`. The generated `docs/internal-link-report.md` fails on broken targets, redirects among canonical sitemap URLs, or orphaned sitemap routes.

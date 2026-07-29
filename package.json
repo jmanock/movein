@@ -14,6 +14,7 @@
     "check:links": "node scripts/check-internal-links.mjs",
     "seo:audit": "node scripts/seo-audit.mjs",
     "seo:duplicates": "node scripts/content-duplication.mjs",
+    "frontend:audit": "node scripts/frontend-audit.mjs",
     "db:generate": "node scripts/db-generate.mjs",
     "db:migrate": "node scripts/db-migrate.mjs",
     "db:seed": "node scripts/import-florida-data.mjs",

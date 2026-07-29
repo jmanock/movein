@@ -16,8 +16,8 @@ export const metadata: Metadata = {
   creator: "MoveIn",
   icons: { icon: "/movein-icon.png", shortcut: "/movein-icon.png", apple: "/movein-icon.png" },
   manifest: "/manifest.webmanifest",
-  openGraph: { siteName: "MoveIn", type: "website", images: [{ url: "/images/seo/movein-og-2026.png", width: 1200, height: 630, alt: "MoveIn — Find the services for your new place" }] },
-  twitter: { card: "summary_large_image", images: ["/images/seo/movein-og-2026.png"] },
+  openGraph: { siteName: "MoveIn", type: "website", images: [{ url: "/images/seo/movein-og-2026-v2.png", width: 1200, height: 630, alt: "MoveIn — Everything after the keys" }] },
+  twitter: { card: "summary_large_image", images: ["/images/seo/movein-og-2026-v2.png"] },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

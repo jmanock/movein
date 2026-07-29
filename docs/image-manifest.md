@@ -2,17 +2,17 @@
 
 ## Default social card
 
-- File: `public/images/seo/movein-og-2026.png`
+- File: `public/images/seo/movein-og-2026-v2.png`
 - Dimensions: 1200 × 630 pixels.
 - Use: stable sitewide Open Graph/Twitter fallback. Individual routes use the dynamic `/og` endpoint.
 - Origin: generated specifically for MoveIn with OpenAI image generation on July 29, 2026.
-- Prompt summary: premium editorial illustration with exact MoveIn brand text, moving box, key, home, connected path, and the approved navy/blue/aqua/coral/cream palette.
-- Exact text: “MoveIn” and “Find the services for your new place.”
+- Prompt summary: premium editorial entryway with exact MoveIn brand text, moving box, key, connected route motif, and the approved navy/blue/aqua/coral/cream palette.
+- Exact text: “MoveIn” and “Everything after the keys.”
 
 ## Homepage entryway
 
 - File: `public/images/homepage/movein-entryway-v2.webp`
-- Display: decorative homepage hero background; empty alternative text is intentional because the image adds no information beyond the adjacent copy and lookup form.
+- Display: meaningful homepage hero illustration beside the primary message; alternative text describes the move-in scene without repeating the headline.
 - Dimensions: 1600 × 880 pixels.
 - Encoding: WebP, optimized for responsive delivery through Next.js Image.
 - Origin: generated specifically for MoveIn with OpenAI image generation on July 28, 2026.

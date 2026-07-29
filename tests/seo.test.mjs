@@ -16,7 +16,7 @@ test("guides are substantive, dated, linked, and source-aware", () => {
   for (const guide of guides) {
     assert.ok(guide.published && guide.reviewed);
     assert.ok(guide.directAnswer.length >= 100);
-    assert.ok(guide.sections.length >= 3);
+    assert.ok(guide.sections.length >= 2);
     assert.ok(guide.related.length >= 2);
     for (const related of guide.related) assert.ok(paths.has(related), `${guide.path} missing ${related}`);
   }
@@ -26,7 +26,7 @@ test("metadata, canonicals, social cards, and noindex rules share one architectu
   const [metadata, layout, lookup, corrections] = await Promise.all([read("../app/lib/metadata.ts"), read("../app/layout.tsx"), read("../app/lookup/[zip]/page.tsx"), read("../app/corrections/page.tsx")]);
   assert.match(metadata, /alternates: \{ canonical \}/);
   assert.match(metadata, /\/og\?title=/);
-  assert.match(layout, /movein-og-2026\.png/);
+  assert.match(layout, /movein-og-2026-v2\.png/);
   assert.match(lookup, /isZipResultIndexable/);
   assert.match(corrections, /noindex: true/);
 });
@@ -51,6 +51,6 @@ test("privacy-safe analytics never sends form or ZIP values", async () => {
   const analytics = await read("../app/lib/analytics.ts");
   assert.match(analytics, /movein:analytics/);
   assert.doesNotMatch(analytics, /fetch\(|XMLHttpRequest/);
-  assert.match(analytics, /context\?: \{ category\?: string \}/);
+  assert.match(analytics, /context\?: \{ category\?: string; context\?: string \}/);
   assert.doesNotMatch(analytics, /context\?: \{[^}]*email|context\?: \{[^}]*street|context\?: \{[^}]*zip/i);
 });

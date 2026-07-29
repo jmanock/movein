@@ -4,8 +4,8 @@ Generated: 2026-07-29
 
 ## Scope
 
-- 28 manifest-backed public pages
-- 15 substantive guides
+- 39 manifest-backed public pages
+- 19 substantive guides
 - 12 database-backed ZIP pages that pass the indexability gate
 - metadata, canonicals, H1s, schema hooks, sitemap/robots integration, related-guide targets, and content dates
 - runtime crawl against http://127.0.0.1:3006
@@ -28,6 +28,7 @@ None.
 | /learn-your-area | 200 | 1 | https://movein.guide/learn-your-area |
 | /resources | 200 | 1 | https://movein.guide/resources |
 | /faq | 200 | 1 | https://movein.guide/faq |
+| /coverage | 200 | 1 | https://movein.guide/coverage |
 | /about | 200 | 1 | https://movein.guide/about |
 | /data-sources | 200 | 1 | https://movein.guide/data-sources |
 | /editorial-policy | 200 | 1 | https://movein.guide/editorial-policy |
@@ -50,6 +51,16 @@ None.
 | /renters/set-up-utilities | 200 | 1 | https://movein.guide/renters/set-up-utilities |
 | /renters/utility-responsibilities | 200 | 1 | https://movein.guide/renters/utility-responsibilities |
 | /renters/internet-installation | 200 | 1 | https://movein.guide/renters/internet-installation |
+| /resources/set-up-utilities | 200 | 1 | https://movein.guide/resources/set-up-utilities |
+| /resources/utility-deposits | 200 | 1 | https://movein.guide/resources/utility-deposits |
+| /resources/city-vs-county-water-service | 200 | 1 | https://movein.guide/resources/city-vs-county-water-service |
+| /homeowners/hoa-utility-responsibilities | 200 | 1 | https://movein.guide/homeowners/hoa-utility-responsibilities |
+| /resources/printables/utility-setup-checklist | 200 | 1 | https://movein.guide/resources/printables/utility-setup-checklist |
+| /resources/printables/new-home-checklist | 200 | 1 | https://movein.guide/resources/printables/new-home-checklist |
+| /resources/printables/renter-move-in-checklist | 200 | 1 | https://movein.guide/resources/printables/renter-move-in-checklist |
+| /resources/printables/utility-contact-worksheet | 200 | 1 | https://movein.guide/resources/printables/utility-contact-worksheet |
+| /resources/printables/outage-preparation-sheet | 200 | 1 | https://movein.guide/resources/printables/outage-preparation-sheet |
+| /resources/printables/address-update-checklist | 200 | 1 | https://movein.guide/resources/printables/address-update-checklist |
 | /lookup/32114 | 200 | 1 | https://movein.guide/lookup/32114 |
 | /lookup/32703 | 200 | 1 | https://movein.guide/lookup/32703 |
 | /lookup/32720 | 200 | 1 | https://movein.guide/lookup/32720 |

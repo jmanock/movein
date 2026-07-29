@@ -38,6 +38,7 @@ npm run data:links
 npm run data:report
 npm run seo:duplicates
 npm run seo:audit
+npm run frontend:audit
 npm run lint
 npm test
 npm run build
@@ -60,7 +61,8 @@ DATABASE_PATH=/var/lib/movein/movein.sqlite
 - `/lookup/[zip]` — server-rendered result page
 - `/api/lookup?zip=32771` — controlled JSON lookup
 - `/homeowners`, `/renters` — focused hubs with substantive setup guides
-- `/learn-your-area`, `/resources`, `/faq`
+- `/learn-your-area`, `/resources`, `/coverage`, `/faq`
+- `/resources/printables/[slug]` — maintainable HTML checklists with print CSS
 - `/data-sources`, `/corrections` — correction submissions are reviewed before public data changes
 - `/about`, `/contact`, `/privacy`, `/terms`, `/disclosure`, `/editorial-policy`, `/site-map`
 
@@ -104,3 +106,9 @@ The seed is idempotent and non-deleting. A changed verified row is refused unles
 - `docs/structured-data.md`, `docs/image-seo.md`, and `docs/editorial-policy.md` — implementation and governance
 - `docs/content-duplication-report.md` and `docs/internal-link-report.md` — generated content/link reports
 - `docs/privacy.md` — application data-handling notes
+- `docs/frontend-growth-audit.md` — baseline UX findings and rebuild decisions
+- `docs/design-system.md` — tokens, components, and ZIP states
+- `docs/search-intent-map.md` — intent ownership and supporting paths
+- `docs/frontend-validation-report.md` — browser, journey, and release checks
+- `docs/accessibility.md` and `docs/performance.md` — front-end quality guardrails
+- `docs/analytics-events.md` — privacy-safe event names and integration boundary

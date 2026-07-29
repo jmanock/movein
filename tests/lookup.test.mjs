@@ -147,10 +147,11 @@ test("data operations support duplicate checks, a research queue, and a non-writ
   assert.equal(getDatabase().prepare("SELECT COUNT(*) AS count FROM providers").get().count, before);
 });
 
-test("homepage makes one accessible ZIP lookup the primary action", async () => {
+test("homepage makes accessible ZIP lookups the primary and closing actions", async () => {
   const [page, form] = await Promise.all([read("../app/page.tsx"), read("../app/components/ZipLookupForm.tsx")]);
-  assert.match(page, /Find the services for your new place/);
-  assert.match(page, /<ZipLookupForm/);
+  assert.match(page, /You have the keys/);
+  assert.match(page, /context="homepage_hero"/);
+  assert.match(page, /context="homepage_footer"/);
   assert.match(form, /onSubmit=\{submit\}/);
   assert.match(form, /onKeyDown=\{submitWithEnter\}/);
   assert.match(form, /requestSubmit\(\)/);
@@ -163,7 +164,7 @@ test("homepage makes one accessible ZIP lookup the primary action", async () => 
 test("navigation excludes retired timeline, checklist, and Florida Guide items", async () => {
   const data = await read("../app/data/site.ts");
   const navigation = data.slice(0, data.indexOf("] as const;") + 11);
-  for (const route of ["/homeowners", "/renters", "/learn-your-area", "/resources", "/faq"]) assert.match(navigation, new RegExp(route));
+  for (const route of ["/homeowners", "/renters", "/learn-your-area", "/resources", "/coverage"]) assert.match(navigation, new RegExp(route));
   assert.doesNotMatch(navigation, /timeline|checklists|Florida Guide/i);
 });
 
@@ -179,7 +180,8 @@ test("SEO includes only ZIP pages that pass the shared database quality gate", a
   assert.match(data, /indexablePilotZips = \["32771", "32746", "32801"/);
   assert.match(sitemap, /getIndexableZipResults\(\)\.map/);
   assert.match(lookupPage, /isZipResultIndexable\(result\)/);
-  assert.match(lookupPage, /if \(!result\) notFound\(\)/);
+  assert.match(lookupPage, /if \(!result\) return <UnsupportedZip/);
+  assert.match(lookupPage, /noindex: true/);
   assert.doesNotMatch(sitemap, /welcome\//);
 });
 
@@ -242,13 +244,14 @@ test("corrections use a validated form with loading and duplicate-submit protect
   assert.match(form, /correctionIssueTypes/);
 });
 
-test("homepage hero uses an optimized decorative Next image without layout shift", async () => {
+test("homepage hero uses an optimized meaningful Next image without layout shift", async () => {
   const page = await read("../app/page.tsx");
   assert.match(page, /from "next\/image"/);
   assert.match(page, /width=\{1600\}/);
   assert.match(page, /height=\{880\}/);
-  assert.match(page, /sizes="100vw"/);
-  assert.match(page, /preload/);
+  assert.match(page, /sizes="\(max-width: 760px\) 100vw, 48vw"/);
+  assert.match(page, /priority/);
+  assert.match(page, /alt="A bright home entryway/);
 });
 
 test("standard Node scripts and dependencies have no Cloudflare coupling", async () => {

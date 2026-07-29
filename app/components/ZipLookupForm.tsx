@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { FormEvent, KeyboardEvent, useId, useState, useTransition } from "react";
 import { trackEvent } from "../lib/analytics";
 
-export function ZipLookupForm({ compact = false, initialZip = "" }: { compact?: boolean; initialZip?: string }) {
+export function ZipLookupForm({ compact = false, initialZip = "", context = "inline" }: { compact?: boolean; initialZip?: string; context?: string }) {
   const router = useRouter();
   const inputId = useId();
   const routerErrorId = `${inputId}-message`;
@@ -20,18 +20,19 @@ export function ZipLookupForm({ compact = false, initialZip = "" }: { compact?: 
       setError("Enter a valid five-digit ZIP code.");
       return;
     }
-    trackEvent("zip_lookup_submitted");
+    trackEvent("zip_lookup_submitted", { context });
     setError("");
     try {
       const response = await fetch(`/api/lookup?zip=${normalized}`);
       if (!response.ok) {
         const payload = await response.json() as { error?: string };
         const outsidePilot = response.status === 404 && /pilot area/i.test(payload.error ?? "");
-        trackEvent(outsidePilot ? "zip_lookup_outside_pilot" : "zip_lookup_unknown");
+        trackEvent(outsidePilot ? "zip_lookup_outside_pilot" : "zip_lookup_unknown", { context });
+        if (response.status === 404) { startTransition(() => router.push(`/lookup/${normalized}`)); return; }
         setError(payload.error ?? "We could not find that ZIP code.");
         return;
       }
-      trackEvent("zip_lookup_success");
+      trackEvent("zip_lookup_success", { context });
       startTransition(() => router.push(`/lookup/${normalized}`));
     } catch { setError("We could not reach MoveIn. Check your connection and try again."); }
   }
@@ -61,6 +62,6 @@ export function ZipLookupForm({ compact = false, initialZip = "" }: { compact?: 
       />
       <button className="button" type="submit" disabled={pending}><Search size={19} aria-hidden="true" />{pending ? "Finding…" : "Find My Services"}</button>
     </div>
-    <p className={error ? "form-message error" : "form-message"} id={routerErrorId} role={error ? "alert" : "status"} aria-live="polite">{error || "Florida is available first. More states will be added as data is verified."}</p>
+    <p className={error ? "form-message error" : "form-message"} id={routerErrorId} role={error ? "alert" : "status"} aria-live="polite">{error || "Selected Central Florida ZIPs are available. No email or account required."}</p>
   </form>;
 }

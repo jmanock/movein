@@ -12,7 +12,7 @@ sqlite3 /var/lib/movein/movein.sqlite ".backup '/var/backups/movein/movein-befor
 test -s /var/backups/movein/movein-before-004.sqlite
 ```
 
-## Release commands for this SEO/content release
+## Release commands for this front-end release
 
 ```bash
 cd /var/www/movein

@@ -231,6 +231,38 @@ export const guides: Guide[] = [
     ],
     related: ["/resources/find-internet-providers", "/renters/set-up-utilities", "/renters/utility-responsibilities"], sources: [fcc],
   },
+  {
+    path: "/resources/set-up-utilities", section: "resources", slug: "set-up-utilities",
+    title: "How to Set Up Utilities After a Move", description: "A practical order for finding, confirming, and starting electric, water, internet, gas, and trash service at a new address.",
+    h1: "How to set up utilities after a move", eyebrow: "Utility setup",
+    directAnswer: "List the services the household is responsible for, use the ZIP lookup to find possible providers, confirm the complete address with each official source, and schedule service for the date responsibility begins.", published: reviewed, reviewed,
+    sections: [
+      { heading: "Start with responsibility, not provider names", paragraphs: ["Homeowners usually arrange every service. Renters should read the lease first because water, trash, or gas may be included or billed through management."], steps: ["List every service needed.", "Mark who is responsible.", "Confirm the exact address.", "Ask about deposits and lead times.", "Save official outage contacts."] },
+      { heading: "Use a sensible order", paragraphs: ["Start electricity and water first, then schedule internet or other appointment-based work. Confirm trash rules and natural gas only where they apply."] },
+      { heading: "Verify the first bill", paragraphs: ["Check service dates, address, deposits, and rate details. Keep confirmations privately; MoveIn does not collect account or payment information."] },
+    ], related: ["/resources/utility-setup-documents", "/resources/when-to-transfer-utilities", "/resources/find-electric-company"], sources: [floridaPsc],
+  },
+  {
+    path: "/resources/utility-deposits", section: "resources", slug: "utility-deposits",
+    title: "Utility Deposits and Account Requirements", description: "Understand common utility deposit, identification, credit, and start-service requirements without sharing sensitive details with MoveIn.",
+    h1: "What to know about utility deposits", eyebrow: "Account requirements",
+    directAnswer: "Deposits and waivers vary by provider, service, and account history. Confirm the amount, refund policy, accepted documents, and payment channel directly with the official provider before paying.", published: reviewed, reviewed,
+    sections: [{ heading: "Ask before you pay", paragraphs: ["Request the written deposit amount, due date, refund or credit policy, and official payment method."], steps: ["Confirm the official provider.", "Ask which documents are required.", "Ask whether a waiver or installment option exists.", "Keep the receipt privately."] }, { heading: "Protect sensitive information", paragraphs: ["Do not send identification, bank details, or lease documents through unofficial links. MoveIn never requests them."] }, { heading: "Check the first statement", paragraphs: ["Confirm that the deposit, service address, start date, and any promised waiver or credit appear correctly. Contact the official provider promptly if they do not."] }], related: ["/resources/set-up-utilities", "/resources/utility-setup-documents", "/resources/when-to-transfer-utilities"], sources: [floridaPsc],
+  },
+  {
+    path: "/resources/city-vs-county-water-service", section: "resources", slug: "city-vs-county-water-service",
+    title: "City vs. County Water Service", description: "Understand why a mailing city does not always identify the water or sewer utility for a Florida address.",
+    h1: "Does the city or county provide the water?", eyebrow: "Water jurisdiction",
+    directAnswer: "A postal city name does not prove that an address is inside city limits or served by that city utility. Confirm the parcel with the city, county, utility district, or property records.", published: reviewed, reviewed,
+    sections: [{ heading: "Postal names and service areas differ", paragraphs: ["ZIP codes support mail delivery. Utility systems follow pipes, annexations, districts, and agreements that can cross those postal labels."] }, { heading: "Confirm both water and sewer", paragraphs: ["One provider may supply water while a different authority handles sewer, or the property may use a private well or septic system."], steps: ["Check city limits or parcel jurisdiction.", "Ask the listed water utility to confirm the address.", "Confirm sewer separately.", "Ask about well or septic records when relevant."] }, { heading: "Use the parcel when names conflict", paragraphs: ["If the mailing city, municipality, and utility name disagree, use the full service address or parcel record with the official utility. Do not choose from the postal label alone."] }], related: ["/resources/find-water-provider", "/resources/mailing-city-vs-utility-jurisdiction", "/resources/why-providers-vary-by-zip"], sources: [],
+  },
+  {
+    path: "/homeowners/hoa-utility-responsibilities", section: "homeowners", slug: "hoa-utility-responsibilities",
+    title: "HOA Utility Responsibilities for Homeowners", description: "Clarify which services an HOA may arrange and which accounts a homeowner still needs to open.",
+    h1: "Which utilities can an HOA handle?", eyebrow: "HOA basics",
+    directAnswer: "An HOA may coordinate trash, irrigation, private water, cable, or shared-area service, but the governing documents and closing disclosures—not the neighborhood name—control the answer.", published: reviewed, reviewed,
+    sections: [{ heading: "Build a written responsibility list", paragraphs: ["Review the declaration, budget, fee schedule, and resale or estoppel materials."], steps: ["Identify services paid through assessments.", "Confirm individual meters and accounts.", "Ask about approved vendors or access rules.", "Get emergency contacts for shared systems."] }, { heading: "Still confirm public utilities", paragraphs: ["HOA involvement does not prove the public or private utility serving the parcel. Confirm the address with the official source."] }, { heading: "Separate shared and household emergencies", paragraphs: ["Save both the HOA contact for common systems and the confirmed provider contacts for the home. Know which party handles irrigation, lift stations, gates, and common-area outages."] }], related: ["/homeowners/set-up-utilities", "/resources/find-trash-service", "/resources/find-water-provider"], sources: [],
+  },
 ];
 
 export const guidesByPath = new Map(guides.map((guide) => [guide.path, guide]));
