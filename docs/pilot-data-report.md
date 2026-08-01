@@ -1,41 +1,40 @@
 # Florida pilot data report
 
-Last reviewed: July 28, 2026
+Last reviewed: August 1, 2026
 
-The launch dataset intentionally supports a small reviewed sample across five Central Florida pilot counties. It is a workflow test, not a claim of countywide or statewide coverage. The generated `docs/data-coverage-report.md` is the reproducible source for current gaps and queue priorities.
+MoveIn’s five-county pilot now contains 50 ZIP records in Seminole, Orange, Volusia, Lake, and Osceola counties. Twelve ZIPs have complete reviewed records for the public core categories and are indexable. Thirty-eight expansion ZIPs are deliberately pending and noindex while utility research continues.
 
-- Supported ZIP codes: 32114, 32703, 32720, 32746, 32757, 32771, 32789, 32801, 34711, 34741, 34748, 34769
-- Fully verified and editorially approved ZIP codes: 32757, 32789, 32801, 34741, 34769
-- Partially verified ZIP codes: 32114, 32703, 32720, 32746, 32771, 34711, 34748
-- Pending ZIP codes: none in the current pilot
+## Current coverage
 
-| County | ZIP | Primary city | Status | Known gaps |
-| --- | --- | --- | --- | --- |
-| Seminole | 32771, 32746 | Sanford, Lake Mary | Partial | Electric territory and natural gas need address-level confirmation |
-| Orange | 32801, 32789, 32703 | Orlando, Winter Park, Apopka | Mixed | Apopka electric territory remains unresolved; natural gas varies |
-| Volusia | 32720, 32114 | DeLand, Daytona Beach | Partial | Electric territory and natural gas need address-level confirmation |
-| Lake | 34748, 32757, 34711 | Leesburg, Mount Dora, Clermont | Mixed | Leesburg utility records and Clermont electric territory remain incomplete |
-| Osceola | 34741, 34769 | Kissimmee, St. Cloud | Verified | Trash arrangements and natural gas still require exact-address checks |
+- Verified and indexable ZIPs: 32114, 32703, 32720, 32746, 32757, 32771, 32789, 32801, 34711, 34741, 34748, 34769
+- Pending and noindex ZIPs: 38
+- Missing core categories on verified ZIPs: 0
+- Confirmed broken official links in the August 1 check: 0
 
-Current records include 41 provider or official-resource entries and 79 provider-to-ZIP coverage links. The shared internet record deliberately points to the FCC’s address-level broadband map because a ZIP alone cannot establish availability. Florida PSC territory finders are also identified as lookup tools rather than asserted providers.
+Every verified page includes official starting points for electricity, water, sewer, trash and recycling, internet, and local government. Electric records include customer-service and outage contacts, a start-service link, and an outage map or an explicit evidence-based limitation when no stable public map was found. Water and sewer records include official start-service and phone details. Trash records link to official collection information. Local resources include county or municipal emergency-management guidance.
 
-Every public record has an official HTTPS website, a verification date, and at least one source. Run `npm run data:validate`, `npm run data:duplicates`, `npm run data:missing`, `npm run data:coverage`, `npm run data:stale`, and `npm run data:report` to reproduce the checks and report.
+Internet results use multiple provider-owned availability checkers and the FCC National Broadband Map. The cards name the likely technology but do not claim that a provider serves every address in a ZIP. Every page instructs the visitor to confirm availability using the exact service address.
 
-## Source URLs
+The 38 pending records include an official county starting point, an FCC address-level broadband lookup, a unique locality introduction, and a Census ZCTA-to-county relationship source. They remain noindex and are excluded from the sitemap until all core utility categories are researched and approved.
 
-- https://sanfordfl.gov/government/public-works-utilities/water_and_sewer/
-- https://sanfordfl.gov/government/public-works-utilities/
-- https://www.ouc.com/about/newsroom/
-- https://www.ouc.com/about/water-services/
-- https://deland.org/476/Billing-Information
-- https://secoenergy.com/service-territory
-- https://kua.com/about-kua/service-territory/
-- https://www.tohowater.com/about-us/our-service-area
-- https://help.bdc.fcc.gov/hc/en-us/articles/10467446103579-How-to-Use-the-FCC-s-National-Broadband-Map
-- https://www.seminolecountyfl.gov/
-- https://www.ocfl.net/
-- https://www.volusia.org/
-- https://www.lakecountyfl.gov/
-- https://www.osceola.org/
+## Important limitations
 
-Next verification work should fill the explicitly missing categories above, confirm boundaries using exact-address tools, add a second verified ZIP per county, and review every record again before the 180-day stale-data threshold. A ZIP should move to `verified` only after the documented source and confidence rules are satisfied.
+ZIP codes are postal areas, not utility boundaries. A reviewed record is a useful possible-provider starting point, not a guarantee for a street address. Municipal limits, utility territories, franchises, wells, septic systems, and building-specific internet infrastructure can divide a ZIP.
+
+The City of Mount Dora publishes an official electric outage phone and emergency guidance, but the review did not find a stable public outage-map URL. The result says so explicitly instead of inventing a map.
+
+## Reproduce the release checks
+
+```bash
+npm run data:validate
+npm run data:duplicates
+npm run data:missing
+npm run data:coverage
+npm run data:stale
+npm run data:links
+npm run data:research-queue
+npm run data:report
+npm run health:report
+```
+
+The generated `docs/data-coverage-report.md`, `docs/research-queue-summary.md`, `docs/link-validation-report.md`, and `docs/production-health-report.md` contain the reproducible current state.

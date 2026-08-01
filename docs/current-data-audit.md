@@ -15,7 +15,7 @@ The application uses a local SQLite database through `better-sqlite3`. Productio
 | 34748 | Leesburg | Lake | Partial | No |
 | 34741 | Kissimmee | Osceola | Verified | Yes |
 
-The baseline contains 18 provider or official-resource records, 22 provider-to-ZIP links, 21 phone contacts, and 18 sources. Categories present are electricity (3 records), water (4), sewer (3), internet (1 official address lookup), trash/recycling (2), and local government (5). Natural gas has no provider record.
+The baseline contains 18 provider or official-resource records, 22 provider-to-ZIP links, 21 phone contacts, and 18 sources. Categories present are electricity (3 records), water (4), sewer (3), internet (1 official address lookup), trash/recycling (2), and local government (5).
 
 Providers present: City of Sanford Water Utilities, City of Sanford Wastewater Utilities, City of Sanford Solid Waste Division, Orlando Utilities Commission electric and water, City of DeLand Water Utility, City of DeLand Sewer Utility, City of DeLand Solid Waste Service, SECO Energy, Kissimmee Utility Authority, Toho Water Authority water and sewer, FCC National Broadband Map, and the five pilot county governments.
 
@@ -28,7 +28,6 @@ The source hierarchy is generally appropriate: municipal utilities and governmen
 ## Missing and potentially misleading information
 
 - No provider stores a separate start-service URL, outage URL, address-check URL, operating hours, provider type, or internet technology.
-- Natural-gas availability is entirely unverified.
 - Electricity is absent for Sanford and DeLand; ZIP-level assignment should not be guessed.
 - Water, sewer, and trash are absent for Leesburg; the current SECO record does not make the ZIP broadly complete.
 - The primary USPS city is stored, but additional jurisdictions, incorporated/unincorporated status, and jurisdiction notes are not.
@@ -52,6 +51,6 @@ No duplicate or source-free records were found. `is_verified` is true for every 
 ## Audit conclusion
 
 The baseline is trustworthy but intentionally small. Expansion should add authoritative municipal records with explicit address/jurisdiction caveats, strengthen action URLs and outage contacts, generate research queues for unresolved categories, and require explicit confirmation before a verified row is changed. No uncertain baseline record should be deleted during that work.
-# July 28, 2026 pilot completion audit
+# August 1, 2026 Phase 2 update
 
-The dataset now contains 12 supported ZIPs, 52 provider/resource records, 98 provider-to-ZIP links, 67 contacts, and 57 official-source records. All electricity, water, sewer, trash, and local-government gaps identified in the previous 36-item queue were resolved with cautious ZIP-to-territory wording. Twenty address-level research tasks remain: 12 internet and 8 natural-gas tasks. They are documented rather than falsely closed because authoritative sources require a street address.
+The dataset now contains 50 ZIP records: 12 verified/indexable records and 38 pending/noindex expansion records. The verified pages have complete electricity, water, sewer, internet guidance, trash/recycling, and local-government coverage, with cautious ZIP-to-territory wording. Address-level internet checkers replace ZIP-wide availability claims. The generated coverage, research-queue, link, and production-health reports are the authoritative current inventory.

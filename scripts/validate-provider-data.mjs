@@ -41,9 +41,11 @@ for (const row of zips) {
 }
 for (const row of providers) {
   if (!validCategories.has(row.category_slug)) errors.push(`Provider ${row.slug} has unknown category '${row.category_slug}'`);
+  if (row.category_slug === "natural-gas" && row.status !== "inactive") errors.push(`Retired natural-gas provider ${row.slug} must remain inactive`);
   if (!isHttpsUrl(row.official_website)) errors.push(`Provider ${row.slug} lacks a valid HTTPS official website`);
   if (!row.last_verified_at) errors.push(`Provider ${row.slug} lacks a verification date`);
-  for (const field of ["start_service_url", "address_check_url", "outage_url", "outage_map_url", "collection_info_url"]) if (row[field] && !isHttpsUrl(row[field])) errors.push(`Provider ${row.slug} has invalid ${field}`);
+  for (const field of ["start_service_url", "address_check_url", "support_url", "outage_url", "outage_map_url", "collection_info_url"]) if (row[field] && !isHttpsUrl(row[field])) errors.push(`Provider ${row.slug} has invalid ${field}`);
+  if (row.category_slug === "internet" && row.provider_type !== "official_lookup" && (!row.address_check_url || !row.support_url || !row.technology_type)) errors.push(`Internet provider ${row.slug} needs an availability checker, support link, and technology label`);
   if (row.last_verified_at > today) errors.push(`Provider ${row.slug} has a future verification date`);
   if (!row.provider_type) errors.push(`Provider ${row.slug} lacks a provider type`);
   const identity = `${row.state_code}|${row.category_slug}|${row.name.trim().toLowerCase()}`;
@@ -71,6 +73,18 @@ for (const row of contacts) {
 }
 const contactKeys = new Set();
 for (const row of contacts) { const key = `${row.provider_slug}|${row.contact_type}|${row.phone}`; if (contactKeys.has(key)) errors.push(`Duplicate contact '${key}'`); contactKeys.add(key); }
+const contactsByProvider = Object.groupBy(contacts, (row) => row.provider_slug);
+for (const row of providers.filter((provider) => provider.status !== "inactive")) {
+  const providerContacts = contactsByProvider[row.slug] ?? [];
+  if (row.category_slug === "electricity" && row.provider_type !== "official_lookup") {
+    if (!row.start_service_url || !row.outage_url) errors.push(`Electric provider ${row.slug} needs start-service and outage links`);
+    if (!providerContacts.some((contact) => contact.contact_type === "customer_service")) errors.push(`Electric provider ${row.slug} needs a customer-service phone`);
+    if (!providerContacts.some((contact) => contact.contact_type === "outage")) errors.push(`Electric provider ${row.slug} needs an outage phone`);
+    if (!row.outage_map_url && !/no stable public outage map/i.test(row.service_notes)) errors.push(`Electric provider ${row.slug} needs an outage map or an explicit official-source limitation`);
+  }
+  if (["water", "sewer"].includes(row.category_slug) && (!row.start_service_url || providerContacts.length === 0)) errors.push(`${row.category_slug} provider ${row.slug} needs a start-service link and phone`);
+  if (row.category_slug === "trash-recycling" && (!row.collection_info_url || providerContacts.length === 0)) errors.push(`Trash provider ${row.slug} needs collection information and a phone`);
+}
 for (const row of sources) {
   if (!providerSet.has(row.provider_slug)) errors.push(`Unknown provider ${row.provider_slug} in sources`);
   if (!isHttpsUrl(row.source_url)) errors.push(`Invalid or non-HTTPS source at row ${row.__row}`);
@@ -84,6 +98,10 @@ const linkedZips = new Set(areas.map((row) => row.zip_code));
 for (const zip of zipSet) if (!linkedZips.has(zip)) errors.push(`ZIP ${zip} has no service-area links`);
 const linkedProviders = new Set(areas.map((row) => row.provider_slug));
 for (const slug of providerSet) if (!linkedProviders.has(slug)) errors.push(`Provider ${slug} has no service-area links`);
+for (const zip of zips.filter((row) => row.status === "verified")) {
+  const categories = new Set(areas.filter((area) => area.zip_code === zip.zip_code).map((area) => providers.find((provider) => provider.slug === area.provider_slug)).filter((provider) => provider?.status !== "inactive").map((provider) => provider.category_slug));
+  for (const category of ["electricity", "water", "sewer", "internet", "trash-recycling", "local-government"]) if (!categories.has(category)) errors.push(`Verified ZIP ${zip.zip_code} lacks ${category}`);
+}
 const contacted = new Set(contacts.map((row) => row.provider_slug));
 for (const row of providers) if (!contacted.has(row.slug) && row.provider_type !== "official_lookup" && !['internet', 'local-government'].includes(row.category_slug)) warnings.push(`No phone number for ${row.slug}`);
 if (warnings.length) console.warn(`Warnings:\n- ${warnings.join("\n- ")}`);

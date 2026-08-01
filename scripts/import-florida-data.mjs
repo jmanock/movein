@@ -35,13 +35,13 @@ for (const row of zipRows) {
 }
 for (const row of providerRows) {
   const existing = database.prepare(`SELECT name, category_id, description, official_website, service_notes, status, is_verified, last_verified_at,
-    provider_type, start_service_url, address_check_url, outage_url, outage_map_url, collection_info_url, hours, technology_type FROM providers WHERE slug=?`).get(row.slug);
+    provider_type, start_service_url, address_check_url, support_url, outage_url, outage_map_url, collection_info_url, hours, technology_type FROM providers WHERE slug=?`).get(row.slug);
   if (!existing?.is_verified) continue;
   const category = database.prepare("SELECT slug FROM provider_categories WHERE id=?").get(existing.category_id)?.slug;
   assertConfirmedChange(`verified provider '${row.slug}'`, { ...existing, category_slug: category }, {
     name: row.name, category_slug: row.category_slug, description: row.description || null, official_website: row.official_website,
     service_notes: row.service_notes || null, status: row.status, is_verified: Number(row.is_verified), last_verified_at: row.last_verified_at || null,
-    provider_type: row.provider_type || null, start_service_url: row.start_service_url || null, address_check_url: row.address_check_url || null,
+    provider_type: row.provider_type || null, start_service_url: row.start_service_url || null, address_check_url: row.address_check_url || null, support_url: row.support_url || null,
     outage_url: row.outage_url || null, outage_map_url: row.outage_map_url || null, collection_info_url: row.collection_info_url || null,
     hours: row.hours || null, technology_type: row.technology_type || null,
   });
@@ -72,9 +72,9 @@ const importData = database.transaction(() => {
     VALUES (?, (SELECT id FROM states WHERE code=?), (SELECT c.id FROM counties c JOIN states s ON s.id=c.state_id WHERE s.code=? AND c.name=?), (SELECT ci.id FROM cities ci JOIN states s ON s.id=ci.state_id JOIN counties c ON c.id=ci.county_id WHERE s.code=? AND c.name=? AND ci.name=?), ?, ?, 1, ?, ?, ?, ?, ?, ?)
     ON CONFLICT(zip_code) DO UPDATE SET state_id=excluded.state_id, county_id=excluded.county_id, primary_city_id=excluded.primary_city_id, status=excluded.status, is_indexable=excluded.is_indexable, is_active=1, last_verified_at=excluded.last_verified_at, confidence_status=excluded.confidence_status, jurisdiction_notes=excluded.jurisdiction_notes, locality_source_url=excluded.locality_source_url, mailing_city_name=excluded.mailing_city_name, jurisdiction_status=excluded.jurisdiction_status`);
   const upsertCategory = database.prepare("INSERT INTO provider_categories (slug, name, display_order) VALUES (?, ?, ?) ON CONFLICT(slug) DO UPDATE SET name=excluded.name, display_order=excluded.display_order");
-  const upsertProvider = database.prepare(`INSERT INTO providers (slug, name, category_id, state_id, description, official_website, service_notes, status, is_verified, last_verified_at, provider_type, start_service_url, address_check_url, outage_url, outage_map_url, collection_info_url, hours, technology_type)
-    VALUES (?, ?, (SELECT id FROM provider_categories WHERE slug=?), (SELECT id FROM states WHERE code=?), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    ON CONFLICT(slug) DO UPDATE SET name=excluded.name, category_id=excluded.category_id, state_id=excluded.state_id, description=excluded.description, official_website=excluded.official_website, service_notes=excluded.service_notes, status=excluded.status, is_verified=excluded.is_verified, last_verified_at=excluded.last_verified_at, provider_type=excluded.provider_type, start_service_url=excluded.start_service_url, address_check_url=excluded.address_check_url, outage_url=excluded.outage_url, outage_map_url=excluded.outage_map_url, collection_info_url=excluded.collection_info_url, hours=excluded.hours, technology_type=excluded.technology_type`);
+  const upsertProvider = database.prepare(`INSERT INTO providers (slug, name, category_id, state_id, description, official_website, service_notes, status, is_verified, last_verified_at, provider_type, start_service_url, address_check_url, support_url, outage_url, outage_map_url, collection_info_url, hours, technology_type)
+    VALUES (?, ?, (SELECT id FROM provider_categories WHERE slug=?), (SELECT id FROM states WHERE code=?), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    ON CONFLICT(slug) DO UPDATE SET name=excluded.name, category_id=excluded.category_id, state_id=excluded.state_id, description=excluded.description, official_website=excluded.official_website, service_notes=excluded.service_notes, status=excluded.status, is_verified=excluded.is_verified, last_verified_at=excluded.last_verified_at, provider_type=excluded.provider_type, start_service_url=excluded.start_service_url, address_check_url=excluded.address_check_url, support_url=excluded.support_url, outage_url=excluded.outage_url, outage_map_url=excluded.outage_map_url, collection_info_url=excluded.collection_info_url, hours=excluded.hours, technology_type=excluded.technology_type`);
   const upsertArea = database.prepare(`INSERT INTO service_areas (provider_id, zip_code_id, coverage_type, coverage_notes, confidence_level, is_primary, service_availability, requires_address_confirmation, jurisdiction_notes)
     VALUES ((SELECT id FROM providers WHERE slug=?), (SELECT id FROM zip_codes WHERE zip_code=?), ?, ?, ?, ?, ?, ?, ?)
     ON CONFLICT(provider_id, zip_code_id) DO UPDATE SET coverage_type=excluded.coverage_type, coverage_notes=excluded.coverage_notes, confidence_level=excluded.confidence_level, is_primary=excluded.is_primary, service_availability=excluded.service_availability, requires_address_confirmation=excluded.requires_address_confirmation, jurisdiction_notes=excluded.jurisdiction_notes`);
@@ -94,7 +94,7 @@ const importData = database.transaction(() => {
       ON CONFLICT(zip_code_id, city_id, jurisdiction_type) DO UPDATE SET source_url=excluded.source_url, notes=excluded.notes`).run(row.locality_source_url, row.jurisdiction_notes || null, row.zip_code);
   }
   for (const row of categoryRows) upsertCategory.run(...row);
-  for (const row of providerRows) upsertProvider.run(row.slug, row.name, row.category_slug, row.state_code, row.description, row.official_website, row.service_notes, row.status, Number(row.is_verified), row.last_verified_at || null, row.provider_type || null, row.start_service_url || null, row.address_check_url || null, row.outage_url || null, row.outage_map_url || null, row.collection_info_url || null, row.hours || null, row.technology_type || null);
+  for (const row of providerRows) upsertProvider.run(row.slug, row.name, row.category_slug, row.state_code, row.description, row.official_website, row.service_notes, row.status, Number(row.is_verified), row.last_verified_at || null, row.provider_type || null, row.start_service_url || null, row.address_check_url || null, row.support_url || null, row.outage_url || null, row.outage_map_url || null, row.collection_info_url || null, row.hours || null, row.technology_type || null);
   for (const row of areaRows) upsertArea.run(row.provider_slug, row.zip_code, row.coverage_type, row.coverage_notes, row.confidence_level, Number(row.is_primary), row.service_availability || null, Number(row.requires_address_confirmation || 1), row.jurisdiction_notes || null);
   for (const row of contactRows) upsertContact.run(row.provider_slug, row.contact_type, row.label, row.phone);
   for (const row of sourceRows) {

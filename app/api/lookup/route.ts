@@ -14,8 +14,7 @@ export async function GET(request: Request) {
     const providers = result.providers;
     return Response.json({ zipCode: result.zipCode, city: result.city, county: result.county, state: result.state,
       stateName: result.stateName, status: result.status, confidenceStatus: result.confidenceStatus, jurisdictionNotes: result.jurisdictionNotes, lastUpdated: result.lastUpdated, lastLocationReview: result.lastLocationReview, disclaimer: result.disclaimer, providers: {
-      electricity: providers.electricity ?? [], water: providers.water ?? [], sewer: providers.sewer ?? [],
-      naturalGas: providers["natural-gas"] ?? [], internet: providers.internet ?? [],
+      electricity: providers.electricity ?? [], water: providers.water ?? [], sewer: providers.sewer ?? [], internet: providers.internet ?? [],
       trashRecycling: providers["trash-recycling"] ?? [], localInformation: providers["local-government"] ?? [],
     } }, { headers: { "Cache-Control": "public, max-age=300, s-maxage=3600, stale-while-revalidate=86400" } });
   } catch (error) {

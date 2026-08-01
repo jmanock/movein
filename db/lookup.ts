@@ -11,6 +11,7 @@ export type LookupProvider = {
   providerType: string | null;
   startServiceUrl: string | null;
   addressCheckUrl: string | null;
+  supportUrl: string | null;
   outageUrl: string | null;
   outageMapUrl: string | null;
   collectionInfoUrl: string | null;
@@ -48,7 +49,7 @@ export type LookupResult = {
 };
 
 type LocationRow = { zip_code: string; city: string | null; county: string | null; state: string; state_name: string; mailing_city_name: string | null; jurisdiction_status: LookupResult["jurisdictionStatus"]; status: "verified" | "partial" | "pending"; confidence_status: string | null; jurisdiction_notes: string | null; is_indexable: number; last_verified_at: string | null };
-type ProviderRow = { provider_id: number; name: string; slug: string; category_slug: string; description: string | null; official_website: string; provider_type: string | null; start_service_url: string | null; address_check_url: string | null; outage_url: string | null; outage_map_url: string | null; collection_info_url: string | null; hours: string | null; technology_type: string | null; service_notes: string | null; coverage_type: CoverageType; coverage_notes: string; confidence_level: string; service_availability: string | null; requires_address_confirmation: number; jurisdiction_notes: string | null; is_verified: number; last_verified_at: string | null };
+type ProviderRow = { provider_id: number; name: string; slug: string; category_slug: string; description: string | null; official_website: string; provider_type: string | null; start_service_url: string | null; address_check_url: string | null; support_url: string | null; outage_url: string | null; outage_map_url: string | null; collection_info_url: string | null; hours: string | null; technology_type: string | null; service_notes: string | null; coverage_type: CoverageType; coverage_notes: string; confidence_level: string; service_availability: string | null; requires_address_confirmation: number; jurisdiction_notes: string | null; is_verified: number; last_verified_at: string | null };
 
 export function getLookupResult(zipCode: string): LookupResult | null {
   const database = getDatabase();
@@ -57,7 +58,7 @@ export function getLookupResult(zipCode: string): LookupResult | null {
     FROM zip_codes z JOIN states s ON s.id=z.state_id LEFT JOIN counties c ON c.id=z.county_id LEFT JOIN cities ci ON ci.id=z.primary_city_id
     WHERE z.zip_code=? AND z.is_active=1`).get(zipCode) as LocationRow | undefined;
   if (!location) return null;
-  const providerRows = database.prepare(`SELECT p.id AS provider_id, p.name, p.slug, pc.slug AS category_slug, p.description, p.official_website, p.provider_type, p.start_service_url, p.address_check_url, p.outage_url, p.outage_map_url, p.collection_info_url, p.hours, p.technology_type, p.service_notes,
+  const providerRows = database.prepare(`SELECT p.id AS provider_id, p.name, p.slug, pc.slug AS category_slug, p.description, p.official_website, p.provider_type, p.start_service_url, p.address_check_url, p.support_url, p.outage_url, p.outage_map_url, p.collection_info_url, p.hours, p.technology_type, p.service_notes,
     sa.coverage_type, sa.coverage_notes, sa.confidence_level, sa.service_availability, sa.requires_address_confirmation, sa.jurisdiction_notes, p.is_verified, p.last_verified_at
     FROM service_areas sa JOIN providers p ON p.id=sa.provider_id JOIN provider_categories pc ON pc.id=p.category_id JOIN zip_codes z ON z.id=sa.zip_code_id
     WHERE z.zip_code=? AND p.status!='inactive' ORDER BY pc.display_order, sa.is_primary DESC, p.name`).all(zipCode) as ProviderRow[];
@@ -67,7 +68,7 @@ export function getLookupResult(zipCode: string): LookupResult | null {
     const sources = database.prepare("SELECT source_name AS name, source_url AS url, source_type AS type, retrieved_at AS retrievedAt FROM data_sources WHERE provider_id=? ORDER BY retrieved_at DESC").all(row.provider_id) as LookupProvider["sources"];
     (providers[row.category_slug] ??= []).push({
       name: row.name, slug: row.slug, description: row.description, officialWebsite: row.official_website,
-      providerType: row.provider_type, startServiceUrl: row.start_service_url, addressCheckUrl: row.address_check_url,
+      providerType: row.provider_type, startServiceUrl: row.start_service_url, addressCheckUrl: row.address_check_url, supportUrl: row.support_url,
       outageUrl: row.outage_url, outageMapUrl: row.outage_map_url, collectionInfoUrl: row.collection_info_url, hours: row.hours, technologyType: row.technology_type,
       serviceNotes: row.service_notes, coverageType: row.coverage_type, coverageLabel: availabilityLabel(row.service_availability, row.coverage_type),
       coverageNotes: row.coverage_notes, confidenceLevel: row.confidence_level, availabilityStatus: row.service_availability,

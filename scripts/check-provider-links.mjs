@@ -7,7 +7,7 @@ const providerPath = process.env.PROVIDER_DATA_PATH ?? join(root, "data", "flori
 const outputPath = process.env.LINK_STATUS_PATH ?? join(root, "data", "florida", "provider-link-status.csv");
 const reportPath = process.env.LINK_REPORT_PATH ?? join(root, "docs", "link-validation-report.md");
 const providers = await readCsv(providerPath);
-const fields = ["official_website", "start_service_url", "address_check_url", "outage_url", "outage_map_url", "collection_info_url"];
+const fields = ["official_website", "start_service_url", "address_check_url", "support_url", "outage_url", "outage_map_url", "collection_info_url"];
 const urls = [...new Set(providers.flatMap((row) => fields.map((field) => row[field]).filter(Boolean)))];
 const results = [];
 

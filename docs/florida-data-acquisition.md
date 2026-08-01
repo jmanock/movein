@@ -8,7 +8,7 @@ Start with Seminole, Orange, Volusia, Lake, and Osceola counties. Expand ZIP by 
 
 1. Build a ZIP working list from a licensed or public authoritative source and record the source version.
 2. Identify incorporated places, unincorporated areas, special districts, and major service-boundary maps.
-3. Research each category separately: electric, water, sewer/septic context, natural gas, internet, trash/recycling, and local government.
+3. Research each public category separately: electric, water, sewer/septic context, internet, trash/recycling, and local government.
 4. Prefer official provider territory maps, municipal/county utility pages, Florida Public Service Commission materials, FCC broadband data, and official solid-waste departments.
 5. Record the exact source URL, retrieval date, contact type, normalized phone, and a plain-language limitation note.
 6. Use `possible` or `address_required` whenever a ZIP crosses a boundary. Use `primary` only when source evidence supports the entire mapped record—not because a provider is common nearby.
@@ -28,4 +28,4 @@ Take numbers only from an official contact, outage, or service page. Store custo
 
 ## Adding the next county
 
-Add one ZIP as `pending`, import official local-government starting points, then add provider categories as verified. Promote to `partial` when some useful records exist. Promote to `verified` and `is_indexable=1` only after multiple meaningful categories, source review, and rendered-page QA.
+Add one ZIP as `pending`, import official local-government and FCC address-lookup starting points, then add provider categories as verified. Promote to `partial` when some useful records exist. Promote to `verified` and `is_indexable=1` only after every core category passes source review and rendered-page QA.

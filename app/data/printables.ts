@@ -14,7 +14,7 @@ export const printables: Printable[] = [
     { title: "Document move-in", items: ["Photograph existing damage", "Complete the required condition form", "Record visible meter readings when appropriate", "Keep account and deposit confirmations privately"] },
   ] },
   { slug: "utility-contact-worksheet", title: "Utility contact worksheet", description: "A clean printable worksheet for official provider and outage contacts.", audience: "Every household", intro: "Write down only information you are comfortable storing on paper. MoveIn never needs your account numbers.", sections: [
-    { title: "Provider contacts", items: ["Electric provider / service / outage", "Water and sewer / emergency", "Internet / technical support", "Trash and recycling / collection day", "Natural gas / emergency (if applicable)"] },
+    { title: "Provider contacts", items: ["Electric provider / service / outage", "Water and sewer / emergency", "Internet / technical support", "Trash and recycling / collection day", "City or county non-emergency contact"] },
     { title: "Property contacts", items: ["Landlord or property manager", "HOA or community association", "City or county utilities", "Insurance contact", "Trusted local emergency contact"] },
   ] },
   { slug: "outage-preparation-sheet", title: "Outage preparation sheet", description: "A printable household reference for official outage contacts and basic preparation.", audience: "Every household", intro: "For immediate danger, call 911. Never approach downed lines or open sealed utility equipment.", sections: [

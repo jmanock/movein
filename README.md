@@ -2,7 +2,7 @@
 
 MoveIn is a focused Florida utility and local-services lookup. A visitor enters a five-digit ZIP code, sees reviewed possible providers and official starting points, and is reminded to confirm the exact street address.
 
-The reviewed dataset contains 12 representative pilot ZIPs in Seminole, Orange, Volusia, Lake, and Osceola counties. It does not claim countywide or statewide coverage.
+The pilot dataset contains 50 ZIP records in Seminole, Orange, Volusia, Lake, and Osceola counties. Twelve ZIPs have complete reviewed core-service records and are indexable; 38 expansion ZIPs remain pending and noindex while utility research continues. It does not claim countywide or statewide coverage.
 
 ## Stack
 
@@ -39,6 +39,7 @@ npm run data:report
 npm run seo:duplicates
 npm run seo:audit
 npm run frontend:audit
+npm run health:report
 npm run lint
 npm test
 npm run build
@@ -116,3 +117,4 @@ The seed is idempotent and non-deleting. A changed verified row is refused unles
 - `docs/analytics-events.md` — privacy-safe event names and integration boundary
 - `docs/google-analytics.md` — GA4 setup, event parameters, testing, privacy, and duplicate prevention
 - `docs/phase-3-quality-audit.md` — full-site authority audit, remediation, guardrails, and release evidence
+- `docs/production-health-report.md` — generated coverage, link, search, analytics, test, and build health

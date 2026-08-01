@@ -8,8 +8,8 @@ Stop or quiesce the app, create a timestamped SQLite online backup of `/var/lib/
 
 ```bash
 sudo install -d -o "$USER" -g "$USER" /var/backups/movein
-sqlite3 /var/lib/movein/movein.sqlite ".backup '/var/backups/movein/movein-before-004.sqlite'"
-test -s /var/backups/movein/movein-before-004.sqlite
+sqlite3 /var/lib/movein/movein.sqlite ".backup '/var/backups/movein/movein-before-phase-2.sqlite'"
+test -s /var/backups/movein/movein-before-phase-2.sqlite
 ```
 
 ## Release commands for this front-end release
@@ -20,19 +20,23 @@ git pull --ff-only origin main
 source ~/.bashrc
 nvm use 22
 export NEXT_PUBLIC_GA_MEASUREMENT_ID=G-QC9FYWHVZZ
+export DATABASE_PATH=/var/lib/movein/movein.sqlite
 npm ci
 npm run data:validate
+npm run db:migrate
+npm run data:import -- --dry-run
+npm run data:import -- --confirm-verified
 npm run seo:duplicates
 npm run seo:audit
 npm run lint
 npm test
 npm run build
-DATABASE_PATH=/var/lib/movein/movein.sqlite npm run data:coverage
+npm run data:coverage
 pm2 restart movein --update-env
 pm2 save
 ```
 
-This release does **not** add a database migration or change seed data, so do not run an import solely for this deployment. Keep the backup step because the production database is persistent and the app reads it during the build/runtime checks. The exact direct smoke-test command is:
+This release adds migrations for provider support links and retirement of legacy natural-gas rows, plus reviewed CSV changes. Back up the persistent database, migrate, dry-run the import, then apply it with the verified-row confirmation shown above. The exact direct smoke-test command is:
 
 ```bash
 PORT=3006 DATABASE_PATH=/var/lib/movein/movein.sqlite npm run start -- -H 127.0.0.1

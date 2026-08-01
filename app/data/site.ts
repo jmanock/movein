@@ -11,19 +11,18 @@ export const serviceTypes = [
   { slug: "electricity", name: "Electricity", icon: "Zap", description: "Possible electric utility and outage contact." },
   { slug: "water", name: "Water", icon: "Droplets", description: "Municipal or regional water starting point." },
   { slug: "internet", name: "Internet", icon: "Wifi", description: "Address-level availability lookup." },
-  { slug: "natural-gas", name: "Gas", icon: "Flame", description: "Natural gas information when verified." },
   { slug: "trash-recycling", name: "Trash & recycling", icon: "Recycle", description: "Local collection agency or department." },
   { slug: "local-government", name: "Local information", icon: "Landmark", description: "Official city and county starting points." },
 ] as const;
 
 export const categoryLabels: Record<string, string> = {
-  electricity: "Electricity", water: "Water", sewer: "Sewer", "natural-gas": "Natural gas",
+  electricity: "Electricity", water: "Water", sewer: "Sewer",
   internet: "Internet availability", "trash-recycling": "Trash & recycling", "local-government": "Local information",
 };
 
 export const pilotCounties = ["Seminole", "Orange", "Volusia", "Lake", "Osceola"] as const;
 export const indexablePilotZips = ["32771", "32746", "32801", "32789", "32703", "32720", "32114", "34748", "34711", "32757", "34741", "34769"] as const;
-export const supportedPilotZips = ["32771", "32746", "32801", "32789", "32703", "32720", "32114", "34748", "34711", "32757", "34741", "34769"] as const;
+export const supportedPilotZips = ["32114", "32117", "32118", "32119", "32127", "32129", "32168", "32174", "32701", "32703", "32707", "32708", "32714", "32720", "32724", "32726", "32746", "32750", "32757", "32765", "32766", "32771", "32773", "32778", "32789", "32801", "32803", "32804", "32806", "32809", "34711", "34715", "34731", "34736", "34739", "34741", "34743", "34744", "34746", "34747", "34748", "34753", "34758", "34761", "34769", "34771", "34772", "34786", "34787", "34788"] as const;
 
 export const faqItems = [
   ["How do I find my electric company?", "Enter your ZIP code for possible providers, then confirm your street address on the utility’s official website or by phone. Electric territories can split a ZIP code."],

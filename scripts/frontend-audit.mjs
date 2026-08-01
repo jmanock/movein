@@ -3,7 +3,7 @@ import { join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const baseUrl = process.env.FRONTEND_AUDIT_URL || "http://127.0.0.1:3006";
-const routes = ["/", "/homeowners", "/renters", "/learn-your-area", "/resources", "/faq", "/coverage", "/resources/find-electric-company", "/lookup/32757", "/lookup/32771", "/lookup/99999", "/robots.txt", "/sitemap.xml"];
+const routes = ["/", "/homeowners", "/renters", "/learn-your-area", "/resources", "/faq", "/coverage", "/resources/find-electric-company", "/lookup/32757", "/lookup/32771", "/lookup/32701", "/lookup/99999", "/robots.txt", "/sitemap.xml"];
 const failures = [];
 const warnings = [];
 
@@ -26,6 +26,7 @@ if (/<section(?:\s[^>]*)?>\s*<\/section>/i.test(source)) failures.push("Empty pa
 if (!/aria-label="Toggle navigation"/.test(source)) failures.push("Mobile navigation is missing its accessible label");
 if (!/<label htmlFor=/.test(source)) failures.push("ZIP form label is missing");
 if (/cloudflare:|wrangler|vinext|@cloudflare/i.test(source)) failures.push("Cloudflare-specific production code detected");
+if (/natural[ -]gas/i.test(source)) failures.push("Retired natural-gas content detected in the public application");
 for (const required of ["Recently moved?", "Things to check during the first week", "Emergency information", "Official source", "CollectionPage", "SearchAction", '"@type": "Service"']) if (!source.includes(required)) failures.push(`Phase 3 authority element is missing: ${required}`);
 const clientFiles = await Promise.all(sourceFiles.filter((file) => file.endsWith(".tsx")).map(async (file) => ({ file, text: await readFile(file, "utf8") })));
 const clients = clientFiles.filter(({ text }) => text.startsWith('"use client"')).map(({ file }) => relative(new URL("../", import.meta.url).pathname, file));

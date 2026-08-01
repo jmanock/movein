@@ -11,10 +11,9 @@ Municipal service is linked as `primary_municipal` only as a likely city-system 
 - Electricity: prefer an official territory map, start-service page, outage phone, and outage page. Use the Florida PSC territory finder when the provider is unresolved.
 - Water and sewer: identify city, county, authority, private utility, well, or septic possibilities separately. Never infer a connection from the mailing city.
 - Internet: use the FCC address lookup. Store technologies only when verified; never publish unverified speeds, rankings, or prices.
-- Natural gas: absence of a record is not proof of unavailability. Use the PSC territory tool until an address-level provider is verified.
-- Trash: distinguish city, county, HOA, landlord, apartment, and private-hauler arrangements.
+- Trash and recycling: distinguish city, county, HOA, landlord, apartment, and private-hauler arrangements. Include an official collection-information or schedule page.
 
 Run validation, duplicate, missing-data, stale-data, research-queue, and coverage-report commands before review. A verified-row change requires the explicit `--confirm-verified` import flag and a reviewed diff.
 # Pilot completion rule
 
-A provider-to-ZIP link requires an official provider, municipal, county, state, federal, tariff, or territory source and a current retrieval date. Mailing city alone is never evidence. Electricity may list multiple possibilities. Water, sewer, trash, internet, and gas require jurisdiction or exact-address warnings. Internet prices, promotions, rankings, and unsupported speed claims are excluded.
+A provider-to-ZIP link requires an official provider, municipal, county, state, federal, tariff, or territory source and a current retrieval date. Mailing city alone is never evidence. Electricity may list multiple possibilities. Water, sewer, trash, and internet require jurisdiction or exact-address warnings. Internet prices, promotions, rankings, and unsupported speed claims are excluded.

@@ -4,7 +4,7 @@ Generated: 2026-08-01
 
 ## Scope
 
-Checked 44 public-page titles, descriptions, and H1s, 24 guide bodies, and 12 ZIP-specific moving overviews using normalized exact matching and Jaccard token similarity. Shared navigation, legal disclaimers, provider data, and reusable CTA copy are excluded from body comparison.
+Checked 44 public-page titles, descriptions, and H1s, 24 guide bodies, and 50 ZIP-specific moving overviews using normalized exact matching and Jaccard token similarity. Shared navigation, legal disclaimers, provider data, and reusable CTA copy are excluded from body comparison.
 
 ## Result
 

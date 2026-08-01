@@ -18,7 +18,6 @@ volusia-government,Volusia County Government,https://www.volusia.org/,county-gov
 lake-government,Lake County Government,https://www.lakecountyfl.gov/,county-government,2026-07-27,Official county website.
 osceola-government,Osceola County Government,https://www.osceola.org/,county-government,2026-07-27,Official county website.
 florida-psc-electric-finder,Florida PSC Find Your Utility Service Territories,https://www.floridapsc.com/find-utility-service,state-government,2026-07-28,Official state territory lookup; service areas remain approximate and require address confirmation.
-florida-psc-gas-finder,Florida PSC Find Your Utility Service Territories,https://www.floridapsc.com/find-utility-service,state-government,2026-07-28,Official state natural-gas territory lookup; presence on the map does not guarantee a connection.
 lake-mary-water,City of Lake Mary Utility Customer Service,https://www.lakemaryfl.com/178/Utility-Customer-Service,municipal-utility,2026-07-28,Official page lists water services contact and hours.
 lake-mary-sewer,City of Lake Mary Utility Customer Service,https://www.lakemaryfl.com/178/Utility-Customer-Service,municipal-utility,2026-07-28,Official page lists wastewater service and warns users to confirm service.
 lake-mary-trash,City of Lake Mary Garbage Recycling and Yard Waste,https://www.lakemaryfl.com/180/Garbage-Recycling-Yard-Waste-Info,municipal-government,2026-07-28,Official page describes city-billed residential collection.
@@ -50,9 +49,16 @@ fpl-electric,Florida Power and Light Contact,https://www.fpl.com/support/contact
 leesburg-water,City of Leesburg Adopted Budget,https://www.leesburgflorida.gov/2023-24%20Budget%20FINAL%20Document.pdf,municipal-government,2026-07-28,Official budget documents the City water utility.
 leesburg-sewer,City of Leesburg Adopted Budget,https://www.leesburgflorida.gov/2023-24%20Budget%20FINAL%20Document.pdf,municipal-government,2026-07-28,Official budget documents the City wastewater utility.
 leesburg-trash,City of Leesburg Adopted Budget,https://www.leesburgflorida.gov/2023-24%20Budget%20FINAL%20Document.pdf,municipal-government,2026-07-28,Official budget describes City solid-waste services.
-leesburg-gas,City of Leesburg Adopted Budget,https://www.leesburgflorida.gov/2023-24%20Budget%20FINAL%20Document.pdf,municipal-government,2026-07-28,Official budget documents the City natural-gas utility.
 orlando-sewer,City of Orlando Wastewater Data,https://www.orlando.gov/Our-Government/Departments-Offices/Public-Works/View-Wastewater-and-Stormwater-Utilities-Data,municipal-government,2026-07-28,Official page states map data are approximate and require field verification.
 orlando-trash,City of Orlando Trash and Recycling,https://www.orlando.gov/Trash-Recycling,municipal-government,2026-07-28,Official page provides collection information and contact options.
 kissimmee-trash,City of Kissimmee Solid Waste,https://www.kissimmee.gov/My-Government/City-Departments-Offices/Public-Works-Engineering/Solid-Waste,municipal-government,2026-07-28,Official page distinguishes city and unincorporated collection.
-lake-apopka-gas,Lake Apopka Natural Gas District Service Inquiry,https://langd.org/new-service-inquiry/,special-district,2026-07-28,Official district form checks gas availability by address.
-fpuc-gas,Florida Public Utilities Natural Gas Tariff,https://fpuc.com/wp-content/uploads/FPU-Consolidated-Natural-Gas-Tariff-1.pdf,utility-tariff,2026-07-28,Official tariff identifies DeLand territory and regulated service.
+spectrum-internet,Spectrum Internet Availability,https://www.spectrum.com/address/localization,provider-address-checker,2026-08-01,Official Spectrum tool requires a complete address.
+xfinity-internet,Xfinity Service Availability,https://www.xfinity.com/support/articles/determining-serviceability,provider-address-checker,2026-08-01,Official Xfinity guidance requires an address-level serviceability check.
+att-internet,AT&T Internet Availability,https://www.att.com/buy/broadband/availability.html,provider-address-checker,2026-08-01,Official AT&T tool requires a complete address.
+quantum-fiber,Quantum Fiber Availability,https://www.quantumfiber.com/shop/,provider-address-checker,2026-08-01,Official Quantum Fiber tool requires a complete address.
+kua-electric,KUA Outage Information,https://kua.com/out/,utility-outage,2026-08-01,Official KUA page links to its live outage map and outage reporting options.
+ouc-electric,OUC Outage Information,https://www.ouc.com/customer-service/report-outage-problem/,utility-outage,2026-08-01,Official OUC page links to the public outage map and reporting methods.
+seco-electric,SECO StormCenter,https://secoenergy.com/stormcenter/,utility-outage,2026-08-01,Official SECO resource links to the live outage map and reporting tools.
+winter-park-electric,Winter Park Emergency and Outage Information,https://cityofwinterpark.org/hurricanes/,municipal-utility,2026-08-01,Official city emergency page provides the live power outage map during emergency activation.
+mount-dora-electric,Mount Dora Emergency Preparedness,https://www.mountdora.gov/308/Emergency-Preparedness,municipal-utility,2026-08-01,Official city page provides outage reporting and emergency guidance.
+mount-dora-electric,Mount Dora City Service Contacts,https://mountdora.gov/902/How-to-Contact-City-Services,municipal-utility,2026-08-01,Official city page lists the Mount Dora Electric power-outage phone.

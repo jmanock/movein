@@ -61,14 +61,20 @@ test("returns grouped verified results with multiple possible electric and water
   assert.equal(result.providers.electricity[0].coverageLabel, "Possible provider");
 });
 
-test("returns mostly verified data without fabricated address-level providers", () => {
+test("returns verified core data with address-level internet providers", () => {
   const result = getLookupResult("32771");
-  assert.equal(result?.status, "mostly_verified");
+  assert.equal(result?.status, "verified");
   assert.equal(result?.isIndexable, true);
   assert.ok(result.providers.water.length > 0);
-  assert.equal(result.providers["natural-gas"].length, 1);
-  assert.equal(result.providers["natural-gas"][0].providerType, "official_lookup");
-  assert.match(result.providers["natural-gas"][0].coverageNotes, /confirm/i);
+  assert.equal(result.providers["natural-gas"], undefined);
+  const internetProviders = result.providers.internet.filter((provider) => provider.providerType !== "official_lookup");
+  assert.equal(internetProviders.length, 4);
+  for (const provider of internetProviders) {
+    assert.match(provider.addressCheckUrl, /^https:/);
+    assert.match(provider.supportUrl, /^https:/);
+    assert.ok(provider.technologyType);
+    assert.equal(provider.requiresAddressConfirmation, true);
+  }
   assert.match(result.disclaimer, /exact street address/i);
 });
 
@@ -89,6 +95,17 @@ test("returns a known empty ZIP as pending and never indexable", () => {
   assert.equal(Object.values(result.providers).flat().length, 0);
 });
 
+test("seeded expansion ZIPs stay noindex while exposing safe starting points", () => {
+  const result = getLookupResult("32701");
+  assert.ok(result);
+  assert.equal(result.isIndexable, false);
+  assert.equal(result.status, "partial");
+  assert.equal(result.providers.electricity, undefined);
+  assert.equal(result.providers.water, undefined);
+  assert.equal(result.providers.internet[0].providerType, "official_lookup");
+  assert.equal(result.providers["local-government"][0].name, "Seminole County Government");
+});
+
 test("formats phone links and exposes official source URLs", () => {
   const provider = getLookupResult("32801").providers.electricity[0];
   assert.match(provider.contacts[0].phone, /^\(\d{3}\) \d{3}-\d{4}$/);
@@ -106,8 +123,9 @@ test("API controls invalid, unknown, and successful responses", async () => {
   const valid = await GET(new Request("http://localhost/api/lookup?zip=32720"));
   assert.equal(valid.status, 200);
   const payload = await valid.json();
-  assert.equal(payload.status, "mostly_verified");
-  assert.ok(Array.isArray(payload.providers.naturalGas));
+  assert.equal(payload.status, "verified");
+  assert.equal("naturalGas" in payload.providers, false);
+  assert.ok(Array.isArray(payload.providers.internet));
   assert.ok(Array.isArray(payload.providers.trashRecycling));
   assert.equal("isIndexable" in payload, false);
   assert.match(valid.headers.get("cache-control"), /s-maxage/);
@@ -128,12 +146,12 @@ test("correction validation and API return controlled responses", async () => {
 test("CSV validation catches no errors in the pilot dataset", () => {
   const result = spawnSync(process.execPath, ["scripts/validate-provider-data.mjs"], { cwd: root, encoding: "utf8" });
   assert.equal(result.status, 0, result.stderr);
-  assert.match(result.stdout, /Validated 12 ZIPs/);
+  assert.match(result.stdout, /Validated 50 ZIPs/);
 });
 
 test("data operations support duplicate checks, a research queue, and a non-writing import preview", () => {
   for (const [script, expected] of [
-    ["scripts/report-duplicates.mjs", /No duplicates across 12 ZIPs/],
+    ["scripts/report-duplicates.mjs", /No duplicates across 50 ZIPs/],
     ["scripts/generate-research-queue.mjs", /Wrote \d+ research tasks/],
   ]) {
     const result = spawnSync(process.execPath, [script], { cwd: root, env: { ...process.env, RESEARCH_QUEUE_PATH: join(temporaryDirectory, "research-queue.csv"), RESEARCH_SUMMARY_PATH: join(temporaryDirectory, "research-summary.md") }, encoding: "utf8" });
@@ -143,7 +161,7 @@ test("data operations support duplicate checks, a research queue, and a non-writ
   const before = getDatabase().prepare("SELECT COUNT(*) AS count FROM providers").get().count;
   const dryRun = spawnSync(process.execPath, ["scripts/import-florida-data.mjs", "--dry-run", "--confirm-verified"], { cwd: root, env: process.env, encoding: "utf8" });
   assert.equal(dryRun.status, 0, dryRun.stderr);
-  assert.match(dryRun.stdout, /Dry run: 12 ZIPs, 52 providers/);
+  assert.match(dryRun.stdout, /Dry run: 50 ZIPs, 52 providers/);
   assert.equal(getDatabase().prepare("SELECT COUNT(*) AS count FROM providers").get().count, before);
 });
 
@@ -204,10 +222,13 @@ test("mobile layout and accessible focus treatment are preserved", async () => {
 test("results show every service category and an explicit missing-data state", async () => {
   const results = await read("../app/components/LookupResults.tsx");
   assert.match(results, /We are still verifying this service for your ZIP code/);
-  for (const category of ["electricity", "water", "sewer", "natural-gas", "internet", "trash-recycling"]) assert.match(results, new RegExp(category));
+  for (const category of ["electricity", "water", "sewer", "internet", "trash-recycling", "local-government"]) assert.match(results, new RegExp(category));
+  assert.doesNotMatch(results, /natural-gas|Natural gas/i);
   assert.match(results, /Report incorrect information/);
   assert.match(results, /Check availability at your address/);
   assert.match(results, /Availability and speeds vary by exact street address/);
+  assert.match(results, /Internet availability depends on your exact address/);
+  assert.match(results, /Provider support/);
   assert.match(results, /Trash service may be arranged by your city, county, HOA, landlord, or private hauler/);
   assert.match(results, /View outage map/);
   assert.match(results, /Verified \{formatDate\(provider\.lastVerifiedAt\)\}/);
@@ -228,7 +249,8 @@ test("research automation preserves address-level gaps and link checker has GET 
   assert.equal(queue.status, 0, queue.stderr);
   const queueText = await readFile(queuePath, "utf8");
   assert.match(queueText, /sources_reviewed,next_recommended_action/);
-  assert.match(queueText, /Verify a representative street address/);
+  assert.match(queueText, /Review official provider address checkers/);
+  assert.doesNotMatch(queueText, /natural-gas|Natural gas/i);
   const checker = await read("../scripts/check-provider-links.mjs");
   assert.match(checker, /HEAD returned \$\{head\.status\}; GET fallback used/);
   assert.match(checker, /head-blocked-get-reachable/);
@@ -262,4 +284,12 @@ test("standard Node scripts and dependencies have no Cloudflare coupling", async
   assert.equal(parsed.scripts.start, "next start");
   assert.equal(parsed.engines.node, ">=22.13.0");
   assert.doesNotMatch(`${pkg}${lock}`, /cloudflare:|wrangler|vinext|@cloudflare/i);
+});
+
+test("retired natural gas is absent from public application code and active providers", async () => {
+  const files = ["../app/components/LookupResults.tsx", "../app/api/lookup/route.ts", "../app/data/site.ts", "../app/data/guides.ts", "../app/learn-your-area/page.tsx"];
+  const publicSource = (await Promise.all(files.map(read))).join("\n");
+  assert.doesNotMatch(publicSource, /natural gas|natural-gas/i);
+  const activeGas = getDatabase().prepare(`SELECT COUNT(*) count FROM providers p JOIN provider_categories pc ON pc.id=p.category_id WHERE pc.slug='natural-gas' AND p.status!='inactive'`).get().count;
+  assert.equal(activeGas, 0);
 });

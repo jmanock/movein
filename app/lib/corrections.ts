@@ -1,6 +1,6 @@
 export const correctionCategories = [
   ["electricity", "Electricity"], ["water", "Water"], ["sewer", "Sewer"],
-  ["natural-gas", "Natural gas"], ["internet", "Internet"],
+  ["internet", "Internet"],
   ["trash-recycling", "Trash & recycling"], ["local-government", "Local government"],
   ["other", "Other"],
 ] as const;

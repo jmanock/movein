@@ -30,7 +30,7 @@ export type Guide = {
 
 const reviewed = "2026-07-29";
 const fcc: OfficialResource = { title: "National Broadband Map", organization: "Federal Communications Commission", url: "https://broadbandmap.fcc.gov/home", checked: reviewed, note: "Search reported fixed broadband availability by complete street address." };
-const floridaPsc: OfficialResource = { title: "Find Your Utility", organization: "Florida Public Service Commission", url: "https://www.floridapsc.com/find-utility-service", checked: reviewed, note: "Official starting point for regulated electric and natural-gas utility territory information in Florida." };
+const floridaPsc: OfficialResource = { title: "Find Your Utility", organization: "Florida Public Service Commission", url: "https://www.floridapsc.com/find-utility-service", checked: reviewed, note: "Official starting point for regulated electric utility territory information in Florida." };
 const usps: OfficialResource = { title: "Official USPS Change of Address", organization: "United States Postal Service", url: "https://moversguide.usps.com/", checked: reviewed, note: "Submit an official mail-forwarding request directly with USPS." };
 const ready: OfficialResource = { title: "Power Outages", organization: "Ready.gov", url: "https://www.ready.gov/power-outages", checked: reviewed, note: "Federal preparedness guidance for power outages and household safety." };
 const cpsc: OfficialResource = { title: "Home Safety Education", organization: "U.S. Consumer Product Safety Commission", url: "https://www.cpsc.gov/Safety-Education/Safety-Guides/Home", checked: reviewed, note: "Federal home-safety guidance covering common household risks." };
@@ -112,20 +112,20 @@ export const guides: Guide[] = [
     published: "2026-07-29", reviewed,
     sections: [
       { heading: "Work backward from responsibility", paragraphs: ["Your closing documents, lease, seller, landlord, or property manager should establish when responsibility changes. Installation services such as internet may need more lead time than an account transfer."], steps: ["Confirm the responsibility date.", "Identify the provider for the exact address.", "Ask each provider for its current lead time.", "Keep confirmation numbers and scheduled dates."] },
-      { heading: "Coordinate, do not guess", paragraphs: ["Electric, water, gas, and internet providers have different processes. Some transfers are immediate; others require deposits, appointments, or access to the property."] },
+      { heading: "Coordinate, do not guess", paragraphs: ["Electric, water, and internet providers have different processes. Some transfers are immediate; others require deposits, appointments, or access to the property."] },
       { heading: "Check the first bill", paragraphs: ["Confirm the service address, start date, meter information when shown, and approved charges. Contact the provider promptly if the account reflects the wrong property or date."] },
     ],
     related: ["/resources/utility-setup-documents", "/homeowners/set-up-utilities", "/renters/set-up-utilities"], sources: [],
   },
   {
     path: "/resources/why-providers-vary-by-zip", section: "resources", slug: "why-providers-vary-by-zip",
-    title: "Why Utility Providers Vary Within One ZIP Code", description: "Understand why ZIP codes can contain multiple electric, water, internet, gas, and trash service arrangements.",
+    title: "Why Utility Providers Vary Within One ZIP Code", description: "Understand why ZIP codes can contain multiple electric, water, internet, and trash service arrangements.",
     h1: "Why providers can vary within the same ZIP code", eyebrow: "Service boundaries",
     directAnswer: "ZIP codes organize mail delivery; utility service follows infrastructure, municipal borders, districts, franchises, and property connections. A ZIP can therefore contain multiple possible providers.",
     published: "2026-07-29", reviewed,
     sections: [
       { heading: "Different systems use different boundaries", paragraphs: ["Electric territories, water systems, sewer connections, trash franchises, and broadband networks were not designed around one shared postal map. Each service can have a different boundary inside the same ZIP."] },
-      { heading: "Property conditions also matter", paragraphs: ["A house may use a private well or septic system. A multifamily property may have a master utility account or building-wide internet arrangement. Natural gas infrastructure may stop before reaching a particular street."] },
+      { heading: "Property conditions also matter", paragraphs: ["A house may use a private well or septic system. A multifamily property may have a master utility account or building-wide internet arrangement. Collection responsibility may also sit with an HOA or property manager."] },
       { heading: "How MoveIn handles uncertainty", paragraphs: ["MoveIn labels records as possible, multiple providers possible, address confirmation required, or coverage varies when the evidence cannot support a ZIP-wide claim."], steps: ["Use the ZIP result to identify official starting points.", "Read the coverage and jurisdiction notes.", "Confirm the complete address directly before opening service."] },
     ],
     related: ["/resources/find-electric-company", "/resources/find-internet-providers", "/resources/mailing-city-vs-utility-jurisdiction"], sources: [floridaPsc, fcc],
@@ -158,12 +158,12 @@ export const guides: Guide[] = [
   },
   {
     path: "/homeowners/set-up-utilities", section: "homeowners", slug: "set-up-utilities",
-    title: "Utility Setup for New Homeowners", description: "Set up electricity, water, sewer or septic, internet, gas, and trash service for a newly purchased home.",
+    title: "Utility Setup for New Homeowners", description: "Set up electricity, water, sewer or septic, internet, and trash service for a newly purchased home.",
     h1: "How to set up utilities for a new home", eyebrow: "Homeowner guide",
-    directAnswer: "Confirm each provider for the exact address, schedule service for the responsibility date, save confirmations and emergency contacts, and verify the first bill. Treat water, sewer, gas, internet, and trash as separate address checks.",
+    directAnswer: "Confirm each provider for the exact address, schedule service for the responsibility date, save confirmations and emergency contacts, and verify the first bill. Treat water, sewer, internet, and trash as separate address checks.",
     published: "2026-07-29", reviewed,
     sections: [
-      { heading: "Start with the essential accounts", paragraphs: ["Use the ZIP lookup to identify likely providers, then confirm the property with each official source."], steps: ["Electricity and outage contacts.", "Water plus sewer or septic status.", "Internet installation and property access.", "Natural gas only where available.", "Trash, recycling, yard waste, and bulk collection."] },
+      { heading: "Start with the essential accounts", paragraphs: ["Use the ZIP lookup to identify likely providers, then confirm the property with each official source."], steps: ["Electricity and outage contacts.", "Water plus sewer or septic status.", "Internet installation and property access.", "Trash, recycling, yard waste, and bulk collection.", "City and county emergency information."] },
       { heading: "Learn the house while service starts", paragraphs: ["Locate the main water shutoff and electrical panel, test smoke and carbon-monoxide alarms, and keep inspection findings available. Do not open sealed utility equipment or attempt unsafe repairs."] },
       { heading: "Keep a clean record", paragraphs: ["Save start dates, confirmation numbers, account contacts, deposits, meter information when provided, and the first bill. MoveIn does not collect or store these account materials."] },
     ],
@@ -176,8 +176,8 @@ export const guides: Guide[] = [
     directAnswer: "After confirming each provider, save its official outage or emergency number, bookmark the outage map, and keep a non-digital copy with household emergency information.",
     published: "2026-07-29", reviewed,
     sections: [
-      { heading: "Use confirmed provider contacts", paragraphs: ["An outage number is useful only when it belongs to the utility serving the property. Confirm the provider before saving the number."], steps: ["Electric outage phone and map.", "Water or sewer emergency line.", "Natural-gas emergency line when gas is present.", "City or county non-emergency contact."] },
-      { heading: "Know which channel to use", paragraphs: ["Use 911 for immediate danger. Report utility outages, leaks, or service problems through the provider’s official emergency channel. Never investigate a suspected gas leak or downed power line yourself."] },
+      { heading: "Use confirmed provider contacts", paragraphs: ["An outage number is useful only when it belongs to the utility serving the property. Confirm the provider before saving the number."], steps: ["Electric outage phone and map.", "Water or sewer emergency line.", "City or county non-emergency contact.", "Property-management emergency contact when applicable."] },
+      { heading: "Know which channel to use", paragraphs: ["Use 911 for immediate danger. Report utility outages, leaks, or service problems through the provider’s official emergency channel. Never approach a downed power line or open sealed utility equipment."] },
       { heading: "Keep information available during an outage", paragraphs: ["Store contacts on the phone and on paper. Keep devices charged, follow official public-safety instructions, and avoid relying on social-media posts for restoration estimates."] },
     ],
     related: ["/resources/find-electric-company", "/homeowners/set-up-utilities", "/homeowners/find-water-shutoff"], sources: [ready],
@@ -202,7 +202,7 @@ export const guides: Guide[] = [
     directAnswer: "Read the lease first, list the services the tenant must open, confirm each provider for the exact unit, and coordinate start dates with the landlord or property manager.",
     published: "2026-07-29", reviewed,
     sections: [
-      { heading: "Separate included services from tenant accounts", paragraphs: ["Electricity, water, gas, trash, and internet responsibilities vary by lease and building."], steps: ["Mark every utility the lease says is included.", "List accounts the tenant must open.", "Confirm providers for the exact unit.", "Ask about shared meters, billing allocations, or required providers."] },
+      { heading: "Separate included services from tenant accounts", paragraphs: ["Electricity, water, trash, and internet responsibilities vary by lease and building."], steps: ["Mark every utility the lease says is included.", "List accounts the tenant must open.", "Confirm providers for the exact unit.", "Ask about shared meters, billing allocations, or required providers."] },
       { heading: "Coordinate installation access", paragraphs: ["Internet or other installation work may require an appointment, building access, or written permission before drilling or modifying wiring."] },
       { heading: "Document the handoff", paragraphs: ["Keep utility confirmations with the lease and move-in condition report. Photograph visible meter readings when lawful and practical, and notify management promptly about mismatches or service problems."] },
     ],
@@ -212,10 +212,10 @@ export const guides: Guide[] = [
     path: "/renters/utility-responsibilities", section: "renters", slug: "utility-responsibilities",
     title: "Renter Utility Responsibilities", description: "Understand how a lease, property type, and local service arrangements determine utility responsibility.",
     h1: "Which utilities are renters responsible for?", eyebrow: "Read the lease",
-    directAnswer: "The lease controls which utilities are included and which accounts the tenant must open. Never assume that water, trash, gas, or internet is included because it was included at another property.",
+    directAnswer: "The lease controls which utilities are included and which accounts the tenant must open. Never assume that water, trash, or internet is included because it was included at another property.",
     published: "2026-07-29", reviewed,
     sections: [
-      { heading: "Build a responsibility list", paragraphs: ["Review utility clauses, addenda, building rules, and any separate billing disclosures."], steps: ["Electric account responsibility.", "Water and sewer billing method.", "Natural gas where present.", "Trash and recycling arrangement.", "Internet and installation rules."] },
+      { heading: "Build a responsibility list", paragraphs: ["Review utility clauses, addenda, building rules, and any separate billing disclosures."], steps: ["Electric account responsibility.", "Water and sewer billing method.", "Trash and recycling arrangement.", "Internet and installation rules.", "Building-managed services and shared meters."] },
       { heading: "Ask about shared or allocated bills", paragraphs: ["Some multifamily properties bill through management or divide a master account. Ask how charges are calculated, when they are due, and where disputes should be directed."] },
       { heading: "Keep maintenance roles separate", paragraphs: ["Opening a utility account does not necessarily make the tenant responsible for repairing building systems. Use the lease’s maintenance process and report emergencies through the designated contact."] },
     ],
@@ -236,12 +236,12 @@ export const guides: Guide[] = [
   },
   {
     path: "/resources/set-up-utilities", section: "resources", slug: "set-up-utilities",
-    title: "How to Set Up Utilities After a Move", description: "A practical order for finding, confirming, and starting electric, water, internet, gas, and trash service at a new address.",
+    title: "How to Set Up Utilities After a Move", description: "A practical order for finding, confirming, and starting electric, water, internet, and trash service at a new address.",
     h1: "How to set up utilities after a move", eyebrow: "Utility setup",
     directAnswer: "List the services the household is responsible for, use the ZIP lookup to find possible providers, confirm the complete address with each official source, and schedule service for the date responsibility begins.", published: reviewed, reviewed,
     sections: [
-      { heading: "Start with responsibility, not provider names", paragraphs: ["Homeowners usually arrange every service. Renters should read the lease first because water, trash, or gas may be included or billed through management."], steps: ["List every service needed.", "Mark who is responsible.", "Confirm the exact address.", "Ask about deposits and lead times.", "Save official outage contacts."] },
-      { heading: "Use a sensible order", paragraphs: ["Start electricity and water first, then schedule internet or other appointment-based work. Confirm trash rules and natural gas only where they apply."] },
+      { heading: "Start with responsibility, not provider names", paragraphs: ["Homeowners usually arrange every service. Renters should read the lease first because water or trash may be included or billed through management."], steps: ["List every service needed.", "Mark who is responsible.", "Confirm the exact address.", "Ask about deposits and lead times.", "Save official outage contacts."] },
+      { heading: "Use a sensible order", paragraphs: ["Start electricity and water first, then schedule internet or other appointment-based work. Confirm trash rules and local-government contacts before move-in."] },
       { heading: "Verify the first bill", paragraphs: ["Check service dates, address, deposits, and rate details. Keep confirmations privately; MoveIn does not collect account or payment information."] },
     ], related: ["/resources/utility-setup-documents", "/resources/when-to-transfer-utilities", "/resources/find-electric-company"], sources: [floridaPsc],
   },

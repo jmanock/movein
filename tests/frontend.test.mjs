@@ -8,7 +8,8 @@ test("front-end growth routes and states remain explicit", async () => {
   const [home, coverage, lookup, resources] = await Promise.all([read("../app/page.tsx"), read("../app/coverage/page.tsx"), read("../app/lookup/[zip]/page.tsx"), read("../app/resources/page.tsx")]);
   assert.match(home, /context="homepage_hero"/);
   assert.match(home, /pathway-icon/);
-  assert.match(coverage, /getIndexableZipResults/);
+  assert.match(coverage, /getCoverageResults/);
+  assert.match(coverage, /isZipResultIndexable/);
   assert.match(lookup, /UnsupportedZip/);
   assert.match(lookup, /See current coverage/);
   assert.match(resources, /printables\.map/);
@@ -34,7 +35,7 @@ test("Phase 3 ZIP pages include practical local authority content", async () => 
   for (const section of ["Recently moved?", "Things to check during the first week", "Emergency information", "Moving to this ZIP code"]) assert.match(results, new RegExp(section.replace("?", "\\?")));
   for (const action of ["Change your mailing address", "Update your license or vehicle record", "Register or update your voter record", "Check flood risk", "Prepare for Florida hazards"]) assert.match(localResources, new RegExp(action));
   for (const county of ["Seminole", "Orange", "Volusia", "Lake", "Osceola"]) assert.match(localResources, new RegExp(`${county}:`));
-  assert.equal((localResources.match(/^\s+"\d{5}":/gm) ?? []).length, 12);
+  assert.equal((localResources.match(/^\s+"\d{5}":/gm) ?? []).length, 50);
   assert.match(results, /provider\.serviceNotes/);
   assert.match(results, /Official source/);
   assert.match(styles, /\.local-resource-grid/);
@@ -70,4 +71,14 @@ test("GA4 loads once from the root and manually measures App Router page views",
   assert.match(analytics, /blockedKeys/);
   assert.match(declarations, /gtag\?: GtagFunction/);
   assert.match(environment, /G-QC9FYWHVZZ/);
+});
+
+test("Phase 2 coverage and health reporting preserve the indexability gate", async () => {
+  const [coverage, health, pkg] = await Promise.all([read("../app/coverage/page.tsx"), read("../scripts/production-health-report.mjs"), read("../package.json")]);
+  assert.match(coverage, /verified and indexable/);
+  assert.match(coverage, /pending research/);
+  assert.match(coverage, /excluded from the XML sitemap/);
+  assert.match(health, /GA4 root installation and manual page-view control/);
+  assert.match(health, /Production build/);
+  assert.equal(JSON.parse(pkg).scripts["health:report"], "node scripts/production-health-report.mjs");
 });
