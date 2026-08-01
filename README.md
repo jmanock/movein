@@ -60,7 +60,7 @@ DATABASE_PATH=/var/lib/movein/movein.sqlite
 ## Product routes
 
 - `/` — primary ZIP lookup
-- `/lookup/[zip]` — server-rendered result page
+- `/lookup/[zip]` — server-rendered utility, recently-moved, emergency, and official local-resource page
 - `/api/lookup?zip=32771` — controlled JSON lookup
 - `/homeowners`, `/renters` — focused hubs with substantive setup guides
 - `/learn-your-area`, `/resources`, `/coverage`, `/faq`
@@ -115,3 +115,4 @@ The seed is idempotent and non-deleting. A changed verified row is refused unles
 - `docs/accessibility.md` and `docs/performance.md` — front-end quality guardrails
 - `docs/analytics-events.md` — privacy-safe event names and integration boundary
 - `docs/google-analytics.md` — GA4 setup, event parameters, testing, privacy, and duplicate prevention
+- `docs/phase-3-quality-audit.md` — full-site authority audit, remediation, guardrails, and release evidence

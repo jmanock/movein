@@ -32,11 +32,14 @@ test("metadata, canonicals, social cards, and noindex rules share one architectu
 });
 
 test("schema and sitemap implementations use visible source data", async () => {
-  const [breadcrumbs, guide, faq, zip, sitemap, htmlMap] = await Promise.all([read("../app/components/PageHero.tsx"), read("../app/components/GuideArticle.tsx"), read("../app/faq/page.tsx"), read("../app/components/LookupResults.tsx"), read("../app/sitemap.ts"), read("../app/site-map/page.tsx")]);
+  const [breadcrumbs, guide, faq, zip, zipPage, home, resources, sitemap, htmlMap] = await Promise.all([read("../app/components/PageHero.tsx"), read("../app/components/GuideArticle.tsx"), read("../app/faq/page.tsx"), read("../app/components/LookupResults.tsx"), read("../app/lookup/[zip]/page.tsx"), read("../app/page.tsx"), read("../app/resources/page.tsx"), read("../app/sitemap.ts"), read("../app/site-map/page.tsx")]);
   assert.match(breadcrumbs, /BreadcrumbList/);
   assert.match(guide, /"Article"/);
   assert.match(faq, /faqItems\.map/);
   assert.match(zip, /buildLocalFaq/);
+  assert.match(zipPage, /"@type": "Service"/);
+  assert.match(home, /SearchAction/);
+  assert.match(resources, /CollectionPage/);
   assert.match(sitemap, /getIndexableZipResults/);
   assert.match(htmlMap, /getIndexableZipResults/);
 });

@@ -1,11 +1,11 @@
 # SEO Validation Report
 
-Generated: 2026-07-29
+Generated: 2026-08-01
 
 ## Scope
 
-- 39 manifest-backed public pages
-- 19 substantive guides
+- 44 manifest-backed public pages
+- 24 substantive guides
 - 12 database-backed ZIP pages that pass the indexability gate
 - metadata, canonicals, H1s, schema hooks, sitemap/robots integration, related-guide targets, and content dates
 - runtime crawl against http://127.0.0.1:3006
@@ -55,6 +55,11 @@ None.
 | /resources/utility-deposits | 200 | 1 | https://movein.guide/resources/utility-deposits |
 | /resources/city-vs-county-water-service | 200 | 1 | https://movein.guide/resources/city-vs-county-water-service |
 | /homeowners/hoa-utility-responsibilities | 200 | 1 | https://movein.guide/homeowners/hoa-utility-responsibilities |
+| /homeowners/first-week-home-safety | 200 | 1 | https://movein.guide/homeowners/first-week-home-safety |
+| /homeowners/home-records-and-maintenance | 200 | 1 | https://movein.guide/homeowners/home-records-and-maintenance |
+| /renters/document-move-in-condition | 200 | 1 | https://movein.guide/renters/document-move-in-condition |
+| /renters/renters-insurance-and-deposits | 200 | 1 | https://movein.guide/renters/renters-insurance-and-deposits |
+| /renters/maintenance-parking-and-pet-checklist | 200 | 1 | https://movein.guide/renters/maintenance-parking-and-pet-checklist |
 | /resources/printables/utility-setup-checklist | 200 | 1 | https://movein.guide/resources/printables/utility-setup-checklist |
 | /resources/printables/new-home-checklist | 200 | 1 | https://movein.guide/resources/printables/new-home-checklist |
 | /resources/printables/renter-move-in-checklist | 200 | 1 | https://movein.guide/resources/printables/renter-move-in-checklist |

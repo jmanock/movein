@@ -1,8 +1,8 @@
 # Internal Link Report
 
-Generated: 2026-07-29
+Generated: 2026-08-01
 
-Crawled 51 canonical sitemap routes and checked 55 distinct internal targets against http://127.0.0.1:3006.
+Crawled 56 canonical sitemap routes and checked 60 distinct internal targets against http://127.0.0.1:3006.
 
 ## Broken targets
 

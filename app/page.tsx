@@ -12,7 +12,7 @@ import { getIndexableZipResults } from "./lib/seo";
 
 export const metadata: Metadata = pageMetadata("Find Utilities and Essential Services by ZIP Code", DEFAULT_DESCRIPTION, "/");
 const structuredData = { "@context": "https://schema.org", "@graph": [
-  { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: "MoveIn", url: SITE_URL, description: DEFAULT_DESCRIPTION },
+  { "@type": "WebSite", "@id": `${SITE_URL}/#website`, name: "MoveIn", url: SITE_URL, description: DEFAULT_DESCRIPTION, potentialAction: { "@type": "SearchAction", target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/lookup?zip={search_term_string}` }, "query-input": "required name=search_term_string" } },
   { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: "MoveIn", url: SITE_URL, slogan: "Everything after the keys.", email: "hello@movein.guide" },
 ] };
 const resources = [

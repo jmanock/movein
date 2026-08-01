@@ -29,6 +29,18 @@ test("front-end audit checks serious quality regressions", async () => {
   assert.match(audit, /process\.exitCode = 1/);
 });
 
+test("Phase 3 ZIP pages include practical local authority content", async () => {
+  const [results, localResources, styles] = await Promise.all([read("../app/components/LookupResults.tsx"), read("../app/data/local-resources.ts"), read("../app/globals.css")]);
+  for (const section of ["Recently moved?", "Things to check during the first week", "Emergency information", "Moving to this ZIP code"]) assert.match(results, new RegExp(section.replace("?", "\\?")));
+  for (const action of ["Change your mailing address", "Update your license or vehicle record", "Register or update your voter record", "Check flood risk", "Prepare for Florida hazards"]) assert.match(localResources, new RegExp(action));
+  for (const county of ["Seminole", "Orange", "Volusia", "Lake", "Osceola"]) assert.match(localResources, new RegExp(`${county}:`));
+  assert.equal((localResources.match(/^\s+"\d{5}":/gm) ?? []).length, 12);
+  assert.match(results, /provider\.serviceNotes/);
+  assert.match(results, /Official source/);
+  assert.match(styles, /\.local-resource-grid/);
+  assert.match(styles, /\.emergency-grid/);
+});
+
 test("GA4 loads once from the root and manually measures App Router page views", async () => {
   const [layout, component, analytics, environment, declarations] = await Promise.all([read("../app/layout.tsx"), read("../app/components/GoogleAnalytics.tsx"), read("../app/lib/analytics.ts"), read("../.env.example"), read("../types/gtag.d.ts")]);
   assert.match(layout, /<GoogleAnalytics/);

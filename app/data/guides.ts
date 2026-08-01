@@ -34,6 +34,9 @@ const floridaPsc: OfficialResource = { title: "Find Your Utility", organization:
 const usps: OfficialResource = { title: "Official USPS Change of Address", organization: "United States Postal Service", url: "https://moversguide.usps.com/", checked: reviewed, note: "Submit an official mail-forwarding request directly with USPS." };
 const ready: OfficialResource = { title: "Power Outages", organization: "Ready.gov", url: "https://www.ready.gov/power-outages", checked: reviewed, note: "Federal preparedness guidance for power outages and household safety." };
 const cpsc: OfficialResource = { title: "Home Safety Education", organization: "U.S. Consumer Product Safety Commission", url: "https://www.cpsc.gov/Safety-Education/Safety-Guides/Home", checked: reviewed, note: "Federal home-safety guidance covering common household risks." };
+const readyPlan: OfficialResource = { title: "Plan Ahead for Disasters", organization: "Ready.gov", url: "https://www.ready.gov/", checked: "2026-08-01", note: "Federal guidance for household emergency plans, alerts, and supply kits." };
+const floridaRentersInsurance: OfficialResource = { title: "Renters' Insurance Overview", organization: "Florida Department of Financial Services", url: "https://www.myfloridacfo.com/division/consumers/understanding-insurance/renters-insurance", checked: "2026-08-01", note: "Official Florida consumer information about renters' insurance coverage and questions to ask." };
+const floridaLandlordTenant: OfficialResource = { title: "Landlord/Tenant Law in Florida", organization: "Florida Department of Agriculture and Consumer Services", url: "https://www.fdacs.gov/Consumer-Resources/Landlord-Tenant-Law-in-Florida", checked: "2026-08-01", note: "Official state summary covering move-in condition records, deposits, notices, and responsibilities; it is not legal advice." };
 
 export const guides: Guide[] = [
   {
@@ -262,6 +265,71 @@ export const guides: Guide[] = [
     h1: "Which utilities can an HOA handle?", eyebrow: "HOA basics",
     directAnswer: "An HOA may coordinate trash, irrigation, private water, cable, or shared-area service, but the governing documents and closing disclosures—not the neighborhood name—control the answer.", published: reviewed, reviewed,
     sections: [{ heading: "Build a written responsibility list", paragraphs: ["Review the declaration, budget, fee schedule, and resale or estoppel materials."], steps: ["Identify services paid through assessments.", "Confirm individual meters and accounts.", "Ask about approved vendors or access rules.", "Get emergency contacts for shared systems."] }, { heading: "Still confirm public utilities", paragraphs: ["HOA involvement does not prove the public or private utility serving the parcel. Confirm the address with the official source."] }, { heading: "Separate shared and household emergencies", paragraphs: ["Save both the HOA contact for common systems and the confirmed provider contacts for the home. Know which party handles irrigation, lift stations, gates, and common-area outages."] }], related: ["/homeowners/set-up-utilities", "/resources/find-trash-service", "/resources/find-water-provider"], sources: [],
+  },
+  {
+    path: "/homeowners/first-week-home-safety", section: "homeowners", slug: "first-week-home-safety",
+    title: "First-Week Home Safety Checklist", description: "Check locks, alarms, the breaker panel, GFCI outlets, water shutoffs, garage access, and emergency contacts during the first week in a home.",
+    h1: "A first-week safety check for a new home", eyebrow: "Home safety",
+    directAnswer: "Start with controls and alarms you may need in an emergency: confirm keys and access codes, locate the main water shutoff and electrical panel, test alarms, identify GFCI protection, and save official emergency contacts. Do not dismantle equipment or attempt work you are not qualified to perform.",
+    published: "2026-08-01", reviewed: "2026-08-01",
+    sections: [
+      { heading: "Secure the ways into the home", paragraphs: ["Account for exterior keys, garage remotes, gate credentials, keypad codes, and any smart-lock access left by prior occupants. Follow HOA or property rules where they apply."], steps: ["Confirm every exterior door and window closes and locks.", "Change or rekey locks when appropriate.", "Reset garage, gate, and alarm access with the authorized system owner.", "Keep one safe backup entry plan."] },
+      { heading: "Find critical controls without experimenting", paragraphs: ["Label the homeowner-accessible water shutoff and electrical panel only after confirming what each control does. Do not open sealed meter equipment, touch exposed wiring, force a damaged valve, or reset a breaker that repeatedly trips."], steps: ["Locate the main water shutoff.", "Locate the electrical panel and confirm its directory.", "Identify GFCI outlets and use their built-in test instructions.", "Ask a qualified professional about damaged, warm, sparking, leaking, or unfamiliar equipment."] },
+      { heading: "Test alerts and prepare for an interruption", paragraphs: ["Confirm smoke and carbon-monoxide alarms are present where required, follow the manufacturer's test and replacement instructions, and save provider outage contacts before an emergency."], steps: ["Test alarms using their test controls.", "Check alarm age and battery instructions.", "Bookmark the confirmed electric outage map.", "Keep flashlights and a basic emergency kit accessible."] },
+    ],
+    related: ["/homeowners/find-water-shutoff", "/homeowners/save-outage-information", "/homeowners/home-records-and-maintenance"], sources: [cpsc, readyPlan],
+  },
+  {
+    path: "/homeowners/home-records-and-maintenance", section: "homeowners", slug: "home-records-and-maintenance",
+    title: "Home Records and Maintenance Setup", description: "Create an appliance record, insurance inventory, filter schedule, warranty file, and practical maintenance calendar after moving in.",
+    h1: "Set up home records before details get lost", eyebrow: "Home organization",
+    directAnswer: "Create one private home record with major appliance models, warranty and registration details, an insurance inventory, filter sizes, inspection priorities, and recurring maintenance dates. Store sensitive documents securely; MoveIn does not collect them.",
+    published: "2026-08-01", reviewed: "2026-08-01",
+    sections: [
+      { heading: "Build an appliance and equipment list", paragraphs: ["Record the manufacturer, model, serial number, approximate age, warranty information, filter or consumable size, and authorized service contact for major equipment."], steps: ["Photograph equipment labels for your private records.", "Register eligible products through the manufacturer's official site.", "Keep purchase, warranty, and service documents together.", "Never publish serial numbers or access codes."] },
+      { heading: "Start a simple maintenance calendar", paragraphs: ["Use manufacturer instructions, inspection findings, and qualified service advice instead of a generic interval when the equipment specifies its own schedule."], steps: ["Record the HVAC filter size and next check date.", "Schedule inspection priorities by safety and urgency.", "Add alarm, irrigation, pest, roof, drainage, and appliance checks when applicable.", "Review the list after major weather or service work."] },
+      { heading: "Create a private insurance inventory", paragraphs: ["Photograph rooms and significant belongings, retain receipts where useful, and ask the insurer what documentation would support a future claim. Keep a protected backup away from the home or in secure cloud storage."], steps: ["Capture wide room views and important items.", "Record purchase information privately where available.", "Review policy limits and exclusions with the insurer or agent.", "Update the inventory after major purchases."] },
+    ],
+    related: ["/homeowners/first-week-home-safety", "/homeowners/set-up-utilities", "/homeowners/save-outage-information"], sources: [readyPlan],
+  },
+  {
+    path: "/renters/document-move-in-condition", section: "renters", slug: "document-move-in-condition",
+    title: "How to Document Rental Move-In Condition", description: "Create a dated move-in record of rooms, fixtures, appliances, keys, meter readings, and existing damage, then submit it through the lease process.",
+    h1: "Document the rental before unpacking", eyebrow: "Move-in records",
+    directAnswer: "Before belongings cover the surfaces, make a dated room-by-room record of the rental's condition, complete the required move-in form, and send it using the method in the lease. Keep a copy and do not rely only on photos stored on one phone.",
+    published: "2026-08-01", reviewed: "2026-08-01",
+    sections: [
+      { heading: "Record each room consistently", paragraphs: ["Use wide photographs for context and closer images for existing wear, damage, stains, missing items, or nonworking fixtures. Do not include people, account information, or sensitive documents in the images."], steps: ["Start at the entry and move room by room.", "Capture walls, floors, ceilings, windows, doors, and built-in fixtures.", "Test appliances and controls the lease permits you to use.", "Record keys, remotes, access devices, and visible meter readings when appropriate."] },
+      { heading: "Use the required reporting process", paragraphs: ["Complete the landlord or property manager's condition form, follow the lease's delivery method and deadline, and request confirmation that the record was received."], steps: ["Describe issues plainly without diagnosing hidden causes.", "Submit urgent safety or maintenance issues separately through the emergency or maintenance channel.", "Save the submitted form, images, correspondence, and receipt together."] },
+      { heading: "Keep the record useful", paragraphs: ["Retain the original files and a backup throughout the tenancy. Add dated records when maintenance work changes the condition of the unit."], steps: ["Avoid editing original images.", "Keep work orders and repair confirmations.", "Repeat the same room-by-room process before move-out."] },
+    ],
+    related: ["/renters/renters-insurance-and-deposits", "/renters/maintenance-parking-and-pet-checklist", "/renters/utility-responsibilities"], sources: [floridaLandlordTenant],
+  },
+  {
+    path: "/renters/renters-insurance-and-deposits", section: "renters", slug: "renters-insurance-and-deposits",
+    title: "Renters Insurance and Security Deposit Basics", description: "Review renters insurance, personal-property records, lease requirements, security-deposit documentation, and official Florida consumer guidance.",
+    h1: "Protect your belongings and deposit records", eyebrow: "Renter finances",
+    directAnswer: "Read the lease, compare renters-insurance coverage using official consumer guidance, document the unit at move-in, and keep every deposit receipt and notice. Coverage and legal rights depend on the policy, lease, facts, and current law.",
+    published: "2026-08-01", reviewed: "2026-08-01",
+    sections: [
+      { heading: "Understand what the policy covers", paragraphs: ["A landlord's property policy generally is not a substitute for coverage on a tenant's belongings or liability. Policy terms vary, so review covered causes of loss, exclusions, deductibles, limits, replacement-cost treatment, liability, and additional-living-expense terms with the insurer or agent."] },
+      { heading: "Keep a private belongings record", paragraphs: ["A room-by-room inventory can support both coverage decisions and a future claim. Store it securely and keep receipts or serial information private."], steps: ["Photograph rooms and higher-value items.", "Ask whether special limits apply to particular property.", "Keep an off-site or secure cloud backup.", "Update the record after major purchases."] },
+      { heading: "Separate deposit records from maintenance records", paragraphs: ["Keep the lease, deposit receipt, move-in condition report, required notices, and correspondence. Use the official Florida consumer summary for current deposit and notice information; obtain legal advice for a specific dispute."], steps: ["Save proof of every payment.", "Use the notice method allowed by the lease and current law.", "Keep copies of maintenance requests and responses.", "Document move-out condition before returning access devices."] },
+    ],
+    related: ["/renters/document-move-in-condition", "/renters/maintenance-parking-and-pet-checklist", "/resources/utility-deposits"], sources: [floridaRentersInsurance, floridaLandlordTenant],
+  },
+  {
+    path: "/renters/maintenance-parking-and-pet-checklist", section: "renters", slug: "maintenance-parking-and-pet-checklist",
+    title: "Rental Maintenance, Parking, and Pet Checklist", description: "Confirm maintenance reporting, emergency contacts, parking permits, pet registration, packages, trash, and building access after moving into a rental.",
+    h1: "Confirm the rental rules you will need every week", eyebrow: "Property routines",
+    directAnswer: "Before the first problem, save the routine and emergency maintenance channels, learn written-notice requirements, and confirm parking, pet, package, trash, guest, and building-access rules from the lease and property manager.",
+    published: "2026-08-01", reviewed: "2026-08-01",
+    sections: [
+      { heading: "Separate emergency and routine maintenance", paragraphs: ["Save the property manager's emergency definition and contact method. Use 911 for immediate danger and the confirmed utility outage channel for service interruptions outside the property."], steps: ["Save the emergency maintenance number.", "Bookmark the routine work-order system.", "Learn the required written-notice method.", "Keep copies of requests, photos, entry notices, and completed-work confirmations."] },
+      { heading: "Prevent avoidable access and parking problems", paragraphs: ["Confirm how resident and guest vehicles are registered, where moving trucks may stop, and what credentials are needed for gates, elevators, package rooms, or amenities."], steps: ["Register vehicles and obtain permits before enforcement begins.", "Confirm guest, accessible, and towing rules.", "Test keys, remotes, fobs, and access codes.", "Report lost access devices promptly."] },
+      { heading: "Confirm pets, trash, and recurring lease reminders", paragraphs: ["Complete required pet records and fees through the authorized process, learn waste and recycling locations, and calendar notice dates or renewal decisions that the lease makes important."], steps: ["Verify pet registration and vaccination-document requirements.", "Find trash, recycling, bulk-item, and moving-box procedures.", "Record filter or tenant-care duties stated in the lease.", "Calendar renewal, inspection, and move-out notice dates."] },
+    ],
+    related: ["/renters/document-move-in-condition", "/renters/renters-insurance-and-deposits", "/resources/find-trash-service"], sources: [floridaLandlordTenant],
   },
 ];
 

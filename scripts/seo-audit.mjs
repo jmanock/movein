@@ -24,8 +24,8 @@ for (const guide of guides) {
   if (guide.sections.length < 3) errors.push(`${guide.path} has fewer than three substantive sections`);
   for (const related of guide.related) if (!guidesByPath.has(related)) errors.push(`${guide.path} links to missing guide ${related}`);
 }
-const [metadataSource, sitemapSource, robotsSource, breadcrumbSource, lookupSource] = await Promise.all([
-  readFile(new URL("../app/lib/metadata.ts", import.meta.url), "utf8"), readFile(new URL("../app/sitemap.ts", import.meta.url), "utf8"), readFile(new URL("../app/robots.ts", import.meta.url), "utf8"), readFile(new URL("../app/components/PageHero.tsx", import.meta.url), "utf8"), readFile(new URL("../app/lookup/[zip]/page.tsx", import.meta.url), "utf8"),
+const [metadataSource, sitemapSource, robotsSource, breadcrumbSource, lookupSource, homeSource, resourcesSource] = await Promise.all([
+  readFile(new URL("../app/lib/metadata.ts", import.meta.url), "utf8"), readFile(new URL("../app/sitemap.ts", import.meta.url), "utf8"), readFile(new URL("../app/robots.ts", import.meta.url), "utf8"), readFile(new URL("../app/components/PageHero.tsx", import.meta.url), "utf8"), readFile(new URL("../app/lookup/[zip]/page.tsx", import.meta.url), "utf8"), readFile(new URL("../app/page.tsx", import.meta.url), "utf8"), readFile(new URL("../app/resources/page.tsx", import.meta.url), "utf8"),
 ]);
 if (!metadataSource.includes("alternates: { canonical }")) errors.push("Metadata helper lacks canonical output");
 if (!metadataSource.includes("/og?title=")) errors.push("Metadata helper lacks route-specific social cards");
@@ -33,6 +33,9 @@ if (!sitemapSource.includes("getIndexableZipResults")) errors.push("Sitemap bypa
 if (!robotsSource.includes('sitemap: `${SITE_URL}/sitemap.xml`')) errors.push("robots.ts lacks sitemap declaration");
 if (!breadcrumbSource.includes('"BreadcrumbList"')) errors.push("Breadcrumb schema is missing");
 if (!lookupSource.includes("isZipResultIndexable")) errors.push("ZIP metadata bypasses the quality gate");
+if (!lookupSource.includes('"@type": "Service"')) errors.push("ZIP pages lack Service schema");
+if (!homeSource.includes("SearchAction")) errors.push("Homepage lacks SearchAction schema for the working ZIP lookup route");
+if (!resourcesSource.includes("CollectionPage")) errors.push("Resource hub lacks CollectionPage schema");
 
 let zipCount = 0;
 try { zipCount = getIndexableZipResults().length; } catch (error) { warnings.push(`Database-backed ZIP audit unavailable: ${error.message}`); }
@@ -63,6 +66,6 @@ if (baseUrl) {
 }
 
 const report = `# SEO Validation Report\n\nGenerated: 2026-07-29\n\n## Scope\n\n- ${publicPages.length} manifest-backed public pages\n- ${guides.length} substantive guides\n- ${zipCount} database-backed ZIP pages that pass the indexability gate\n- metadata, canonicals, H1s, schema hooks, sitemap/robots integration, related-guide targets, and content dates\n${baseUrl ? `- runtime crawl against ${baseUrl}` : "- static mode; set SEO_BASE_URL to add the runtime crawl"}\n\n## Blocking findings\n\n${errors.length ? errors.map((item) => `- ${item}`).join("\n") : "None."}\n\n## Warnings\n\n${warnings.length ? warnings.map((item) => `- ${item}`).join("\n") : "None."}\n\n## Runtime results\n\n${runtimeRows.length ? `| Route | Status | H1 | Canonical |\n| --- | ---: | ---: | --- |\n${runtimeRows.map((row) => `| ${row.path} | ${row.status} | ${row.h1 ?? "—"} | ${row.canonical ?? "—"} |`).join("\n")}` : "Not run in static mode."}\n`;
-await writeFile(new URL("../docs/seo-validation-report.md", import.meta.url), report);
+await writeFile(new URL("../docs/seo-validation-report.md", import.meta.url), report.replace("Generated: 2026-07-29", "Generated: 2026-08-01"));
 console.log(`SEO audit: ${errors.length} error(s), ${warnings.length} warning(s).`);
 if (errors.length) process.exitCode = 1;

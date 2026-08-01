@@ -1,6 +1,8 @@
 import { writeFile } from "node:fs/promises";
 import { guides } from "../app/data/guides.ts";
+import { zipMoveOverviews } from "../app/data/local-resources.ts";
 import { publicPages } from "../app/data/pages.ts";
+import { supportedPilotZips } from "../app/data/site.ts";
 
 const findings = [];
 const pairs = (items) => items.flatMap((item, index) => items.slice(index + 1).map((other) => [item, other]));
@@ -27,9 +29,14 @@ for (const [left, right] of pairs(guides)) {
   const score = similarity(leftBody, rightBody);
   if (score >= .72) findings.push({ level: score >= .88 ? "error" : "warning", check: "near-duplicate guide copy", pages: [left.path, right.path], score });
 }
+for (const zip of supportedPilotZips) if (!zipMoveOverviews[zip]) findings.push({ level: "error", check: "missing ZIP-specific moving overview", pages: [`/lookup/${zip}`], score: 1 });
+for (const [[leftZip, leftCopy], [rightZip, rightCopy]] of pairs(Object.entries(zipMoveOverviews))) {
+  const score = similarity(leftCopy, rightCopy);
+  if (score >= .72) findings.push({ level: score >= .88 ? "error" : "warning", check: "near-duplicate ZIP overview", pages: [`/lookup/${leftZip}`, `/lookup/${rightZip}`], score });
+}
 
 const errors = findings.filter((finding) => finding.level === "error");
-const report = `# Content Duplication Report\n\nGenerated: 2026-07-29\n\n## Scope\n\nChecked ${publicPages.length} public-page titles, descriptions, and H1s plus ${guides.length} guide bodies using normalized exact matching and Jaccard token similarity. Shared navigation, legal disclaimers, and reusable CTA copy are excluded from body comparison.\n\n## Result\n\n${findings.length ? findings.map((finding) => `- **${finding.level.toUpperCase()}** ${finding.check}: ${finding.pages.join(" and ")} (${Math.round(finding.score * 100)}% similarity)`).join("\n") : "No exact metadata duplicates or high-similarity guide bodies were found."}\n\n## Release rule\n\nExact duplicate metadata or guide-body similarity at or above 88% fails the command. Similarity from 72% through 87% is a manual-review warning. Campaign, state, county, and city pages must not be generated without distinct sourced value and an explicit indexability decision.\n`;
+const report = `# Content Duplication Report\n\nGenerated: 2026-08-01\n\n## Scope\n\nChecked ${publicPages.length} public-page titles, descriptions, and H1s, ${guides.length} guide bodies, and ${Object.keys(zipMoveOverviews).length} ZIP-specific moving overviews using normalized exact matching and Jaccard token similarity. Shared navigation, legal disclaimers, provider data, and reusable CTA copy are excluded from body comparison.\n\n## Result\n\n${findings.length ? findings.map((finding) => `- **${finding.level.toUpperCase()}** ${finding.check}: ${finding.pages.join(" and ")} (${Math.round(finding.score * 100)}% similarity)`).join("\n") : "No exact metadata duplicates, missing ZIP overviews, or high-similarity guide and ZIP overview bodies were found."}\n\n## Release rule\n\nExact duplicate metadata, a missing reviewed-ZIP overview, or content similarity at or above 88% fails the command. Similarity from 72% through 87% is a manual-review warning. Campaign, state, county, and city pages must not be generated without distinct sourced value and an explicit indexability decision.\n`;
 await writeFile(new URL("../docs/content-duplication-report.md", import.meta.url), report);
 console.log(`Checked ${publicPages.length} pages and ${guides.length} guides: ${errors.length} blocking duplication finding(s).`);
 if (errors.length) process.exitCode = 1;
