@@ -51,6 +51,7 @@ test("privacy-safe analytics never sends form or ZIP values", async () => {
   const analytics = await read("../app/lib/analytics.ts");
   assert.match(analytics, /movein:analytics/);
   assert.doesNotMatch(analytics, /fetch\(|XMLHttpRequest/);
-  assert.match(analytics, /context\?: \{ category\?: string; context\?: string \}/);
-  assert.doesNotMatch(analytics, /context\?: \{[^}]*email|context\?: \{[^}]*street|context\?: \{[^}]*zip/i);
+  assert.match(analytics, /AnalyticsEventParameters/);
+  assert.match(analytics, /blockedKeys/);
+  assert.doesNotMatch(analytics, /zip_lookup_(?:submit|success|partial|unsupported): \{[^}]*zip/i);
 });

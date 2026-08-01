@@ -28,3 +28,34 @@ test("front-end audit checks serious quality regressions", async () => {
   for (const check of ["Placeholder copy", "H1 elements", "image without alt text", "Unsupported ZIP page is indexable", "Client component count", "Oversized image"]) assert.match(audit, new RegExp(check));
   assert.match(audit, /process\.exitCode = 1/);
 });
+
+test("GA4 loads once from the root and manually measures App Router page views", async () => {
+  const [layout, component, analytics, environment, declarations] = await Promise.all([read("../app/layout.tsx"), read("../app/components/GoogleAnalytics.tsx"), read("../app/lib/analytics.ts"), read("../.env.example"), read("../types/gtag.d.ts")]);
+  assert.match(layout, /<GoogleAnalytics/);
+  assert.equal((layout.match(/<GoogleAnalytics/g) ?? []).length, 1);
+  assert.match(layout, /NEXT_PUBLIC_GA_MEASUREMENT_ID/);
+  assert.match(component, /usePathname/);
+  assert.match(component, /send_page_view: false/);
+  assert.match(component, /strategy="afterInteractive"/);
+  assert.match(component, /process\.env\.NODE_ENV === "test"/);
+  assert.match(component, /doNotTrack/);
+  assert.match(analytics, /"page_view"/);
+  for (const eventName of [
+    "zip_lookup_submit",
+    "zip_lookup_success",
+    "zip_lookup_partial",
+    "zip_lookup_unsupported",
+    "provider_official_link_click",
+    "provider_phone_click",
+    "provider_start_service_click",
+    "provider_address_check_click",
+    "outage_phone_click",
+    "outage_map_click",
+    "guide_link_click",
+    "correction_form_success",
+    "printable_resource_click",
+  ]) assert.match(analytics, new RegExp(`${eventName}:`));
+  assert.match(analytics, /blockedKeys/);
+  assert.match(declarations, /gtag\?: GtagFunction/);
+  assert.match(environment, /G-QC9FYWHVZZ/);
+});

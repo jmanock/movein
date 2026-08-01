@@ -15,7 +15,7 @@ export function OfficialResources({ resources }: { resources: OfficialResource[]
 export function RelatedGuides({ paths, title = "Related guides" }: { paths: string[]; title?: string }) {
   const related = paths.map((path) => guidesByPath.get(path)).filter((guide): guide is Guide => Boolean(guide));
   if (!related.length) return null;
-  return <section className="related-guides"><div className="section-heading compact"><span className="eyebrow">Keep going</span><h2>{title}</h2></div><div className="related-guide-grid">{related.map((guide) => <Link href={guide.path} key={guide.path} data-analytics-event="related_guide_click"><span>{guide.eyebrow}</span><strong>{guide.h1}</strong><small>Read the guide <ArrowRight size={14} aria-hidden="true" /></small></Link>)}</div></section>;
+  return <section className="related-guides"><div className="section-heading compact"><span className="eyebrow">Keep going</span><h2>{title}</h2></div><div className="related-guide-grid">{related.map((guide) => <Link href={guide.path} key={guide.path}><span>{guide.eyebrow}</span><strong>{guide.h1}</strong><small>Read the guide <ArrowRight size={14} aria-hidden="true" /></small></Link>)}</div></section>;
 }
 
 export function NextStep({ href = "/#zip-lookup", label = "Find services for your ZIP code" }: { href?: string; label?: string }) {

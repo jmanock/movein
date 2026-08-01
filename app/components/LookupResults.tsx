@@ -14,6 +14,7 @@ const groups = [
 ] as const;
 
 type RelatedArea = { zipCode: string; city: string; county: string };
+type QuickAction = { label: string; href: string; external: boolean; category?: string; providerName?: string; linkType?: string };
 
 export function LookupResults({ result, relatedAreas = [] }: { result: LookupResult; relatedAreas?: RelatedArea[] }) {
   const providers = Object.values(result.providers).flat();
@@ -26,7 +27,7 @@ export function LookupResults({ result, relatedAreas = [] }: { result: LookupRes
     <aside className="address-warning"><TriangleAlert size={21} aria-hidden="true" /><div><strong>ZIP codes can cross service boundaries.</strong><p>Confirm availability using your exact address before opening an account.</p>{result.jurisdictionNotes ? <p>{result.jurisdictionNotes}</p> : null}</div></aside>
     <section className="service-summary"><span className="eyebrow">Service coverage summary</span><h2>What this ZIP result can—and cannot—confirm</h2><p>This page lists reviewed possible providers and official lookup tools for {result.zipCode}. It does not determine service for a specific parcel, house, or apartment.</p><ul><li><strong>Mailing city:</strong> {result.mailingCityName ?? result.city ?? "Not recorded"}</li><li><strong>County:</strong> {result.county ? `${result.county} County` : "Not recorded"}</li><li><strong>Jurisdiction context:</strong> {jurisdictionLabel(result.jurisdictionStatus)}</li></ul><p className="local-context">A postal city name is not the same as city limits or utility jurisdiction. Confirm water, sewer, trash, and internet with the complete address.</p></section>
     {result.status === "pending" || providers.length === 0 ? <section className="pending-panel"><h2>We found this location, but some providers are still being verified.</h2><p>MoveIn will not guess. Use the official county or city website while this record is being researched.</p></section> : null}
-    {quickActions.length ? <nav className="quick-actions" aria-label="Utility quick actions">{quickActions.map((action) => action.external ? <a key={action.label} href={action.href} target="_blank" rel="noopener noreferrer">{action.label}<ExternalLink size={15} /></a> : <Link key={action.label} href={action.href}>{action.label}<ArrowRight size={15} /></Link>)}</nav> : null}
+    {quickActions.length ? <nav className="quick-actions" aria-label="Utility quick actions">{quickActions.map((action) => action.external ? <a key={action.label} href={action.href} target="_blank" rel="noopener noreferrer" data-analytics-category={action.category} data-analytics-provider={action.providerName} data-analytics-link-type={action.linkType}>{action.label}<ExternalLink size={15} /></a> : <Link key={action.label} href={action.href}>{action.label}<ArrowRight size={15} /></Link>)}</nav> : null}
     <div className="result-groups">{groups.map((group) => {
       const groupProviders = group.slugs.flatMap((slug) => result.providers[slug] ?? []);
       const multiplePossible = groupProviders.filter((provider) => provider.providerType !== "official_lookup").length > 1;
@@ -45,31 +46,35 @@ export function LookupResults({ result, relatedAreas = [] }: { result: LookupRes
 function ProviderCard({ provider, icon, category }: { provider: LookupProvider; icon: string; category: string }) {
   const officialLabel = provider.providerType === "official_lookup" ? category === "internet" ? "Check availability at your address" : "Open official territory lookup" : "Visit official provider";
   const actions = uniqueActions([
-    provider.startServiceUrl ? { href: provider.startServiceUrl, label: "Start or transfer service" } : null,
-    provider.addressCheckUrl ? { href: provider.addressCheckUrl, label: category === "internet" ? "Check availability at your address" : "Check address availability" } : null,
-    provider.outageUrl ? { href: provider.outageUrl, label: "Report an outage" } : null,
-    provider.outageMapUrl ? { href: provider.outageMapUrl, label: "View outage map" } : null,
-    provider.collectionInfoUrl ? { href: provider.collectionInfoUrl, label: "Find collection information" } : null,
-    { href: provider.officialWebsite, label: category === "local-government" ? "Visit county utilities" : category === "trash-recycling" ? "Find collection information" : officialLabel },
+    provider.startServiceUrl ? { href: provider.startServiceUrl, label: "Start or transfer service", linkType: "start_service" } : null,
+    provider.addressCheckUrl ? { href: provider.addressCheckUrl, label: category === "internet" ? "Check availability at your address" : "Check address availability", linkType: "address_check" } : null,
+    provider.outageUrl ? { href: provider.outageUrl, label: "Report an outage", linkType: "outage_report" } : null,
+    provider.outageMapUrl ? { href: provider.outageMapUrl, label: "View outage map", linkType: "outage_map" } : null,
+    provider.collectionInfoUrl ? { href: provider.collectionInfoUrl, label: "Find collection information", linkType: "collection_info" } : null,
+    { href: provider.officialWebsite, label: category === "local-government" ? "Visit county utilities" : category === "trash-recycling" ? "Find collection information" : officialLabel, linkType: "official_website" },
   ]);
-  return <article className="provider-card"><div className="provider-card-icon"><Icon name={icon} size={19} /></div><div className="provider-main"><div className="provider-top"><div><span className={`coverage-label ${provider.coverageType}`}>{provider.coverageLabel}</span><h3>{provider.name}</h3>{provider.providerType && provider.providerType !== "official_lookup" ? <small className="provider-type">{providerTypeLabel(provider.providerType)}</small> : null}</div>{provider.lastVerifiedAt ? <span className="verified-date">Verified {formatDate(provider.lastVerifiedAt)}</span> : null}</div><p className="coverage-note">{provider.coverageNotes}</p>{provider.description ? <p>{provider.description}</p> : null}{provider.jurisdictionNotes ? <p className="jurisdiction-note">{provider.jurisdictionNotes}</p> : null}{category === "internet" ? <p className="category-caution">Availability and speeds vary by exact street address.</p> : null}{category === "trash-recycling" ? <p className="category-caution">Trash service may be arranged by your city, county, HOA, landlord, or private hauler.</p> : null}{provider.technologyType ? <p><strong>Technology:</strong> {provider.technologyType}</p> : null}{provider.hours ? <p><strong>Hours:</strong> {provider.hours}</p> : null}<div className="contact-list">{provider.contacts.map((contact) => <a href={contact.phoneHref} data-analytics-category={category} key={`${contact.type}-${contact.phone}`}><Phone size={16} aria-hidden="true" /><span><small>{contact.label}</small>{contact.phone}</span></a>)}</div></div><div className="provider-rail"><div className="provider-actions">{actions.map((action, index) => <a className={index === 0 ? "button secondary" : undefined} href={action.href} data-analytics-category={category} key={action.href} target="_blank" rel="noopener noreferrer">{action.label} <ExternalLink size={index === 0 ? 16 : 14} aria-hidden="true" /></a>)}</div>{provider.sources[0] ? <p className="provider-source">Source: <a href={provider.sources[0].url} data-analytics-category={category} target="_blank" rel="noopener noreferrer">{provider.sources[0].name} <ExternalLink size={13} /></a></p> : null}</div></article>;
+  return <article className="provider-card" data-analytics-provider={provider.name} data-analytics-category={category}>
+    <div className="provider-card-icon"><Icon name={icon} size={19} /></div>
+    <div className="provider-main"><div className="provider-top"><div><span className={`coverage-label ${provider.coverageType}`}>{provider.coverageLabel}</span><h3>{provider.name}</h3>{provider.providerType && provider.providerType !== "official_lookup" ? <small className="provider-type">{providerTypeLabel(provider.providerType)}</small> : null}</div>{provider.lastVerifiedAt ? <span className="verified-date">Verified {formatDate(provider.lastVerifiedAt)}</span> : null}</div><p className="coverage-note">{provider.coverageNotes}</p>{provider.description ? <p>{provider.description}</p> : null}{provider.jurisdictionNotes ? <p className="jurisdiction-note">{provider.jurisdictionNotes}</p> : null}{category === "internet" ? <p className="category-caution">Availability and speeds vary by exact street address.</p> : null}{category === "trash-recycling" ? <p className="category-caution">Trash service may be arranged by your city, county, HOA, landlord, or private hauler.</p> : null}{provider.technologyType ? <p><strong>Technology:</strong> {provider.technologyType}</p> : null}{provider.hours ? <p><strong>Hours:</strong> {provider.hours}</p> : null}<div className="contact-list">{provider.contacts.map((contact) => <a href={contact.phoneHref} data-analytics-phone-type={contact.type} key={`${contact.type}-${contact.phone}`}><Phone size={16} aria-hidden="true" /><span><small>{contact.label}</small>{contact.phone}</span></a>)}</div></div>
+    <div className="provider-rail"><div className="provider-actions">{actions.map((action, index) => <a className={index === 0 ? "button secondary" : undefined} href={action.href} data-analytics-link-type={action.linkType} key={action.href} target="_blank" rel="noopener noreferrer">{action.label} <ExternalLink size={index === 0 ? 16 : 14} aria-hidden="true" /></a>)}</div>{provider.sources[0] ? <p className="provider-source">Source: <a href={provider.sources[0].url} data-analytics-link-type="official_source" target="_blank" rel="noopener noreferrer">{provider.sources[0].name} <ExternalLink size={13} /></a></p> : null}</div>
+  </article>;
 }
 
 function buildQuickActions(result: LookupResult) {
   const first = (slug: string) => result.providers[slug]?.find((provider) => provider.isVerified);
   const electric = first("electricity"); const water = first("water"); const internet = first("internet"); const trash = first("trash-recycling");
   return [
-    electric ? { label: electric.providerType === "official_lookup" ? "Find electric territory" : "Start electric service", href: electric.startServiceUrl ?? electric.addressCheckUrl ?? electric.officialWebsite, external: true } : null,
-    water ? { label: "Check water service", href: water.addressCheckUrl ?? water.startServiceUrl ?? water.officialWebsite, external: true } : null,
-    internet ? { label: "Check availability at your address", href: internet.addressCheckUrl ?? internet.officialWebsite, external: true } : null,
-    trash ? { label: "Find trash information", href: trash.addressCheckUrl ?? trash.officialWebsite, external: true } : null,
-    { label: "Report incorrect information", href: `/corrections?zip=${result.zipCode}`, external: false },
-  ].filter((value): value is { label: string; href: string; external: boolean } => Boolean(value));
+    electric ? { label: electric.providerType === "official_lookup" ? "Find electric territory" : "Start electric service", href: electric.startServiceUrl ?? electric.addressCheckUrl ?? electric.officialWebsite, external: true, category: "electricity", providerName: electric.name, linkType: electric.startServiceUrl ? "start_service" : electric.addressCheckUrl ? "address_check" : "official_website" } : null,
+    water ? { label: "Check water service", href: water.addressCheckUrl ?? water.startServiceUrl ?? water.officialWebsite, external: true, category: "water", providerName: water.name, linkType: water.addressCheckUrl ? "address_check" : water.startServiceUrl ? "start_service" : "official_website" } : null,
+    internet ? { label: "Check availability at your address", href: internet.addressCheckUrl ?? internet.officialWebsite, external: true, category: "internet", providerName: internet.name, linkType: internet.addressCheckUrl ? "address_check" : "official_website" } : null,
+    trash ? { label: "Find trash information", href: trash.addressCheckUrl ?? trash.officialWebsite, external: true, category: "trash-recycling", providerName: trash.name, linkType: trash.addressCheckUrl ? "address_check" : "official_website" } : null,
+    { label: "Report incorrect information", href: `/corrections?zip=${result.zipCode}`, external: false, category: undefined, providerName: undefined, linkType: undefined },
+  ].filter(Boolean) as QuickAction[];
 }
 
-function uniqueActions(actions: Array<{ href: string; label: string } | null>) {
+function uniqueActions(actions: Array<{ href: string; label: string; linkType: string } | null>) {
   const seen = new Set<string>();
-  const unique: Array<{ href: string; label: string }> = [];
+  const unique: Array<{ href: string; label: string; linkType: string }> = [];
   for (const action of actions) {
     if (!action || seen.has(action.href)) continue;
     seen.add(action.href);

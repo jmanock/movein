@@ -55,6 +55,8 @@ DATABASE_PATH=/var/lib/movein/movein.sqlite
 
 `STALE_AFTER_DAYS` is an optional CLI-only value for `npm run data:stale`; it defaults to 180.
 
+`NEXT_PUBLIC_GA_MEASUREMENT_ID=G-QC9FYWHVZZ` enables Google Analytics in production. Analytics is disabled during tests and ordinary local development. See `docs/google-analytics.md` for the explicit local opt-in and duplicate-page-view safeguard.
+
 ## Product routes
 
 - `/` — primary ZIP lookup
@@ -112,3 +114,4 @@ The seed is idempotent and non-deleting. A changed verified row is refused unles
 - `docs/frontend-validation-report.md` — browser, journey, and release checks
 - `docs/accessibility.md` and `docs/performance.md` — front-end quality guardrails
 - `docs/analytics-events.md` — privacy-safe event names and integration boundary
+- `docs/google-analytics.md` — GA4 setup, event parameters, testing, privacy, and duplicate prevention

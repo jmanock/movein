@@ -19,7 +19,7 @@ The old route tree centered on a homepage, eight-stage localStorage timeline, ho
 - Homepage becomes one ZIP lookup followed by service types, three steps, two audience cards, and one Learn Your Area link.
 - Homeowner and renter guidance becomes short Start here / Soon after / Ongoing lists.
 - Navigation is Home, Homeowners, Renters, Learn Your Area, Resources, and FAQ.
-- Analytics is absent at launch; the product collects no lookup email or exact address.
+- At the original rebuild launch, analytics was absent and the product collected no lookup email or exact address. Google Analytics 4 was added later with coarse, privacy-safe event parameters only.
 
 ### Removed
 

@@ -4,6 +4,7 @@ import { SiteChrome } from "./components/SiteChrome";
 import { DEFAULT_DESCRIPTION, SITE_URL } from "./lib/metadata";
 import "./globals.css";
 import { AnalyticsBridge } from "./components/AnalyticsBridge";
+import { GoogleAnalytics } from "./components/GoogleAnalytics";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"], display: "swap" });
 
@@ -21,5 +22,8 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="en"><body className={geistSans.variable}><AnalyticsBridge /><a className="skip-link" href="#main-content">Skip to content</a><SiteChrome>{children}</SiteChrome></body></html>;
+  const measurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID?.trim();
+  const validMeasurementId = measurementId && /^G-[A-Z0-9]+$/.test(measurementId) ? measurementId : undefined;
+  const analyticsEnabled = process.env.NODE_ENV !== "test" && (process.env.NODE_ENV === "production" || process.env.NEXT_PUBLIC_GA_ENABLE_DEV === "true");
+  return <html lang="en"><body className={geistSans.variable}><GoogleAnalytics measurementId={analyticsEnabled ? validMeasurementId : undefined} debug={process.env.NEXT_PUBLIC_GA_DEBUG === "true"} /><AnalyticsBridge /><a className="skip-link" href="#main-content">Skip to content</a><SiteChrome>{children}</SiteChrome></body></html>;
 }

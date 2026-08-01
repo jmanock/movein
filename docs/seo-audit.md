@@ -24,4 +24,4 @@ Baseline commit: `f1f0e83` (July 29, 2026). The approved product was a fast, acc
 
 - Search Console and Bing verification require production-owner access after deployment.
 - County/city/state landing pages remain deferred until the database can support substantial unique local guidance and a page-level review workflow.
-- No analytics vendor is configured. The privacy policy defines safe constraints for any later implementation.
+- Google Analytics 4 is configured as one root-level tag with manual App Router page views and coarse, privacy-safe custom events. Its operational safeguards are documented in `docs/google-analytics.md`.

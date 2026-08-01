@@ -20,19 +20,20 @@ export function ZipLookupForm({ compact = false, initialZip = "", context = "inl
       setError("Enter a valid five-digit ZIP code.");
       return;
     }
-    trackEvent("zip_lookup_submitted", { context });
+    trackEvent("zip_lookup_submit", { source_page: context });
     setError("");
     try {
       const response = await fetch(`/api/lookup?zip=${normalized}`);
       if (!response.ok) {
         const payload = await response.json() as { error?: string };
-        const outsidePilot = response.status === 404 && /pilot area/i.test(payload.error ?? "");
-        trackEvent(outsidePilot ? "zip_lookup_outside_pilot" : "zip_lookup_unknown", { context });
-        if (response.status === 404) { startTransition(() => router.push(`/lookup/${normalized}`)); return; }
+        if (response.status === 404) { trackEvent("zip_lookup_unsupported", { source_page: context }); startTransition(() => router.push(`/lookup/${normalized}`)); return; }
         setError(payload.error ?? "We could not find that ZIP code.");
         return;
       }
-      trackEvent("zip_lookup_success", { context });
+      const payload = await response.json() as { county?: string; state?: string; status?: string; providers?: Record<string, unknown[]> };
+      const analytics = { county: payload.county, state: payload.state, coverage_status: payload.status, provider_category_count: Object.values(payload.providers ?? {}).filter((providers) => providers.length > 0).length, source_page: context };
+      trackEvent("zip_lookup_success", analytics);
+      if (payload.status && payload.status !== "verified") trackEvent("zip_lookup_partial", analytics);
       startTransition(() => router.push(`/lookup/${normalized}`));
     } catch { setError("We could not reach MoveIn. Check your connection and try again."); }
   }

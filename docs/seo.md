@@ -12,4 +12,4 @@ The XML and HTML sitemaps use the public-page manifest and the quality gate. Cam
 
 ## Performance and privacy
 
-Content and ZIP pages remain server components. No maps, carousel, video, animation library, CMS, search engine, or analytics vendor was introduced. A small in-browser event abstraction emits only coarse event names/categories as `movein:analytics` custom events; it sends no network request and includes no ZIP, email, street address, account, correction text, or IP data.
+Content and ZIP pages remain server components. No maps, carousel, video, animation library, CMS, or search engine was introduced. Google Analytics loads once from the root layout only when its public environment variable is present; its typed custom events include coarse operational context and exclude entered ZIP values, email, street addresses, account data, correction text, and visitor phone numbers.

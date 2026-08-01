@@ -1,7 +1,5 @@
 # Privacy-safe front-end events
 
-MoveIn dispatches browser-local `movein:analytics` custom events. No vendor, measurement ID, network request, ZIP value, address, email, account number, or payment data is hardcoded.
+MoveIn dispatches the typed GA4 events documented in `docs/google-analytics.md`. The implementation never serializes form fields and does not include entered ZIP codes, addresses, email, correction text, account numbers, or phone numbers in custom-event parameters.
 
-Prepared events cover ZIP submission and outcome, supported/partial/unsupported result state, homeowner and renter hub visits, coverage visit and link, provider official/start/outage actions, provider category, phone, official source, related guide, correction link/submission, FAQ interaction, and print action. ZIP forms add only a placement context such as `homepage_hero`, `homepage_footer`, `unsupported_zip`, or `inline`.
-
-Any future analytics adapter must listen for the custom event, document retention and consent behavior, and preserve this allowlist instead of serializing form fields or page text.
+The shared utility in `app/lib/analytics.ts` sends to `window.gtag` only when GA4 is enabled and available. It also dispatches a browser-local `movein:analytics` event containing the same allowlisted event name and coarse parameters for non-vendor testing. Both paths fail silently when tracking is disabled or blocked.

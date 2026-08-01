@@ -19,6 +19,7 @@ cd /var/www/movein
 git pull --ff-only origin main
 source ~/.bashrc
 nvm use 22
+export NEXT_PUBLIC_GA_MEASUREMENT_ID=G-QC9FYWHVZZ
 npm ci
 npm run data:validate
 npm run seo:duplicates
@@ -37,7 +38,7 @@ This release does **not** add a database migration or change seed data, so do no
 PORT=3006 DATABASE_PATH=/var/lib/movein/movein.sqlite npm run start -- -H 127.0.0.1
 ```
 
-`ecosystem.config.cjs` already sets port 3006, loopback host, production mode, one instance, and the persistent database path.
+`ecosystem.config.cjs` already sets port 3006, loopback host, production mode, one instance, and the persistent database path. GA4 is a public build-time value; export it before `npm run build`, then use `pm2 restart movein --update-env` so dynamic responses receive the same value.
 
 ## Nginx expectations
 
