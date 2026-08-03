@@ -1,6 +1,6 @@
 # MoveIn production health report
 
-Generated: 2026-08-01T12:05:41.651Z
+Generated: 2026-08-03T11:41:27.013Z
 
 ## Overall status
 
@@ -9,26 +9,26 @@ Generated: 2026-08-01T12:05:41.651Z
 ## ZIP coverage
 
 - Active ZIP records: 50
-- Verified and indexable ZIPs: 12
-- Pending and noindex ZIPs: 38
+- Verified and indexable ZIPs: 25
+- Pending and noindex ZIPs: 25
 - Counties covered: 5
 - Missing core provider categories on verified ZIPs: 0
-- Missing core provider items across pending ZIPs: 152
+- Missing core provider items across pending ZIPs: 100
 
 ## Provider counts
 
 | Category | Providers or official tools | ZIP records |
 | --- | ---: | ---: |
-| Electricity | 8 | 12 |
-| Water | 11 | 12 |
-| Sewer | 11 | 12 |
+| Electricity | 8 | 25 |
+| Water | 11 | 25 |
+| Sewer | 11 | 25 |
 | Internet | 5 | 50 |
-| Trash & recycling | 12 | 12 |
+| Trash & recycling | 12 | 25 |
 | Local information | 5 | 50 |
 
 ## Missing provider information
 
-No core-category gaps remain on the 12 verified ZIP pages. Pending ZIP gaps stay in the research queue and do not affect indexing.
+No core-category gaps remain on the 25 verified ZIP pages. Pending ZIP gaps stay in the research queue and do not affect indexing.
 
 ## Official links
 
@@ -43,7 +43,7 @@ No core-category gaps remain on the 12 verified ZIP pages. Pending ZIP gaps stay
 - Robots sitemap declaration: PASS
 - GA4 root installation and manual page-view control: PASS
 - GA4 runtime status: enabled in production only when `NEXT_PUBLIC_GA_MEASUREMENT_ID` is present
-- Privacy: typed events omit entered ZIPs and submitted form content
+- Privacy: typed events omit routine lookup ZIPs and submitted form content; a ZIP is sent only when a visitor explicitly requests unsupported coverage
 
 ## Automated checks
 

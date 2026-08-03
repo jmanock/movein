@@ -1,6 +1,6 @@
 # Link validation report
 
-Generated: 2026-08-01T12:03:54.608Z
+Generated: 2026-08-03T11:36:07.373Z
 
 The checker uses HEAD first and a lightweight GET fallback when HEAD is blocked or unsupported. It follows redirects without crawling site content.
 

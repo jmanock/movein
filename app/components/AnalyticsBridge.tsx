@@ -38,6 +38,11 @@ export function AnalyticsBridge() {
       if (!anchor) return;
       const destination = new URL(anchor.href, window.location.origin);
       if (destination.origin !== window.location.origin) return;
+      const county = anchor.dataset.analyticsCounty;
+      if (county) {
+        trackEvent("county_page_navigation", { county, source_page: sourcePage() });
+        return;
+      }
       const printable = destination.pathname.match(/^\/resources\/printables\/([^/]+)$/);
       if (printable) {
         trackEvent("printable_resource_click", { resource_slug: printable[1], source_page: sourcePage(), action: "open" });

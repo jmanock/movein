@@ -18,6 +18,7 @@ const official: OfficialResource[] = [
 const groups = [
   ["Find a provider", resourceGuides.filter((g) => g.slug.startsWith("find-") || g.slug.includes("providers-vary") || g.slug.includes("jurisdiction"))],
   ["Set up service", resourceGuides.filter((g) => g.slug.includes("set-up") || g.slug.includes("transfer") || g.slug.includes("documents") || g.slug.includes("deposits"))],
+  ["Plan move-in", resourceGuides.filter((g) => g.slug.includes("move-in") || g.slug.includes("moving-utility") || g.slug.includes("first-week"))],
   ["Understand the address", resourceGuides.filter((g) => g.slug.includes("mailing") || g.slug.includes("city-vs") || g.slug.includes("change-address"))],
 ] as const;
 

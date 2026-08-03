@@ -205,3 +205,116 @@ fcc-broadband-map,34771,address_required,Use the FCC address search for reported
 osceola-government,34771,possible,Official Osceola County starting point while utility research is pending.,high,0,possible,1,Confirm municipal and county jurisdiction with the complete address.
 fcc-broadband-map,34772,address_required,Use the FCC address search for reported internet providers and technologies.,high,0,address_required,1,Availability and speeds vary by exact street address.
 osceola-government,34772,possible,Official Osceola County starting point while utility research is pending.,high,0,possible,1,Confirm municipal and county jurisdiction with the complete address.
+sanford-water,32773,possible,Possible City of Sanford water service; confirm the complete address with the city.,high,0,possible,1,Sanford mailing addresses may be outside the City service area.
+sanford-sewer,32773,possible,Possible City of Sanford wastewater service; sewer or septic varies by property.,high,0,possible,1,Sanford mailing addresses may use another utility or septic.
+sanford-solid-waste,32773,address_required,City collection depends on jurisdiction and property type.,high,0,address_required,1,Unincorporated and multi-family properties may have different arrangements.
+florida-psc-electric-finder,32773,address_required,Use the official state territory tool to confirm the electric utility.,high,0,address_required,1,The tool is a starting point and not a provider assignment.
+fpl-electric,32773,possible,FPL may serve portions of Sanford ZIP 32773; confirm the exact address.,high,0,multiple_possible,1,Electric territories do not follow mailing-city or ZIP boundaries.
+duke-electric,32773,possible,Duke Energy may serve portions of Sanford ZIP 32773; confirm the exact address.,high,0,multiple_possible,1,Electric territories do not follow mailing-city or ZIP boundaries.
+spectrum-internet,32773,address_required,Use the official provider checker with the complete street address.,high,0,address_required,1,This listing does not claim ZIP-wide availability.
+xfinity-internet,32773,address_required,Use the official provider checker with the complete street address.,high,0,address_required,1,This listing does not claim ZIP-wide availability.
+att-internet,32773,address_required,Use the official provider checker with the complete street address.,high,0,address_required,1,This listing does not claim ZIP-wide availability.
+quantum-fiber,32773,address_required,Use the official provider checker with the complete street address.,high,0,address_required,1,This listing does not claim ZIP-wide availability.
+ouc-electric,32803,possible,OUC may serve this Orlando ZIP; confirm the complete service address.,high,0,possible,1,The Orlando mailing name does not guarantee OUC service.
+ouc-water,32803,possible,OUC may provide water within this Orlando ZIP; confirm the address.,high,0,possible,1,Other arrangements may apply outside OUC territory.
+orlando-sewer,32803,address_required,City wastewater may serve connected eligible properties.,high,0,primary_municipal,1,The official service area is approximate; confirm the parcel.
+orlando-trash,32803,address_required,City residential collection may serve eligible Orlando properties.,high,0,address_required,1,Property type and jurisdiction affect collection.
+spectrum-internet,32803,address_required,Use the official provider checker with the complete street address.,high,0,address_required,1,This listing does not claim ZIP-wide availability.
+xfinity-internet,32803,address_required,Use the official provider checker with the complete street address.,high,0,address_required,1,This listing does not claim ZIP-wide availability.
+att-internet,32803,address_required,Use the official provider checker with the complete street address.,high,0,address_required,1,This listing does not claim ZIP-wide availability.
+quantum-fiber,32803,address_required,Use the official provider checker with the complete street address.,high,0,address_required,1,This listing does not claim ZIP-wide availability.
+ouc-electric,32804,possible,OUC may serve this Orlando ZIP; confirm the complete service address.,high,0,possible,1,The Orlando mailing name does not guarantee OUC service.
+ouc-water,32804,possible,OUC may provide water within this Orlando ZIP; confirm the address.,high,0,possible,1,Other arrangements may apply outside OUC territory.
+orlando-sewer,32804,address_required,City wastewater may serve connected eligible properties.,high,0,primary_municipal,1,The official service area is approximate; confirm the parcel.
+orlando-trash,32804,address_required,City residential collection may serve eligible Orlando properties.,high,0,address_required,1,Property type and jurisdiction affect collection.
+spectrum-internet,32804,address_required,Use the official provider checker with the complete street address.,high,0,address_required,1,This listing does not claim ZIP-wide availability.
+xfinity-internet,32804,address_required,Use the official provider checker with the complete street address.,high,0,address_required,1,This listing does not claim ZIP-wide availability.
+att-internet,32804,address_required,Use the official provider checker with the complete street address.,high,0,address_required,1,This listing does not claim ZIP-wide availability.
+quantum-fiber,32804,address_required,Use the official provider checker with the complete street address.,high,0,address_required,1,This listing does not claim ZIP-wide availability.
+ouc-electric,32806,possible,OUC may serve this Orlando ZIP; confirm the complete service address.,high,0,possible,1,The Orlando mailing name does not guarantee OUC service.
+ouc-water,32806,possible,OUC may provide water within this Orlando ZIP; confirm the address.,high,0,possible,1,Other arrangements may apply outside OUC territory.
+orlando-sewer,32806,address_required,City wastewater may serve connected eligible properties.,high,0,primary_municipal,1,The official service area is approximate; confirm the parcel.
+orlando-trash,32806,address_required,City residential collection may serve eligible Orlando properties.,high,0,address_required,1,Property type and jurisdiction affect collection.
+spectrum-internet,32806,address_required,Use the official provider checker with the complete street address.,high,0,address_required,1,This listing does not claim ZIP-wide availability.
+xfinity-internet,32806,address_required,Use the official provider checker with the complete street address.,high,0,address_required,1,This listing does not claim ZIP-wide availability.
+att-internet,32806,address_required,Use the official provider checker with the complete street address.,high,0,address_required,1,This listing does not claim ZIP-wide availability.
+quantum-fiber,32806,address_required,Use the official provider checker with the complete street address.,high,0,address_required,1,This listing does not claim ZIP-wide availability.
+daytona-water,32117,possible,Possible City of Daytona Beach water service for addresses in its utility area.,high,0,primary_municipal,1,Confirm City utility eligibility for the exact address.
+daytona-sewer,32117,address_required,City wastewater service is possible for connected properties.,high,0,address_required,1,Sewer or septic status varies by parcel.
+daytona-trash,32117,address_required,City collection information applies to eligible Daytona Beach properties.,high,0,address_required,1,City limits and property type affect collection.
+florida-psc-electric-finder,32117,address_required,Use the official state territory tool to identify the possible electric utility.,high,0,address_required,1,The tool is a starting point and not a provider assignment.
+fpl-electric,32117,possible,FPL may serve Daytona Beach addresses in ZIP 32117.,high,0,multiple_possible,1,Volusia County has multiple electric territories; confirm by address.
+spectrum-internet,32117,address_required,Use the official provider checker with the complete street address.,high,0,address_required,1,This listing does not claim ZIP-wide availability.
+xfinity-internet,32117,address_required,Use the official provider checker with the complete street address.,high,0,address_required,1,This listing does not claim ZIP-wide availability.
+att-internet,32117,address_required,Use the official provider checker with the complete street address.,high,0,address_required,1,This listing does not claim ZIP-wide availability.
+quantum-fiber,32117,address_required,Use the official provider checker with the complete street address.,high,0,address_required,1,This listing does not claim ZIP-wide availability.
+daytona-water,32118,possible,Possible City of Daytona Beach water service for addresses in its utility area.,high,0,primary_municipal,1,Confirm City utility eligibility for the exact address.
+daytona-sewer,32118,address_required,City wastewater service is possible for connected properties.,high,0,address_required,1,Sewer or septic status varies by parcel.
+daytona-trash,32118,address_required,City collection information applies to eligible Daytona Beach properties.,high,0,address_required,1,City limits and property type affect collection.
+florida-psc-electric-finder,32118,address_required,Use the official state territory tool to identify the possible electric utility.,high,0,address_required,1,The tool is a starting point and not a provider assignment.
+fpl-electric,32118,possible,FPL may serve Daytona Beach addresses in ZIP 32118.,high,0,multiple_possible,1,Volusia County has multiple electric territories; confirm by address.
+spectrum-internet,32118,address_required,Use the official provider checker with the complete street address.,high,0,address_required,1,This listing does not claim ZIP-wide availability.
+xfinity-internet,32118,address_required,Use the official provider checker with the complete street address.,high,0,address_required,1,This listing does not claim ZIP-wide availability.
+att-internet,32118,address_required,Use the official provider checker with the complete street address.,high,0,address_required,1,This listing does not claim ZIP-wide availability.
+quantum-fiber,32118,address_required,Use the official provider checker with the complete street address.,high,0,address_required,1,This listing does not claim ZIP-wide availability.
+daytona-water,32119,possible,Possible City of Daytona Beach water service for addresses in its utility area.,high,0,primary_municipal,1,Confirm City utility eligibility for the exact address.
+daytona-sewer,32119,address_required,City wastewater service is possible for connected properties.,high,0,address_required,1,Sewer or septic status varies by parcel.
+daytona-trash,32119,address_required,City collection information applies to eligible Daytona Beach properties.,high,0,address_required,1,City limits and property type affect collection.
+florida-psc-electric-finder,32119,address_required,Use the official state territory tool to identify the possible electric utility.,high,0,address_required,1,The tool is a starting point and not a provider assignment.
+fpl-electric,32119,possible,FPL may serve Daytona Beach addresses in ZIP 32119.,high,0,multiple_possible,1,Volusia County has multiple electric territories; confirm by address.
+spectrum-internet,32119,address_required,Use the official provider checker with the complete street address.,high,0,address_required,1,This listing does not claim ZIP-wide availability.
+xfinity-internet,32119,address_required,Use the official provider checker with the complete street address.,high,0,address_required,1,This listing does not claim ZIP-wide availability.
+att-internet,32119,address_required,Use the official provider checker with the complete street address.,high,0,address_required,1,This listing does not claim ZIP-wide availability.
+quantum-fiber,32119,address_required,Use the official provider checker with the complete street address.,high,0,address_required,1,This listing does not claim ZIP-wide availability.
+deland-water,32724,possible,Possible City of DeLand water service; confirm the property is in the service area.,high,0,possible,1,The mailing city does not guarantee City service.
+deland-sewer,32724,address_required,Sewer service or septic status varies by property; confirm the exact address.,high,0,address_required,1,Connected sewer service is not ZIP-wide.
+deland-solid-waste,32724,address_required,City collection applies within eligible city service boundaries.,high,0,address_required,1,Unincorporated and multi-family properties may differ.
+florida-psc-electric-finder,32724,address_required,Use the official state territory tool to identify the possible electric utility.,high,0,address_required,1,The tool is a starting point and not a provider assignment.
+duke-electric,32724,possible,Duke Energy may serve DeLand-area addresses in ZIP 32724.,high,0,possible,1,The ZIP includes properties outside city limits; confirm by address.
+spectrum-internet,32724,address_required,Use the official provider checker with the complete street address.,high,0,address_required,1,This listing does not claim ZIP-wide availability.
+xfinity-internet,32724,address_required,Use the official provider checker with the complete street address.,high,0,address_required,1,This listing does not claim ZIP-wide availability.
+att-internet,32724,address_required,Use the official provider checker with the complete street address.,high,0,address_required,1,This listing does not claim ZIP-wide availability.
+quantum-fiber,32724,address_required,Use the official provider checker with the complete street address.,high,0,address_required,1,This listing does not claim ZIP-wide availability.
+seco-electric,34788,possible,SECO may serve parts of Lake County ZIP 34788; confirm on the official territory tool.,medium,0,possible,1,Other electric territories may overlap the ZIP.
+florida-psc-electric-finder,34788,address_required,Use the official state territory tool to confirm the electric territory.,high,0,multiple_possible,1,SECO is possible but the address must be checked.
+leesburg-water,34788,possible,City of Leesburg water may serve eligible properties.,high,0,primary_municipal,1,Confirm the property is within the City utility territory.
+leesburg-sewer,34788,address_required,City wastewater may serve connected eligible properties.,high,0,address_required,1,Sewer connection or septic status varies by parcel.
+leesburg-trash,34788,address_required,City collection may serve eligible properties within city limits.,high,0,address_required,1,Unincorporated and multi-family properties may differ.
+spectrum-internet,34788,address_required,Use the official provider checker with the complete street address.,high,0,address_required,1,This listing does not claim ZIP-wide availability.
+xfinity-internet,34788,address_required,Use the official provider checker with the complete street address.,high,0,address_required,1,This listing does not claim ZIP-wide availability.
+att-internet,34788,address_required,Use the official provider checker with the complete street address.,high,0,address_required,1,This listing does not claim ZIP-wide availability.
+quantum-fiber,34788,address_required,Use the official provider checker with the complete street address.,high,0,address_required,1,This listing does not claim ZIP-wide availability.
+clermont-water,34715,possible,Possible City of Clermont water service within its service area.,high,0,primary_municipal,1,Lake County or a private utility may serve some properties.
+clermont-sewer,34715,address_required,Possible City sewer service for connected properties.,high,0,address_required,1,Another utility or septic may apply.
+clermont-trash,34715,address_required,Possible City garbage service for eligible accounts.,high,0,address_required,1,County or private arrangements may apply.
+florida-psc-electric-finder,34715,address_required,Use the official state territory tool to identify the possible electric utility.,high,0,address_required,1,The tool is a starting point and not a provider assignment.
+duke-electric,34715,possible,Duke Energy may serve portions of Clermont ZIP 34715.,high,0,multiple_possible,1,The City identifies more than one local electric utility; confirm by address.
+seco-electric,34715,possible,SECO may serve portions of Clermont ZIP 34715.,high,0,multiple_possible,1,The City identifies more than one local electric utility; confirm by address.
+spectrum-internet,34715,address_required,Use the official provider checker with the complete street address.,high,0,address_required,1,This listing does not claim ZIP-wide availability.
+xfinity-internet,34715,address_required,Use the official provider checker with the complete street address.,high,0,address_required,1,This listing does not claim ZIP-wide availability.
+att-internet,34715,address_required,Use the official provider checker with the complete street address.,high,0,address_required,1,This listing does not claim ZIP-wide availability.
+quantum-fiber,34715,address_required,Use the official provider checker with the complete street address.,high,0,address_required,1,This listing does not claim ZIP-wide availability.
+kua-electric,34743,possible,KUA may serve this Kissimmee-area ZIP; confirm the property on its official territory map.,high,0,possible,1,The authority territory does not follow ZIP boundaries.
+toho-water,34743,possible,Toho is a possible water provider; confirm the address in its service area.,high,0,possible,1,Other systems may serve some addresses.
+toho-sewer,34743,address_required,Toho is a possible wastewater provider; sewer or septic varies by property.,high,0,address_required,1,Connected service must be confirmed.
+kissimmee-trash,34743,address_required,City collection may serve eligible properties inside Kissimmee city limits.,high,0,address_required,1,Unincorporated addresses use a different arrangement.
+spectrum-internet,34743,address_required,Use the official provider checker with the complete street address.,high,0,address_required,1,This listing does not claim ZIP-wide availability.
+xfinity-internet,34743,address_required,Use the official provider checker with the complete street address.,high,0,address_required,1,This listing does not claim ZIP-wide availability.
+att-internet,34743,address_required,Use the official provider checker with the complete street address.,high,0,address_required,1,This listing does not claim ZIP-wide availability.
+quantum-fiber,34743,address_required,Use the official provider checker with the complete street address.,high,0,address_required,1,This listing does not claim ZIP-wide availability.
+kua-electric,34744,possible,KUA may serve this Kissimmee-area ZIP; confirm the property on its official territory map.,high,0,possible,1,The authority territory does not follow ZIP boundaries.
+toho-water,34744,possible,Toho is a possible water provider; confirm the address in its service area.,high,0,possible,1,Other systems may serve some addresses.
+toho-sewer,34744,address_required,Toho is a possible wastewater provider; sewer or septic varies by property.,high,0,address_required,1,Connected service must be confirmed.
+kissimmee-trash,34744,address_required,City collection may serve eligible properties inside Kissimmee city limits.,high,0,address_required,1,Unincorporated addresses use a different arrangement.
+spectrum-internet,34744,address_required,Use the official provider checker with the complete street address.,high,0,address_required,1,This listing does not claim ZIP-wide availability.
+xfinity-internet,34744,address_required,Use the official provider checker with the complete street address.,high,0,address_required,1,This listing does not claim ZIP-wide availability.
+att-internet,34744,address_required,Use the official provider checker with the complete street address.,high,0,address_required,1,This listing does not claim ZIP-wide availability.
+quantum-fiber,34744,address_required,Use the official provider checker with the complete street address.,high,0,address_required,1,This listing does not claim ZIP-wide availability.
+kua-electric,34746,possible,KUA may serve this Kissimmee-area ZIP; confirm the property on its official territory map.,high,0,possible,1,The authority territory does not follow ZIP boundaries.
+toho-water,34746,possible,Toho is a possible water provider; confirm the address in its service area.,high,0,possible,1,Other systems may serve some addresses.
+toho-sewer,34746,address_required,Toho is a possible wastewater provider; sewer or septic varies by property.,high,0,address_required,1,Connected service must be confirmed.
+kissimmee-trash,34746,address_required,City collection may serve eligible properties inside Kissimmee city limits.,high,0,address_required,1,Unincorporated addresses use a different arrangement.
+spectrum-internet,34746,address_required,Use the official provider checker with the complete street address.,high,0,address_required,1,This listing does not claim ZIP-wide availability.
+xfinity-internet,34746,address_required,Use the official provider checker with the complete street address.,high,0,address_required,1,This listing does not claim ZIP-wide availability.
+att-internet,34746,address_required,Use the official provider checker with the complete street address.,high,0,address_required,1,This listing does not claim ZIP-wide availability.
+quantum-fiber,34746,address_required,Use the official provider checker with the complete street address.,high,0,address_required,1,This listing does not claim ZIP-wide availability.

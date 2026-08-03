@@ -8,8 +8,8 @@ Stop or quiesce the app, create a timestamped SQLite online backup of `/var/lib/
 
 ```bash
 sudo install -d -o "$USER" -g "$USER" /var/backups/movein
-sqlite3 /var/lib/movein/movein.sqlite ".backup '/var/backups/movein/movein-before-phase-2.sqlite'"
-test -s /var/backups/movein/movein-before-phase-2.sqlite
+sqlite3 /var/lib/movein/movein.sqlite ".backup '/var/backups/movein/movein-before-phase-3.sqlite'"
+test -s /var/backups/movein/movein-before-phase-3.sqlite
 ```
 
 ## Release commands for this front-end release
@@ -36,7 +36,7 @@ pm2 restart movein --update-env
 pm2 save
 ```
 
-This release adds migrations for provider support links and retirement of legacy natural-gas rows, plus reviewed CSV changes. Back up the persistent database, migrate, dry-run the import, then apply it with the verified-row confirmation shown above. The exact direct smoke-test command is:
+This release adds reviewed CSV coverage without a new schema migration. Keep the idempotent migration step in the release sequence, back up the persistent database, dry-run the import, then apply it with the verified-row confirmation shown above. The exact direct smoke-test command is:
 
 ```bash
 PORT=3006 DATABASE_PATH=/var/lib/movein/movein.sqlite npm run start -- -H 127.0.0.1
@@ -56,10 +56,15 @@ curl -I http://127.0.0.1:3006/homeowners
 curl -I http://127.0.0.1:3006/renters
 curl -I http://127.0.0.1:3006/learn-your-area
 curl -I http://127.0.0.1:3006/resources
+curl -I http://127.0.0.1:3006/florida-utilities
+curl -I http://127.0.0.1:3006/orange-county-utilities
+curl -I 'http://127.0.0.1:3006/request-zip?zip=99999'
+curl -I http://127.0.0.1:3006/resources/moving-utility-checklist
 curl -I http://127.0.0.1:3006/faq
 curl -I http://127.0.0.1:3006/data-sources
 curl -I http://127.0.0.1:3006/corrections
 curl -I http://127.0.0.1:3006/lookup/32801
+curl -I http://127.0.0.1:3006/lookup/32803
 curl -I http://127.0.0.1:3006/lookup/99999
 curl -I http://127.0.0.1:3006/robots.txt
 curl -I http://127.0.0.1:3006/sitemap.xml

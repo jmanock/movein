@@ -3,7 +3,7 @@ import { join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const baseUrl = process.env.FRONTEND_AUDIT_URL || "http://127.0.0.1:3006";
-const routes = ["/", "/homeowners", "/renters", "/learn-your-area", "/resources", "/faq", "/coverage", "/resources/find-electric-company", "/lookup/32757", "/lookup/32771", "/lookup/32701", "/lookup/99999", "/robots.txt", "/sitemap.xml"];
+const routes = ["/", "/homeowners", "/renters", "/learn-your-area", "/resources", "/faq", "/coverage", "/florida-utilities", "/orange-county-utilities", "/request-zip", "/resources/find-electric-company", "/resources/moving-utility-checklist", "/lookup/32757", "/lookup/32803", "/lookup/32701", "/lookup/99999", "/robots.txt", "/sitemap.xml"];
 const failures = [];
 const warnings = [];
 
@@ -27,7 +27,7 @@ if (!/aria-label="Toggle navigation"/.test(source)) failures.push("Mobile naviga
 if (!/<label htmlFor=/.test(source)) failures.push("ZIP form label is missing");
 if (/cloudflare:|wrangler|vinext|@cloudflare/i.test(source)) failures.push("Cloudflare-specific production code detected");
 if (/natural[ -]gas/i.test(source)) failures.push("Retired natural-gas content detected in the public application");
-for (const required of ["Recently moved?", "Things to check during the first week", "Emergency information", "Official source", "CollectionPage", "SearchAction", '"@type": "Service"']) if (!source.includes(required)) failures.push(`Phase 3 authority element is missing: ${required}`);
+for (const required of ["Recently moved?", "Things to check during the first week", "Emergency information", "Official source", "Request this ZIP", "county_page_navigation", "CollectionPage", "FAQPage", "SearchAction", '"@type": "Service"']) if (!source.includes(required)) failures.push(`Phase 3 authority element is missing: ${required}`);
 const clientFiles = await Promise.all(sourceFiles.filter((file) => file.endsWith(".tsx")).map(async (file) => ({ file, text: await readFile(file, "utf8") })));
 const clients = clientFiles.filter(({ text }) => text.startsWith('"use client"')).map(({ file }) => relative(new URL("../", import.meta.url).pathname, file));
 if (clients.length > 8) warnings.push(`Client component count is ${clients.length}; review bundle impact`);
@@ -49,6 +49,7 @@ for (const route of routes) {
   if (!/<main(?:\s[^>]*)?id="main-content"/.test(html)) failures.push(`${route} has no main content target`);
   if (/<img(?![^>]*\salt=)[^>]*>/i.test(html)) failures.push(`${route} contains an image without alt text`);
   if (route === "/lookup/99999" && !/<meta name="robots" content="noindex/.test(html)) failures.push("Unsupported ZIP page is indexable");
+  if (route === "/request-zip" && !/<meta name="robots" content="noindex/.test(html)) failures.push("ZIP request page is indexable");
   if (route.startsWith("/resources/") && !/Last reviewed/.test(html)) failures.push(`${route} is missing a reviewed date`);
   if (html.length < 4_000 && !route.includes("lookup/99999")) warnings.push(`${route} may have too little visible value`);
   if (!/<form|class="button|class="text-link|provider-actions|resource-columns|faq-layout/.test(html)) warnings.push(`${route} has no obvious primary action`);

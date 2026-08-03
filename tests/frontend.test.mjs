@@ -58,6 +58,7 @@ test("GA4 loads once from the root and manually measures App Router page views",
     "zip_lookup_success",
     "zip_lookup_partial",
     "zip_lookup_unsupported",
+    "zip_coverage_request",
     "provider_official_link_click",
     "provider_phone_click",
     "provider_start_service_click",
@@ -65,12 +66,33 @@ test("GA4 loads once from the root and manually measures App Router page views",
     "outage_phone_click",
     "outage_map_click",
     "guide_link_click",
+    "county_page_navigation",
     "correction_form_success",
     "printable_resource_click",
   ]) assert.match(analytics, new RegExp(`${eventName}:`));
   assert.match(analytics, /blockedKeys/);
   assert.match(declarations, /gtag\?: GtagFunction/);
   assert.match(environment, /G-QC9FYWHVZZ/);
+});
+
+test("county hubs and demand-driven ZIP requests form a crawl-safe content network", async () => {
+  const [countyPage, floridaPage, countyData, requestPage, requestForm, lookup, sitemap] = await Promise.all([
+    read("../app/components/CountyUtilitiesPage.tsx"),
+    read("../app/florida-utilities/page.tsx"),
+    read("../app/data/counties.ts"),
+    read("../app/request-zip/page.tsx"),
+    read("../app/components/ZipRequestForm.tsx"),
+    read("../app/lookup/[zip]/page.tsx"),
+    read("../app/sitemap.ts"),
+  ]);
+  for (const county of ["Orange", "Seminole", "Lake", "Volusia", "Osceola"]) assert.match(countyData, new RegExp(`name: "${county}"`));
+  for (const requirement of ["CollectionPage", "FAQPage", "BreadcrumbList", "RelatedGuides", "LocalResourceCards"]) assert.match(countyPage, new RegExp(requirement));
+  assert.match(floridaPage, /countyProfiles\.map/);
+  assert.match(requestPage, /noindex: true/);
+  assert.match(requestForm, /zip_coverage_request/);
+  assert.match(requestForm, /requested_zip/);
+  assert.match(lookup, /Request this ZIP/);
+  assert.doesNotMatch(sitemap, /request-zip/);
 });
 
 test("Phase 2 coverage and health reporting preserve the indexability gate", async () => {

@@ -6,7 +6,7 @@ Priority is electricity first; water and sewer second; trash third; internet pro
 
 Near-term work:
 
-1. Work through the 38 pending ZIPs using authoritative utility-boundary and jurisdiction sources.
+1. Work through the 25 pending ZIPs using authoritative utility-boundary and jurisdiction sources.
 2. Add electric, water, sewer, and trash records only when the source supports the stated limitation.
 3. Add address-supported internet provider and technology observations without speeds, prices, rankings, or affiliate links.
 4. Promote a ZIP only after all core categories pass validation and a rendered page review.

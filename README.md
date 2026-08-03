@@ -2,7 +2,7 @@
 
 MoveIn is a focused Florida utility and local-services lookup. A visitor enters a five-digit ZIP code, sees reviewed possible providers and official starting points, and is reminded to confirm the exact street address.
 
-The pilot dataset contains 50 ZIP records in Seminole, Orange, Volusia, Lake, and Osceola counties. Twelve ZIPs have complete reviewed core-service records and are indexable; 38 expansion ZIPs remain pending and noindex while utility research continues. It does not claim countywide or statewide coverage.
+The pilot dataset contains 50 ZIP records in Seminole, Orange, Volusia, Lake, and Osceola counties. Twenty-five ZIPs have complete reviewed core-service records and are indexable; 25 expansion ZIPs remain pending and noindex while utility research continues. It does not claim countywide or statewide coverage.
 
 ## Stack
 
@@ -62,7 +62,9 @@ DATABASE_PATH=/var/lib/movein/movein.sqlite
 
 - `/` — primary ZIP lookup
 - `/lookup/[zip]` — server-rendered utility, recently-moved, emergency, and official local-resource page
+- `/request-zip` — privacy-safe demand signal for unsupported five-digit ZIPs; no email is collected
 - `/api/lookup?zip=32771` — controlled JSON lookup
+- `/florida-utilities` and the five county utility hubs — reviewed coverage discovery and local context
 - `/homeowners`, `/renters` — focused hubs with substantive setup guides
 - `/learn-your-area`, `/resources`, `/coverage`, `/faq`
 - `/resources/printables/[slug]` — maintainable HTML checklists with print CSS
@@ -117,4 +119,5 @@ The seed is idempotent and non-deleting. A changed verified row is refused unles
 - `docs/analytics-events.md` — privacy-safe event names and integration boundary
 - `docs/google-analytics.md` — GA4 setup, event parameters, testing, privacy, and duplicate prevention
 - `docs/phase-3-quality-audit.md` — full-site authority audit, remediation, guardrails, and release evidence
+- `docs/phase-3-content-expansion-report.md` — ZIP promotions, authority hubs, request flow, and release evidence
 - `docs/production-health-report.md` — generated coverage, link, search, analytics, test, and build health

@@ -8,6 +8,7 @@ import { getIndexableZipResults } from "../lib/seo";
 export const metadata: Metadata = pageMetadata("MoveIn HTML Sitemap", "Browse MoveIn utility lookup pages, homeowner and renter guides, official resources, verified ZIP pages, and policies.", "/site-map");
 const groups = [
   ["Main pages", [["Home", "/"], ["Homeowners", "/homeowners"], ["Renters", "/renters"], ["Learn Your Area", "/learn-your-area"], ["Resources", "/resources"], ["FAQ", "/faq"]]],
+  ["County utility guides", [["Central Florida utilities", "/florida-utilities"], ["Orange County utilities", "/orange-county-utilities"], ["Seminole County utilities", "/seminole-county-utilities"], ["Lake County utilities", "/lake-county-utilities"], ["Volusia County utilities", "/volusia-county-utilities"], ["Osceola County utilities", "/osceola-county-utilities"], ["Request a ZIP", "/request-zip"]]],
   ["Homeowner guides", guidesFor("homeowners").map((guide) => [guide.h1, guide.path])],
   ["Renter guides", guidesFor("renters").map((guide) => [guide.h1, guide.path])],
   ["Utility resources", guidesFor("resources").map((guide) => [guide.h1, guide.path])],

@@ -24,6 +24,7 @@ export type Guide = {
   published: string;
   reviewed: string;
   sections: GuideSection[];
+  faqs?: { question: string; answer: string }[];
   related: string[];
   sources: OfficialResource[];
 };
@@ -330,6 +331,78 @@ export const guides: Guide[] = [
       { heading: "Confirm pets, trash, and recurring lease reminders", paragraphs: ["Complete required pet records and fees through the authorized process, learn waste and recycling locations, and calendar notice dates or renewal decisions that the lease makes important."], steps: ["Verify pet registration and vaccination-document requirements.", "Find trash, recycling, bulk-item, and moving-box procedures.", "Record filter or tenant-care duties stated in the lease.", "Calendar renewal, inspection, and move-out notice dates."] },
     ],
     related: ["/renters/document-move-in-condition", "/renters/renters-insurance-and-deposits", "/resources/find-trash-service"], sources: [floridaLandlordTenant],
+  },
+  {
+    path: "/resources/utilities-before-move-in-day", section: "resources", slug: "utilities-before-move-in-day",
+    title: "Utilities to Turn On Before Move-In Day", description: "Prioritize electricity, water, sewer, internet, trash, and emergency contacts before taking responsibility for a new home or rental.",
+    h1: "What utilities should be on before move-in day?", eyebrow: "Move-in essentials",
+    directAnswer: "Electricity and water should usually be active when responsibility begins. Confirm sewer or septic, arrange appointment-based internet early, identify trash service, and save official outage and emergency contacts before the first night.",
+    published: "2026-08-03", reviewed: "2026-08-03",
+    sections: [
+      { heading: "Start essential services first", paragraphs: ["Electricity supports cooling, refrigeration, lighting, alarms, and many water or septic systems. Water is needed for sanitation and for checking fixtures safely. Never request a shutoff on another person's active account."], steps: ["Confirm the date responsibility begins.", "Verify the electric and water providers for the complete address.", "Schedule start or transfer service with confirmation numbers.", "Ask whether an in-person appointment, deposit, or document is required."] },
+      { heading: "Treat internet as an installation project", paragraphs: ["Internet may require an address check, equipment shipment, technician visit, building access, or landlord approval. Provider-reported availability does not guarantee that a specific unit is ready."], steps: ["Check the exact address with the FCC map and provider tools.", "Confirm technology and the earliest installation date.", "Ask about wiring, drilling, equipment, and access rules."] },
+      { heading: "Know the local routines before boxes arrive", paragraphs: ["Confirm trash and recycling responsibility, moving-box rules, and collection days. Save the county emergency page, confirmed electric outage map, and water or sewer emergency number."], steps: ["Find the current collection schedule.", "Plan for flattened moving boxes and bulk items.", "Save official outage and emergency contacts offline."] },
+    ],
+    faqs: [
+      { question: "Which utilities are most important before move-in day?", answer: "Electricity and water are usually the first essentials. Confirm sewer or septic responsibility, schedule internet early, identify trash service, and save official emergency contacts." },
+      { question: "Can I choose a utility provider from the ZIP code alone?", answer: "No. Use a ZIP result as a possible-provider shortlist and confirm the complete service address with the official provider before opening an account." },
+      { question: "When should internet installation be scheduled?", answer: "Check the address and ask providers about installation lead time as early as practical because equipment, building access, wiring, or a technician appointment may be required." },
+    ],
+    related: ["/resources/when-to-transfer-utilities", "/resources/moving-utility-checklist", "/resources/find-internet-providers"], sources: [floridaPsc, fcc, ready],
+  },
+  {
+    path: "/resources/moving-utility-checklist", section: "resources", slug: "moving-utility-checklist",
+    title: "Moving Utility Checklist", description: "Use a staged checklist to identify providers, schedule service, protect account details, verify the first bill, and save outage contacts.",
+    h1: "A moving utility checklist that prevents missed steps", eyebrow: "Moving checklist",
+    directAnswer: "Work from the date you become responsible for the property: identify every service, confirm providers by address, schedule starts or transfers, keep confirmations private, inspect service on arrival, and verify the first statements.",
+    published: "2026-08-03", reviewed: "2026-08-03",
+    sections: [
+      { heading: "Two to four weeks before responsibility", paragraphs: ["Lead times vary. Start early without changing another occupant's account."], steps: ["List electricity, water, sewer or septic, internet, trash, and any community-managed services.", "Check the lease or closing documents for responsibility dates.", "Use the ZIP lookup as a shortlist and confirm the complete address.", "Ask providers about lead time, deposits, appointments, and documents."] },
+      { heading: "During the final week", paragraphs: ["Keep service confirmations, but do not put account numbers, identification, or payment details into a public checklist."], steps: ["Confirm start dates and installation windows.", "Arrange authorized property access.", "Save electric outage and utility-emergency contacts.", "Find the current trash schedule and moving-box rules."] },
+      { heading: "On arrival and after the first bill", paragraphs: ["Do not manipulate sealed meters or unfamiliar equipment. Report missing, unsafe, leaking, or repeatedly tripping systems through the appropriate provider, property manager, or qualified professional."], steps: ["Confirm essential service is active.", "Record visible meter readings privately when appropriate.", "Check the service address, dates, deposits, and approved charges on each first statement.", "Store provider and outage contacts where the household can reach them."] },
+    ],
+    faqs: [
+      { question: "How early should I begin the moving utility checklist?", answer: "Start two to four weeks before the responsibility date when possible, then confirm each provider's current lead time and any appointment or document requirements." },
+      { question: "Should I cancel the current occupant's utility service?", answer: "No. Schedule only the service start or transfer you are authorized to request, using the responsibility date established by the lease or closing documents." },
+      { question: "What should I verify on the first utility bill?", answer: "Check the service address, responsibility date, deposit, meter information when shown, and every approved charge. Contact the provider if any detail is wrong." },
+    ],
+    related: ["/resources/utilities-before-move-in-day", "/resources/utility-setup-documents", "/resources/when-to-transfer-utilities"], sources: [floridaPsc, ready],
+  },
+  {
+    path: "/resources/homeowner-first-week-checklist", section: "resources", slug: "homeowner-first-week-checklist",
+    title: "Homeowner First-Week Checklist", description: "Organize utilities, safety controls, emergency contacts, locks, property records, trash routines, and maintenance priorities during the first week.",
+    h1: "The first week in a new home", eyebrow: "Homeowner checklist",
+    directAnswer: "Use the first week to confirm utilities, locate safe household controls, test alarms according to their instructions, secure access, document the property privately, learn local collection routines, and turn inspection findings into a maintenance plan.",
+    published: "2026-08-03", reviewed: "2026-08-03",
+    sections: [
+      { heading: "Confirm the essentials and emergency contacts", paragraphs: ["Verify that each account matches the correct address and responsibility date."], steps: ["Confirm electric, water, sewer or septic, internet, and trash responsibility.", "Save official electric outage and water or sewer emergency contacts.", "Bookmark county emergency alerts and shelter guidance.", "Find the current collection schedule."] },
+      { heading: "Learn the home without unsafe experimentation", paragraphs: ["Locate the homeowner-accessible water shutoff and electrical panel, but do not open sealed equipment, touch exposed wiring, force damaged valves, or repeatedly reset a tripping breaker."], steps: ["Confirm keys, locks, garage remotes, gates, and alarm access.", "Test smoke and carbon-monoxide alarms using manufacturer instructions.", "Record HVAC filter size and major equipment labels privately.", "Escalate safety concerns to a qualified professional."] },
+      { heading: "Create a short, prioritized home record", paragraphs: ["Combine inspection findings, warranties, appliance information, insurance inventory, and recurring maintenance dates in secure private storage."], steps: ["Address urgent safety and water-intrusion issues first.", "Keep receipts and warranty documents together.", "Calendar the next filter, alarm, drainage, and equipment checks."] },
+    ],
+    faqs: [
+      { question: "What should a new homeowner do first?", answer: "Confirm essential utilities and emergency contacts, then learn safe household controls, test alarms according to their instructions, secure access, and prioritize urgent inspection findings." },
+      { question: "What home information should be kept private?", answer: "Keep account numbers, access codes, identification, payment details, insurance inventories, equipment serial numbers, and property records in secure private storage." },
+      { question: "Should I reset a breaker that keeps tripping?", answer: "No. Do not repeatedly reset a tripping breaker or handle exposed or sealed electrical equipment. Use the utility emergency channel or a qualified professional as appropriate." },
+    ],
+    related: ["/homeowners/first-week-home-safety", "/homeowners/home-records-and-maintenance", "/resources/moving-utility-checklist"], sources: [cpsc, readyPlan],
+  },
+  {
+    path: "/resources/renter-first-week-checklist", section: "resources", slug: "renter-first-week-checklist",
+    title: "Renter First-Week Checklist", description: "Confirm utility responsibilities, document move-in condition, save maintenance contacts, and learn building, parking, trash, internet, and access rules.",
+    h1: "The first week in a new rental", eyebrow: "Renter checklist",
+    directAnswer: "Read the lease responsibility list, open only the accounts assigned to the tenant, document the unit before unpacking, submit existing issues through the required process, and save both emergency and routine property contacts.",
+    published: "2026-08-03", reviewed: "2026-08-03",
+    sections: [
+      { heading: "Match every service to the lease", paragraphs: ["A property may include water or trash, allocate a master bill, or require tenants to open individual electric and internet accounts."], steps: ["List included, tenant-paid, and property-managed services.", "Confirm the exact unit with each provider.", "Ask about internet wiring and installation permission.", "Keep account and payment details private."] },
+      { heading: "Document condition and report issues", paragraphs: ["Follow the lease's form, deadline, and delivery method. Use wide and close photographs without capturing people or sensitive documents."], steps: ["Record each room, fixture, appliance, key, remote, and existing issue.", "Submit urgent safety or maintenance problems separately.", "Keep copies and proof of delivery."] },
+      { heading: "Learn the weekly property routines", paragraphs: ["Save routine and emergency maintenance channels and confirm how the property handles entry notices, packages, guests, parking, pets, trash, recycling, and bulk items."], steps: ["Register vehicles and pets when required.", "Test authorized access devices.", "Find waste and moving-box procedures.", "Calendar lease notice and renewal dates."] },
+    ],
+    faqs: [
+      { question: "Which utilities does a renter usually open?", answer: "The lease controls responsibility. Confirm which services are included, billed by the property, or assigned to the tenant before opening any account." },
+      { question: "How should move-in condition be documented?", answer: "Follow the lease's form, deadline, and delivery method. Take clear room and issue photographs without capturing people or sensitive documents, then retain proof of delivery." },
+      { question: "Which property contacts should a renter save?", answer: "Save separate emergency and routine maintenance channels along with authorized building access, utility outage, and local emergency information." },
+    ],
+    related: ["/renters/document-move-in-condition", "/renters/maintenance-parking-and-pet-checklist", "/resources/moving-utility-checklist"], sources: [floridaLandlordTenant],
   },
 ];
 

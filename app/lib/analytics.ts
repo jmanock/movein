@@ -18,6 +18,7 @@ export type AnalyticsEventParameters = {
   zip_lookup_success: LookupParameters;
   zip_lookup_partial: LookupParameters;
   zip_lookup_unsupported: { source_page: string };
+  zip_coverage_request: { requested_zip: string; source_page: string };
   provider_official_link_click: ProviderParameters;
   provider_phone_click: ProviderParameters & { phone_type?: string };
   provider_start_service_click: ProviderParameters;
@@ -25,6 +26,7 @@ export type AnalyticsEventParameters = {
   outage_phone_click: ProviderParameters & { phone_type: string };
   outage_map_click: ProviderParameters;
   guide_link_click: { guide_slug: string; source_page: string };
+  county_page_navigation: { county: string; source_page: string };
   correction_form_success: { source_page: string };
   printable_resource_click: { resource_slug: string; source_page: string; action?: "open" | "print" };
 };

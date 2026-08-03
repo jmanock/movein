@@ -106,6 +106,18 @@ test("seeded expansion ZIPs stay noindex while exposing safe starting points", (
   assert.equal(result.providers["local-government"][0].name, "Seminole County Government");
 });
 
+test("Phase 3 promotes exactly 25 ZIPs only after core coverage is present", () => {
+  const database = getDatabase();
+  const verified = database.prepare("SELECT zip_code FROM zip_codes WHERE status='verified' AND is_indexable=1 ORDER BY zip_code").all();
+  assert.equal(verified.length, 25);
+  for (const zipCode of ["32117", "32724", "32773", "32803", "34715", "34743", "34788"]) {
+    const result = getLookupResult(zipCode);
+    assert.equal(result?.status, "verified", zipCode);
+    assert.equal(result?.isIndexable, true, zipCode);
+    for (const category of ["electricity", "water", "sewer", "internet", "trash-recycling", "local-government"]) assert.ok(result?.providers[category]?.length, `${zipCode} missing ${category}`);
+  }
+});
+
 test("formats phone links and exposes official source URLs", () => {
   const provider = getLookupResult("32801").providers.electricity[0];
   assert.match(provider.contacts[0].phone, /^\(\d{3}\) \d{3}-\d{4}$/);
@@ -195,7 +207,7 @@ test("FAQ content is visible and its schema mirrors the same data", async () => 
 
 test("SEO includes only ZIP pages that pass the shared database quality gate", async () => {
   const [sitemap, data, lookupPage] = await Promise.all([read("../app/sitemap.ts"), read("../app/data/site.ts"), read("../app/lookup/[zip]/page.tsx")]);
-  assert.match(data, /indexablePilotZips = \["32771", "32746", "32801"/);
+  assert.match(data, /indexablePilotZips = \["32114", "32117", "32118"/);
   assert.match(sitemap, /getIndexableZipResults\(\)\.map/);
   assert.match(lookupPage, /isZipResultIndexable\(result\)/);
   assert.match(lookupPage, /if \(!result\) return <UnsupportedZip/);

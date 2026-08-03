@@ -54,3 +54,7 @@ The baseline is trustworthy but intentionally small. Expansion should add author
 # August 1, 2026 Phase 2 update
 
 The dataset now contains 50 ZIP records: 12 verified/indexable records and 38 pending/noindex expansion records. The verified pages have complete electricity, water, sewer, internet guidance, trash/recycling, and local-government coverage, with cautious ZIP-to-territory wording. Address-level internet checkers replace ZIP-wide availability claims. The generated coverage, research-queue, link, and production-health reports are the authoritative current inventory.
+
+# August 3, 2026 Phase 3 update
+
+The dataset still contains 50 ZIP records, but the reviewed public set has expanded to 25 verified/indexable records while 25 records remain pending/noindex. Thirteen ZIPs were promoted only after all six core categories were represented with official sources, dates, contact paths, and explicit address-confirmation caveats. The new statewide and county hubs describe the pilot accurately without implying complete countywide or statewide service coverage.

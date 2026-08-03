@@ -47,6 +47,7 @@ In the GA4 web data stream, open Enhanced Measurement → Page views → advance
 | `zip_lookup_success` | `county`, `state`, `coverage_status`, `provider_category_count`, `source_page` |
 | `zip_lookup_partial` | same aggregate lookup fields |
 | `zip_lookup_unsupported` | `source_page` |
+| `zip_coverage_request` | `requested_zip`, `source_page=/request-zip` |
 | `provider_official_link_click` | `service_category`, `provider_name`, `county`, `link_type` |
 | `provider_phone_click` | provider fields plus `phone_type` |
 | `provider_start_service_click` | provider fields and `link_type` |
@@ -54,10 +55,11 @@ In the GA4 web data stream, open Enhanced Measurement → Page views → advance
 | `outage_phone_click` | provider fields plus `phone_type=outage` |
 | `outage_map_click` | provider fields and `link_type=outage_map` |
 | `guide_link_click` | `guide_slug`, normalized `source_page` |
+| `county_page_navigation` | `county`, `source_page` |
 | `correction_form_success` | `source_page=/corrections` only |
 | `printable_resource_click` | `resource_slug`, `source_page`, `action` |
 
-The lookup submit event is emitted only after five-digit client validation. Custom events never include the entered ZIP value. Result-page guide sources are normalized to `/lookup/[zip]`.
+The lookup submit event is emitted only after five-digit client validation. Ordinary lookup events never include the entered ZIP value. `zip_coverage_request` is the one intentional exception: after confirming that a valid five-digit ZIP is unsupported, it sends that requested ZIP so aggregate demand can guide research. No email, name, phone, street address, or account identifier is collected with it. Result-page guide sources are normalized to `/lookup/[zip]`.
 
 ## Privacy restrictions
 
@@ -69,9 +71,9 @@ Do not add email, correction descriptions, full IP addresses, exact street addre
 
 1. Deploy or use the explicit local opt-in above.
 2. Open GA4 → Reports → Realtime.
-3. Visit several pages and submit one supported and one unsupported lookup.
+3. Visit several pages, submit one supported and one unsupported lookup, and request one unsupported ZIP.
 4. Confirm one `page_view` per pathname and the expected custom events.
-5. Inspect parameters to confirm no entered ZIP, email, address, or correction content appears.
+5. Inspect parameters to confirm the requested ZIP appears only on `zip_coverage_request`, and that no email, address, phone, account, or correction content appears.
 
 ### DebugView
 

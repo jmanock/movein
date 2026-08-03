@@ -59,7 +59,7 @@ ${providerCounts.map((row) => `| ${row.category} | ${row.providers} | ${row.zip_
 
 ## Missing provider information
 
-${missingVerified.length ? missingVerified.map((row) => `- ${row.zip_code}: ${row.missing}`).join("\n") : "No core-category gaps remain on the 12 verified ZIP pages. Pending ZIP gaps stay in the research queue and do not affect indexing."}
+${missingVerified.length ? missingVerified.map((row) => `- ${row.zip_code}: ${row.missing}`).join("\n") : `No core-category gaps remain on the ${totals.verified} verified ZIP pages. Pending ZIP gaps stay in the research queue and do not affect indexing.`}
 
 ## Official links
 
@@ -74,7 +74,7 @@ ${brokenLinks.length ? brokenLinks.map((row) => `- ${row.original_url} — ${row
 - Robots sitemap declaration: ${robotsHealthy ? "PASS" : "FAIL"}
 - GA4 root installation and manual page-view control: ${gaConfigured ? "PASS" : "FAIL"}
 - GA4 runtime status: enabled in production only when \`NEXT_PUBLIC_GA_MEASUREMENT_ID\` is present
-- Privacy: typed events omit entered ZIPs and submitted form content
+- Privacy: typed events omit routine lookup ZIPs and submitted form content; a ZIP is sent only when a visitor explicitly requests unsupported coverage
 
 ## Automated checks
 
