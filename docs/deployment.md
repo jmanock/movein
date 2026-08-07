@@ -8,8 +8,8 @@ Stop or quiesce the app, create a timestamped SQLite online backup of `/var/lib/
 
 ```bash
 sudo install -d -o "$USER" -g "$USER" /var/backups/movein
-sqlite3 /var/lib/movein/movein.sqlite ".backup '/var/backups/movein/movein-before-phase-3.sqlite'"
-test -s /var/backups/movein/movein-before-phase-3.sqlite
+sqlite3 /var/lib/movein/movein.sqlite ".backup '/var/backups/movein/movein-before-search-sprint.sqlite'"
+test -s /var/backups/movein/movein-before-search-sprint.sqlite
 ```
 
 ## Release commands for this front-end release
@@ -56,6 +56,11 @@ curl -I http://127.0.0.1:3006/homeowners
 curl -I http://127.0.0.1:3006/renters
 curl -I http://127.0.0.1:3006/learn-your-area
 curl -I http://127.0.0.1:3006/resources
+curl -I http://127.0.0.1:3006/resources/find-internet-providers
+curl -I http://127.0.0.1:3006/resources/check-internet-availability
+curl -I http://127.0.0.1:3006/resources/transfer-internet-when-moving
+curl -I http://127.0.0.1:3006/resources/utility-setup
+curl -I http://127.0.0.1:3006/renters/renters-insurance-and-deposits
 curl -I http://127.0.0.1:3006/florida-utilities
 curl -I http://127.0.0.1:3006/orange-county-utilities
 curl -I 'http://127.0.0.1:3006/request-zip?zip=99999'
@@ -65,6 +70,9 @@ curl -I http://127.0.0.1:3006/data-sources
 curl -I http://127.0.0.1:3006/corrections
 curl -I http://127.0.0.1:3006/lookup/32801
 curl -I http://127.0.0.1:3006/lookup/32803
+curl -I http://127.0.0.1:3006/lookup/32809
+curl -I http://127.0.0.1:3006/lookup/34771
+curl -I http://127.0.0.1:3006/lookup/34772
 curl -I http://127.0.0.1:3006/lookup/99999
 curl -I http://127.0.0.1:3006/robots.txt
 curl -I http://127.0.0.1:3006/sitemap.xml

@@ -26,6 +26,7 @@ export type AnalyticsEventParameters = {
   outage_phone_click: ProviderParameters & { phone_type: string };
   outage_map_click: ProviderParameters;
   guide_link_click: { guide_slug: string; source_page: string };
+  guide_to_zip_lookup: { guide_slug: string; source_page: string };
   county_page_navigation: { county: string; source_page: string };
   correction_form_success: { source_page: string };
   printable_resource_click: { resource_slug: string; source_page: string; action?: "open" | "print" };

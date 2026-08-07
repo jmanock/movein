@@ -1,6 +1,6 @@
 # MoveIn production health report
 
-Generated: 2026-08-03T11:41:27.013Z
+Generated: 2026-08-07T11:01:55.395Z
 
 ## Overall status
 
@@ -9,32 +9,32 @@ Generated: 2026-08-03T11:41:27.013Z
 ## ZIP coverage
 
 - Active ZIP records: 50
-- Verified and indexable ZIPs: 25
-- Pending and noindex ZIPs: 25
+- Verified and indexable ZIPs: 28
+- Pending and noindex ZIPs: 22
 - Counties covered: 5
 - Missing core provider categories on verified ZIPs: 0
-- Missing core provider items across pending ZIPs: 100
+- Missing core provider items across pending ZIPs: 88
 
 ## Provider counts
 
 | Category | Providers or official tools | ZIP records |
 | --- | ---: | ---: |
-| Electricity | 8 | 25 |
-| Water | 11 | 25 |
-| Sewer | 11 | 25 |
+| Electricity | 8 | 28 |
+| Water | 11 | 28 |
+| Sewer | 11 | 28 |
 | Internet | 5 | 50 |
-| Trash & recycling | 12 | 25 |
+| Trash & recycling | 12 | 28 |
 | Local information | 5 | 50 |
 
 ## Missing provider information
 
-No core-category gaps remain on the 25 verified ZIP pages. Pending ZIP gaps stay in the research queue and do not affect indexing.
+No core-category gaps remain on the 28 verified ZIP pages. Pending ZIP gaps stay in the research queue and do not affect indexing.
 
 ## Official links
 
 - URLs in latest link report: 66
 - Confirmed broken links: 0
-- Network-uncertain links: 0
+- Network-uncertain links: 13
 - No confirmed 404/410 or server-error links in the latest report.
 
 ## Search and analytics health

@@ -12,6 +12,7 @@ const nextConfig: NextConfig = {
       { source: "/florida/:path*", destination: "/learn-your-area", permanent: true },
       { source: "/welcome/:path*", destination: "/", permanent: true },
       { source: "/blog", destination: "/resources", permanent: true },
+      { source: "/resources/set-up-utilities", destination: "/resources/utility-setup", permanent: true },
     ];
   },
 };

@@ -16,7 +16,7 @@ const structuredData = { "@context": "https://schema.org", "@graph": [
   { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: "MoveIn", url: SITE_URL, slogan: "Everything after the keys.", email: "hello@movein.guide" },
 ] };
 const resources = [
-  ["Set up utilities", "A plain-language order of operations for a new address.", "/resources/set-up-utilities"],
+  ["Set up utilities", "A plain-language order of operations for a new address.", "/resources/utility-setup"],
   ["Find your electric company", "Use territory tools and confirm the complete address.", "/resources/find-electric-company"],
   ["Confirm water and sewer", "Understand city, county, private, well, and septic possibilities.", "/resources/find-water-provider"],
   ["Print a utility checklist", "Keep the essentials visible without creating an account.", "/resources/printables/utility-setup-checklist"],

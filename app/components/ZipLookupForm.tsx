@@ -20,6 +20,7 @@ export function ZipLookupForm({ compact = false, initialZip = "", context = "inl
       setError("Enter a valid five-digit ZIP code.");
       return;
     }
+    if (/^\/(?:resources|homeowners|renters)\//.test(context)) trackEvent("guide_to_zip_lookup", { guide_slug: context.split("/").at(-1) ?? "guide", source_page: context });
     trackEvent("zip_lookup_submit", { source_page: context });
     setError("");
     try {

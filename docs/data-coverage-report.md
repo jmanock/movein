@@ -1,6 +1,6 @@
 # Data coverage report
 
-Generated: 2026-08-03
+Generated: 2026-08-07
 
 ## Readiness
 
@@ -9,16 +9,16 @@ Generated: 2026-08-03
 ## Coverage
 
 - Total active ZIP codes: 50
-- Verified ZIP codes: 25
+- Verified ZIP codes: 28
 - Mostly verified ZIP codes: 0
 - Partial ZIP codes: 0
-- Pending ZIP codes: 25
+- Pending ZIP codes: 22
 - Records missing sources: 0
 - Records missing phone numbers: 0
 - Records missing verification dates: 0
 - Records older than 180 days: 0
 - Corrections awaiting review: 0
-- Remaining research tasks: 125
+- Remaining research tasks: 110
 - Official links: reachable: 56, forbidden: 2, redirected: 7, head-blocked-get-reachable: 1
 
 ## ZIPs by county
@@ -53,7 +53,6 @@ Generated: 2026-08-03
 - 32765: electricity, water, sewer, trash-recycling, internet
 - 32766: electricity, water, sewer, trash-recycling, internet
 - 32778: electricity, water, sewer, trash-recycling, internet
-- 32809: electricity, water, sewer, trash-recycling, internet
 - 34731: electricity, water, sewer, trash-recycling, internet
 - 34736: electricity, water, sewer, trash-recycling, internet
 - 34739: electricity, water, sewer, trash-recycling, internet
@@ -61,8 +60,6 @@ Generated: 2026-08-03
 - 34753: electricity, water, sewer, trash-recycling, internet
 - 34758: electricity, water, sewer, trash-recycling, internet
 - 34761: electricity, water, sewer, trash-recycling, internet
-- 34771: electricity, water, sewer, trash-recycling, internet
-- 34772: electricity, water, sewer, trash-recycling, internet
 - 34786: electricity, water, sewer, trash-recycling, internet
 - 34787: electricity, water, sewer, trash-recycling, internet
 

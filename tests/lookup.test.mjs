@@ -106,11 +106,11 @@ test("seeded expansion ZIPs stay noindex while exposing safe starting points", (
   assert.equal(result.providers["local-government"][0].name, "Seminole County Government");
 });
 
-test("Phase 3 promotes exactly 25 ZIPs only after core coverage is present", () => {
+test("the reviewed pilot promotes exactly 28 ZIPs only after core coverage is present", () => {
   const database = getDatabase();
   const verified = database.prepare("SELECT zip_code FROM zip_codes WHERE status='verified' AND is_indexable=1 ORDER BY zip_code").all();
-  assert.equal(verified.length, 25);
-  for (const zipCode of ["32117", "32724", "32773", "32803", "34715", "34743", "34788"]) {
+  assert.equal(verified.length, 28);
+  for (const zipCode of ["32117", "32724", "32773", "32803", "32809", "34715", "34743", "34771", "34772", "34788"]) {
     const result = getLookupResult(zipCode);
     assert.equal(result?.status, "verified", zipCode);
     assert.equal(result?.isIndexable, true, zipCode);

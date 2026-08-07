@@ -55,6 +55,7 @@ In the GA4 web data stream, open Enhanced Measurement → Page views → advance
 | `outage_phone_click` | provider fields plus `phone_type=outage` |
 | `outage_map_click` | provider fields and `link_type=outage_map` |
 | `guide_link_click` | `guide_slug`, normalized `source_page` |
+| `guide_to_zip_lookup` | `guide_slug`, `source_page` |
 | `county_page_navigation` | `county`, `source_page` |
 | `correction_form_success` | `source_page=/corrections` only |
 | `printable_resource_click` | `resource_slug`, `source_page`, `action` |

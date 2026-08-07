@@ -318,3 +318,27 @@ spectrum-internet,34746,address_required,Use the official provider checker with 
 xfinity-internet,34746,address_required,Use the official provider checker with the complete street address.,high,0,address_required,1,This listing does not claim ZIP-wide availability.
 att-internet,34746,address_required,Use the official provider checker with the complete street address.,high,0,address_required,1,This listing does not claim ZIP-wide availability.
 quantum-fiber,34746,address_required,Use the official provider checker with the complete street address.,high,0,address_required,1,This listing does not claim ZIP-wide availability.
+ouc-electric,32809,possible,OUC may serve Orlando-area addresses in ZIP 32809; confirm the complete service address.,high,0,possible,1,The Orlando mailing name does not guarantee OUC service.
+ouc-water,32809,possible,OUC may provide water within ZIP 32809; confirm the complete address.,high,0,possible,1,Other city county or private arrangements may apply.
+orlando-sewer,32809,address_required,City wastewater service may apply to eligible Orlando properties in ZIP 32809.,high,0,address_required,1,Confirm city limits and sewer connection for the parcel.
+orlando-trash,32809,address_required,City collection may apply to eligible Orlando properties in ZIP 32809.,high,0,address_required,1,Confirm jurisdiction and collection responsibility by address.
+spectrum-internet,32809,address_required,Use the official provider checker with the complete street address.,high,0,address_required,1,This listing does not claim ZIP-wide availability.
+xfinity-internet,32809,address_required,Use the official provider checker with the complete street address.,high,0,address_required,1,This listing does not claim ZIP-wide availability.
+att-internet,32809,address_required,Use the official provider checker with the complete street address.,high,0,address_required,1,This listing does not claim ZIP-wide availability.
+quantum-fiber,32809,address_required,Use the official provider checker with the complete street address.,high,0,address_required,1,This listing does not claim ZIP-wide availability.
+ouc-electric,34771,possible,OUC manages the St. Cloud electric system; confirm the complete service address.,high,0,primary_municipal,1,The St. Cloud mailing name does not prove City or OUC territory.
+toho-water,34771,possible,Toho may provide water to St. Cloud-area properties in ZIP 34771.,high,0,possible,1,Confirm the property on the official service-area tool.
+toho-sewer,34771,address_required,Toho may provide wastewater service to connected properties in ZIP 34771.,high,0,address_required,1,Sewer or septic status must be confirmed for the parcel.
+st-cloud-trash,34771,address_required,City residential collection may apply to eligible St. Cloud properties in ZIP 34771.,high,0,address_required,1,County and community-managed arrangements may differ.
+spectrum-internet,34771,address_required,Use the official provider checker with the complete street address.,high,0,address_required,1,This listing does not claim ZIP-wide availability.
+xfinity-internet,34771,address_required,Use the official provider checker with the complete street address.,high,0,address_required,1,This listing does not claim ZIP-wide availability.
+att-internet,34771,address_required,Use the official provider checker with the complete street address.,high,0,address_required,1,This listing does not claim ZIP-wide availability.
+quantum-fiber,34771,address_required,Use the official provider checker with the complete street address.,high,0,address_required,1,This listing does not claim ZIP-wide availability.
+ouc-electric,34772,possible,OUC manages the St. Cloud electric system; confirm the complete service address.,high,0,primary_municipal,1,The St. Cloud mailing name does not prove City or OUC territory.
+toho-water,34772,possible,Toho may provide water to St. Cloud-area properties in ZIP 34772.,high,0,possible,1,Confirm the property on the official service-area tool.
+toho-sewer,34772,address_required,Toho may provide wastewater service to connected properties in ZIP 34772.,high,0,address_required,1,Sewer or septic status must be confirmed for the parcel.
+st-cloud-trash,34772,address_required,City residential collection may apply to eligible St. Cloud properties in ZIP 34772.,high,0,address_required,1,County and community-managed arrangements may differ.
+spectrum-internet,34772,address_required,Use the official provider checker with the complete street address.,high,0,address_required,1,This listing does not claim ZIP-wide availability.
+xfinity-internet,34772,address_required,Use the official provider checker with the complete street address.,high,0,address_required,1,This listing does not claim ZIP-wide availability.
+att-internet,34772,address_required,Use the official provider checker with the complete street address.,high,0,address_required,1,This listing does not claim ZIP-wide availability.
+quantum-fiber,34772,address_required,Use the official provider checker with the complete street address.,high,0,address_required,1,This listing does not claim ZIP-wide availability.

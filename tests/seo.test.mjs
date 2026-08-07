@@ -11,7 +11,7 @@ test("public page metadata and H1s are unique", () => {
 });
 
 test("guides are substantive, dated, linked, and source-aware", () => {
-  const paths = new Set(guides.map((guide) => guide.path));
+  const paths = new Set(publicPages.map((page) => page.path));
   assert.ok(guides.length >= 15);
   for (const guide of guides) {
     assert.ok(guide.published && guide.reviewed);
@@ -24,6 +24,20 @@ test("guides are substantive, dated, linked, and source-aware", () => {
     const guide = guides.find((item) => item.path === path);
     assert.ok(guide?.faqs && guide.faqs.length >= 3, `${path} needs substantive FAQs`);
   }
+});
+
+test("Search Console opportunity pages own distinct intents and remain substantive", () => {
+  const byPath = new Map(guides.map((guide) => [guide.path, guide]));
+  const internet = byPath.get("/resources/find-internet-providers");
+  const renter = byPath.get("/renters/renters-insurance-and-deposits");
+  assert.ok(internet?.sections.length >= 7);
+  assert.ok(internet?.faqs?.length >= 5);
+  assert.match(internet?.image?.src ?? "", /internet-move-setup\.webp/);
+  assert.ok(renter?.sections.length >= 6);
+  assert.ok(renter?.faqs?.length >= 4);
+  assert.match(renter?.image?.src ?? "", /renter-move-in-records\.webp/);
+  for (const path of ["/resources/check-internet-availability", "/resources/transfer-internet-when-moving", "/renters/renter-move-in-costs"]) assert.ok(byPath.has(path), `${path} is missing`);
+  assert.equal(byPath.has("/resources/find-isp-by-address"), false, "overlapping ISP page should not be created");
 });
 
 test("metadata, canonicals, social cards, and noindex rules share one architecture", async () => {
@@ -48,6 +62,15 @@ test("schema and sitemap implementations use visible source data", async () => {
   assert.match(resources, /CollectionPage/);
   assert.match(sitemap, /getIndexableZipResults/);
   assert.match(htmlMap, /getIndexableZipResults/);
+});
+
+test("the utility setup hub and guide-to-lookup journey are crawlable and measurable", async () => {
+  const [hub, article, form, analytics] = await Promise.all([read("../app/resources/utility-setup/page.tsx"), read("../app/components/GuideArticle.tsx"), read("../app/components/ZipLookupForm.tsx"), read("../app/lib/analytics.ts")]);
+  assert.match(hub, /CollectionPage/);
+  assert.match(hub, /BreadcrumbList/);
+  assert.match(article, /Open the complete utility setup hub/);
+  assert.match(form, /guide_to_zip_lookup/);
+  assert.match(analytics, /guide_to_zip_lookup: \{ guide_slug: string; source_page: string \}/);
 });
 
 test("campaign and broad location templates are not indexable copies", async () => {
