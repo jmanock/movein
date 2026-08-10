@@ -1,6 +1,6 @@
 # MoveIn production health report
 
-Generated: 2026-08-10T13:03:40.710Z
+Generated: 2026-08-10T14:56:58.273Z
 
 ## Overall status
 
@@ -32,7 +32,7 @@ No core-category gaps remain on the 29 verified ZIP pages. Pending ZIP gaps stay
 
 ## Official links
 
-- URLs in latest link report: 69
+- URLs in latest link report: 74
 - Confirmed broken links: 0
 - Network-uncertain links: 0
 - No confirmed 404/410 or server-error links in the latest report.

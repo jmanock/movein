@@ -68,7 +68,8 @@ test("returns verified core data with address-level internet providers", () => {
   assert.ok(result.providers.water.length > 0);
   assert.equal(result.providers["natural-gas"], undefined);
   const internetProviders = result.providers.internet.filter((provider) => provider.providerType !== "official_lookup");
-  assert.equal(internetProviders.length, 4);
+  assert.equal(internetProviders.length, 3);
+  assert.deepEqual(internetProviders.map((provider) => provider.name), ["AT&T", "Spectrum", "T-Mobile Home Internet"]);
   for (const provider of internetProviders) {
     assert.match(provider.addressCheckUrl, /^https:/);
     assert.match(provider.supportUrl, /^https:/);
@@ -173,7 +174,7 @@ test("data operations support duplicate checks, a research queue, and a non-writ
   const before = getDatabase().prepare("SELECT COUNT(*) AS count FROM providers").get().count;
   const dryRun = spawnSync(process.execPath, ["scripts/import-florida-data.mjs", "--dry-run", "--confirm-verified"], { cwd: root, env: process.env, encoding: "utf8" });
   assert.equal(dryRun.status, 0, dryRun.stderr);
-  assert.match(dryRun.stdout, /Dry run: 50 ZIPs, 55 providers/);
+  assert.match(dryRun.stdout, /Dry run: 50 ZIPs, 57 providers/);
   assert.equal(getDatabase().prepare("SELECT COUNT(*) AS count FROM providers").get().count, before);
 });
 
@@ -232,14 +233,14 @@ test("mobile layout and accessible focus treatment are preserved", async () => {
 });
 
 test("results show every service category and an explicit missing-data state", async () => {
-  const results = await read("../app/components/LookupResults.tsx");
+  const [results, internet] = await Promise.all([read("../app/components/LookupResults.tsx"), read("../app/components/InternetOptions.tsx")]);
   assert.match(results, /We are still verifying this service for your ZIP code/);
   for (const category of ["electricity", "water", "sewer", "internet", "trash-recycling", "local-government"]) assert.match(results, new RegExp(category));
   assert.doesNotMatch(results, /natural-gas|Natural gas/i);
   assert.match(results, /Report incorrect information/);
-  assert.match(results, /Check availability at your address/);
+  assert.match(internet, /Compare possibilities\. Confirm the address/);
   assert.match(results, /Availability and speeds vary by exact street address/);
-  assert.match(results, /Internet availability depends on your exact address/);
+  assert.match(internet, /Internet availability can vary by exact address/);
   assert.match(results, /Provider support/);
   assert.match(results, /Trash service may be arranged by your city, county, HOA, landlord, or private hauler/);
   assert.match(results, /View outage map/);

@@ -175,6 +175,23 @@ export const printables: Printable[] = [
     related: [{ label: "Complete things people forget guide", href: "/resources/things-people-forget-when-moving" }, { label: "Address update checklist", href: "/resources/printables/address-update-checklist" }, { label: "Open My Move", href: "/my-move" }],
   },
   {
+    slug: "internet-setup-checklist",
+    title: "Internet Setup Checklist for Moving",
+    description: "Print a free Internet setup checklist for address checks, provider comparison, equipment, installation, testing, and returning old equipment.",
+    audience: "Every move",
+    myMoveTaskId: "internet-compare",
+    myMoveLabel: "Add Internet setup to My Move",
+    intro: "Compare possible providers without assuming a ZIP guarantees service. Use each official address checker, keep private account details elsewhere, and confirm the connection before closing old service when practical.",
+    reviewed,
+    sections: [
+      { title: "Compare the new address", items: ["Check the current provider at the new address", "Check at least one alternative provider", "Compare wired and wireless home Internet options", "Confirm the technology that is actually orderable", "Review regular terms rather than only a temporary promotion"] },
+      { title: "Plan equipment and access", items: ["Verify installation or equipment-delivery dates", "Ask whether self-installation or a technician is required", "Confirm modem router or gateway requirements", "Get landlord HOA or building approval for physical changes", "Confirm technician access to the exact unit"] },
+      { title: "Schedule the handoff", items: ["Schedule installation or activation", "Keep old service active until new service works when practical", "Follow the old provider's equipment instructions", "Save appointment and support information privately", "Do not cancel until the new plan is confirmed"] },
+      { title: "After installation", items: ["Test a wired connection when available", "Test Wi-Fi in the rooms that matter", "Confirm the ordered technology and plan", "Return old provider equipment if required", "Keep return receipts and account records privately"] },
+    ],
+    related: [{ label: "Internet comparison tool", href: "/internet/compare" }, { label: "Internet hub", href: "/internet" }, { label: "Transfer Internet when moving", href: "/resources/transfer-internet-when-moving" }],
+  },
+  {
     slug: "utility-contact-information",
     title: "Utility Contact Information Worksheet",
     description: "Print a fillable worksheet for possible providers, official websites, service dates, outage contacts, address checks, and confirmation notes.",

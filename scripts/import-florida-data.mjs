@@ -95,6 +95,10 @@ const importData = database.transaction(() => {
   }
   for (const row of categoryRows) upsertCategory.run(...row);
   for (const row of providerRows) upsertProvider.run(row.slug, row.name, row.category_slug, row.state_code, row.description, row.official_website, row.service_notes, row.status, Number(row.is_verified), row.last_verified_at || null, row.provider_type || null, row.start_service_url || null, row.address_check_url || null, row.support_url || null, row.outage_url || null, row.outage_map_url || null, row.collection_info_url || null, row.hours || null, row.technology_type || null);
+  database.prepare(`DELETE FROM service_areas WHERE provider_id IN (
+    SELECT p.id FROM providers p JOIN provider_categories pc ON pc.id=p.category_id
+    WHERE pc.slug='internet' AND p.status='inactive'
+  )`).run();
   for (const row of areaRows) upsertArea.run(row.provider_slug, row.zip_code, row.coverage_type, row.coverage_notes, row.confidence_level, Number(row.is_primary), row.service_availability || null, Number(row.requires_address_confirmation || 1), row.jurisdiction_notes || null);
   for (const row of contactRows) upsertContact.run(row.provider_slug, row.contact_type, row.label, row.phone);
   for (const row of sourceRows) {

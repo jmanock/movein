@@ -18,8 +18,8 @@ Generated: 2026-08-10
 - Records missing verification dates: 0
 - Records older than 180 days: 0
 - Corrections awaiting review: 0
-- Remaining research tasks: 118
-- Official links: reachable: 36, forbidden: 11, timeout: 13, redirected: 5, head-blocked-get-reachable: 1
+- Remaining research tasks: 84
+- Official links: reachable: 59, forbidden: 2, redirected: 12, head-blocked-get-reachable: 1
 
 ## ZIPs by county
 
@@ -38,28 +38,41 @@ Generated: 2026-08-10
 - Trash & recycling: 13
 - Local information: 5
 
+## Internet comparison coverage
+
+- Commercial Internet providers: 4
+- Provider/ZIP relationships: 113
+- ZIPs with at least 1 possible provider: 50
+- ZIPs with 2+ possible providers: 29
+- ZIPs with 3+ possible providers: 29
+- ZIPs with 4+ possible providers: 5
+- ZIPs with only one possible provider: 21
+- ZIPs with no provider possibilities: 0
+
+These are market-supported possibilities, not ZIP-wide service claims. Every commercial option requires an exact-address check.
+
 ## Missing categories by ZIP
 
-- 32127: electricity, water, sewer, trash-recycling, internet
-- 32129: electricity, water, sewer, trash-recycling, internet
-- 32168: electricity, water, sewer, trash-recycling, internet
-- 32174: electricity, water, sewer, trash-recycling, internet
-- 32701: electricity, water, sewer, trash-recycling, internet
-- 32707: electricity, water, sewer, trash-recycling, internet
-- 32708: electricity, water, sewer, trash-recycling, internet
-- 32714: electricity, water, sewer, trash-recycling, internet
-- 32750: electricity, water, sewer, trash-recycling, internet
-- 32765: electricity, water, sewer, trash-recycling, internet
-- 32766: electricity, water, sewer, trash-recycling, internet
-- 32778: electricity, water, sewer, trash-recycling, internet
-- 34731: electricity, water, sewer, trash-recycling, internet
-- 34736: electricity, water, sewer, trash-recycling, internet
-- 34739: electricity, water, sewer, trash-recycling, internet
-- 34747: electricity, water, sewer, trash-recycling, internet
-- 34753: electricity, water, sewer, trash-recycling, internet
-- 34758: electricity, water, sewer, trash-recycling, internet
-- 34761: electricity, water, sewer, trash-recycling, internet
-- 34786: electricity, water, sewer, trash-recycling, internet
-- 34787: electricity, water, sewer, trash-recycling, internet
+- 32127: electricity, water, sewer, trash-recycling
+- 32129: electricity, water, sewer, trash-recycling
+- 32168: electricity, water, sewer, trash-recycling
+- 32174: electricity, water, sewer, trash-recycling
+- 32701: electricity, water, sewer, trash-recycling
+- 32707: electricity, water, sewer, trash-recycling
+- 32708: electricity, water, sewer, trash-recycling
+- 32714: electricity, water, sewer, trash-recycling
+- 32750: electricity, water, sewer, trash-recycling
+- 32765: electricity, water, sewer, trash-recycling
+- 32766: electricity, water, sewer, trash-recycling
+- 32778: electricity, water, sewer, trash-recycling
+- 34731: electricity, water, sewer, trash-recycling
+- 34736: electricity, water, sewer, trash-recycling
+- 34739: electricity, water, sewer, trash-recycling
+- 34747: electricity, water, sewer, trash-recycling
+- 34753: electricity, water, sewer, trash-recycling
+- 34758: electricity, water, sewer, trash-recycling
+- 34761: electricity, water, sewer, trash-recycling
+- 34786: electricity, water, sewer, trash-recycling
+- 34787: electricity, water, sewer, trash-recycling
 
 The remaining rows are retained because ZIP-wide internet assignments and local utility boundaries cannot be determined responsibly without stronger address-level evidence. See `data/florida/research-queue.csv`.

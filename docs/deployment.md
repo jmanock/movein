@@ -8,8 +8,8 @@ Stop or quiesce the app, create a timestamped SQLite online backup of `/var/lib/
 
 ```bash
 sudo install -d -o "$USER" -g "$USER" /var/backups/movein
-sqlite3 /var/lib/movein/movein.sqlite ".backup '/var/backups/movein/movein-before-search-sprint.sqlite'"
-test -s /var/backups/movein/movein-before-search-sprint.sqlite
+sqlite3 /var/lib/movein/movein.sqlite ".backup '/var/backups/movein/movein-before-internet-sprint.sqlite'"
+test -s /var/backups/movein/movein-before-internet-sprint.sqlite
 ```
 
 ## Release commands for this front-end release
@@ -59,6 +59,13 @@ curl -I http://127.0.0.1:3006/resources
 curl -I http://127.0.0.1:3006/resources/find-internet-providers
 curl -I http://127.0.0.1:3006/resources/check-internet-availability
 curl -I http://127.0.0.1:3006/resources/transfer-internet-when-moving
+curl -I http://127.0.0.1:3006/internet
+curl -I 'http://127.0.0.1:3006/internet/compare?zip=32801'
+curl -I http://127.0.0.1:3006/internet/providers/spectrum
+curl -I http://127.0.0.1:3006/internet/providers/att
+curl -I http://127.0.0.1:3006/internet/providers/t-mobile
+curl -I http://127.0.0.1:3006/internet/providers/verizon
+curl -I http://127.0.0.1:3006/resources/printables/internet-setup-checklist
 curl -I http://127.0.0.1:3006/resources/utility-setup
 curl -I http://127.0.0.1:3006/renters/renters-insurance-and-deposits
 curl -I http://127.0.0.1:3006/florida-utilities

@@ -10,6 +10,7 @@ export type LookupProvider = {
   officialWebsite: string;
   providerType: string | null;
   startServiceUrl: string | null;
+  movingOrTransferUrl: string | null;
   addressCheckUrl: string | null;
   supportUrl: string | null;
   outageUrl: string | null;
@@ -17,6 +18,7 @@ export type LookupProvider = {
   collectionInfoUrl: string | null;
   hours: string | null;
   technologyType: string | null;
+  technologyTypes: string[];
   serviceNotes: string | null;
   coverageType: CoverageType;
   coverageLabel: string;
@@ -68,9 +70,9 @@ export function getLookupResult(zipCode: string): LookupResult | null {
     const sources = database.prepare("SELECT source_name AS name, source_url AS url, source_type AS type, retrieved_at AS retrievedAt FROM data_sources WHERE provider_id=? ORDER BY retrieved_at DESC").all(row.provider_id) as LookupProvider["sources"];
     (providers[row.category_slug] ??= []).push({
       name: row.name, slug: row.slug, description: row.description, officialWebsite: row.official_website,
-      providerType: row.provider_type, startServiceUrl: row.start_service_url, addressCheckUrl: row.address_check_url, supportUrl: row.support_url,
+      providerType: row.provider_type, startServiceUrl: row.start_service_url, movingOrTransferUrl: row.category_slug === "internet" ? row.start_service_url : null, addressCheckUrl: row.address_check_url, supportUrl: row.support_url,
       outageUrl: row.outage_url, outageMapUrl: row.outage_map_url, collectionInfoUrl: row.collection_info_url, hours: row.hours, technologyType: row.technology_type,
-      serviceNotes: row.service_notes, coverageType: row.coverage_type, coverageLabel: availabilityLabel(row.service_availability, row.coverage_type),
+      technologyTypes: row.technology_type?.split("|").map((value) => value.trim()).filter(Boolean) ?? [], serviceNotes: row.service_notes, coverageType: row.coverage_type, coverageLabel: availabilityLabel(row.service_availability, row.coverage_type),
       coverageNotes: row.coverage_notes, confidenceLevel: row.confidence_level, availabilityStatus: row.service_availability,
       requiresAddressConfirmation: Boolean(row.requires_address_confirmation), jurisdictionNotes: row.jurisdiction_notes, isVerified: Boolean(row.is_verified),
       lastVerifiedAt: row.last_verified_at,

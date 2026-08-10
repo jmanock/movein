@@ -16,6 +16,7 @@ const nextConfig: NextConfig = {
       { source: "/resources/set-up-utilities", destination: "/resources/utility-setup", permanent: true },
       { source: "/renters/move-in-costs", destination: "/renters/renter-move-in-costs", permanent: true },
       { source: "/renters/apartment-internet-setup", destination: "/renters/internet-installation", permanent: true },
+      { source: "/resources/find-isp-by-address", destination: "/resources/find-internet-providers", permanent: true },
       { source: "/resources/printables/utility-contact-worksheet", destination: "/resources/printables/new-home-contacts", permanent: true },
       { source: "/resources/printables/outage-preparation-sheet", destination: "/resources/printables/outage-emergency-numbers", permanent: true },
     ];

@@ -21,4 +21,20 @@ The shared utility in `app/lib/analytics.ts` sends to `window.gtag` only when GA
 
 Never add the move date, full checklist or task text, notes, exact address, name, email, phone, account information, home inventory, or form contents. The shared sanitizer blocks `move_date`, `notes`, `checklist_text`, and `task_text` in addition to existing personal-data keys.
 
+## Internet events
+
+| Event | Allowed parameters |
+| --- | --- |
+| `internet_hub_view` | source page |
+| `internet_zip_search` | county, state, coverage status, source page; never the entered ZIP |
+| `internet_provider_view` | public provider slug and source page |
+| `internet_provider_saved` / `internet_provider_removed` | provider, public technology label, coverage status, source page |
+| `internet_compare_view` | source page |
+| `internet_availability_click` | provider, technology, coverage status, source page |
+| `internet_transfer_click` | provider, technology, source page |
+| `internet_technology_filter` | wired, wireless, or all and source page |
+| `internet_checklist_view` / `internet_checklist_print` | public checklist path |
+
+Reports can compare counties, provider clicks, saved-provider events, comparison use, technology filters, source pages, and outbound actions. MoveIn does not send a routine searched ZIP, exact address, price, account data, or saved-list contents to Analytics.
+
 For weekly organic-growth reviews, use page paths to compare supported ZIP traffic, `zip_coverage_request` to prioritize unsupported areas, `printable_resource_click` to distinguish opens from print actions, `county_page_navigation` for hub discovery, and `guide_to_zip_lookup` for guide-assisted searches. Never join these events to email, exact street address, correction text, or other personally identifying form content.

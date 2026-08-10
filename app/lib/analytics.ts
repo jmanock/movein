@@ -20,6 +20,15 @@ type MyMoveParameters = {
   source_page: string;
 };
 
+type InternetParameters = {
+  provider?: string;
+  technology?: string;
+  county?: string;
+  state?: string;
+  source_page: string;
+  coverage_status?: string;
+};
+
 export type AnalyticsEventParameters = {
   zip_lookup_submit: { source_page: string };
   zip_lookup_success: LookupParameters;
@@ -47,6 +56,17 @@ export type AnalyticsEventParameters = {
   dont_forget_impression: { reminder_id: string; source_page: string };
   dont_forget_action: { reminder_id: string; source_page: string };
   utility_added_to_my_move: { task_category: string; source_page: string };
+  internet_hub_view: InternetParameters;
+  internet_zip_search: InternetParameters;
+  internet_provider_view: InternetParameters;
+  internet_provider_saved: InternetParameters;
+  internet_provider_removed: InternetParameters;
+  internet_compare_view: InternetParameters;
+  internet_availability_click: InternetParameters;
+  internet_transfer_click: InternetParameters;
+  internet_technology_filter: InternetParameters;
+  internet_checklist_view: InternetParameters;
+  internet_checklist_print: InternetParameters;
 };
 
 export type AnalyticsEvent = keyof AnalyticsEventParameters;

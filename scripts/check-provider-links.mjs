@@ -8,7 +8,7 @@ const outputPath = process.env.LINK_STATUS_PATH ?? join(root, "data", "florida",
 const reportPath = process.env.LINK_REPORT_PATH ?? join(root, "docs", "link-validation-report.md");
 const providers = await readCsv(providerPath);
 const fields = ["official_website", "start_service_url", "address_check_url", "support_url", "outage_url", "outage_map_url", "collection_info_url"];
-const urls = [...new Set(providers.flatMap((row) => fields.map((field) => row[field]).filter(Boolean)))];
+const urls = [...new Set(providers.filter((row) => row.status !== "inactive").flatMap((row) => fields.map((field) => row[field]).filter(Boolean)))];
 const results = [];
 
 for (const originalUrl of urls) results.push(await check(originalUrl));

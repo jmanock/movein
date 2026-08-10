@@ -2,7 +2,7 @@
 
 Generated: 2026-08-01
 
-Crawled 94 canonical sitemap routes and checked 120 distinct internal targets against http://127.0.0.1:3006.
+Crawled 101 canonical sitemap routes and checked 127 distinct internal targets against http://127.0.0.1:3006.
 
 ## Broken targets
 

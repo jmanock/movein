@@ -1,6 +1,6 @@
 # Link validation report
 
-Generated: 2026-08-10T11:36:02.659Z
+Generated: 2026-08-10T14:51:38.024Z
 
 The checker uses HEAD first and a lightweight GET fallback when HEAD is blocked or unsupported. It follows redirects without crawling site content.
 
@@ -8,8 +8,8 @@ The checker uses HEAD first and a lightweight GET fallback when HEAD is blocked 
 
 - forbidden: 2
 - head-blocked-get-reachable: 1
-- reachable: 58
-- redirected: 8
+- reachable: 59
+- redirected: 12
 
 ## Confirmed failures
 

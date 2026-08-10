@@ -9,6 +9,7 @@ const totals = database.prepare(`SELECT COUNT(*) total,SUM(status='verified') ve
 const mostly = database.prepare(`SELECT COUNT(DISTINCT z.id) count FROM zip_codes z WHERE z.is_active=1 AND z.status='partial' AND NOT EXISTS (SELECT 1 FROM provider_categories pc WHERE pc.slug IN ('electricity','water','sewer','trash-recycling','local-government') AND NOT EXISTS (SELECT 1 FROM service_areas sa JOIN providers p ON p.id=sa.provider_id WHERE sa.zip_code_id=z.id AND p.category_id=pc.id AND p.status!='inactive' AND COALESCE(p.provider_type,'')!='official_lookup'))`).get().count;
 const counties = database.prepare(`SELECT c.name,COUNT(*) zips FROM zip_codes z JOIN counties c ON c.id=z.county_id WHERE z.is_active=1 GROUP BY c.id ORDER BY c.name`).all();
 const categories = database.prepare(`SELECT pc.name,COUNT(DISTINCT p.id) providers FROM provider_categories pc LEFT JOIN providers p ON p.category_id=pc.id AND p.status!='inactive' WHERE pc.slug!='natural-gas' GROUP BY pc.id ORDER BY pc.display_order`).all();
+const internet = database.prepare(`WITH counts AS (SELECT z.id,COUNT(DISTINCT CASE WHEN pc.slug='internet' AND p.status!='inactive' AND COALESCE(p.provider_type,'')!='official_lookup' THEN p.id END) providers FROM zip_codes z LEFT JOIN service_areas sa ON sa.zip_code_id=z.id LEFT JOIN providers p ON p.id=sa.provider_id LEFT JOIN provider_categories pc ON pc.id=p.category_id WHERE z.is_active=1 GROUP BY z.id) SELECT (SELECT COUNT(DISTINCT p.id) FROM providers p JOIN provider_categories pc ON pc.id=p.category_id WHERE pc.slug='internet' AND p.status!='inactive' AND COALESCE(p.provider_type,'')!='official_lookup') total_providers,(SELECT COUNT(*) FROM service_areas sa JOIN providers p ON p.id=sa.provider_id JOIN provider_categories pc ON pc.id=p.category_id WHERE pc.slug='internet' AND p.status!='inactive' AND COALESCE(p.provider_type,'')!='official_lookup') relationships,SUM(providers>=1) one_plus,SUM(providers>=2) two_plus,SUM(providers>=3) three_plus,SUM(providers>=4) four_plus,SUM(providers=1) only_one,SUM(providers=0) none FROM counts`).get();
 const missingSources = database.prepare(`SELECT COUNT(*) count FROM providers p WHERE p.status!='inactive' AND NOT EXISTS(SELECT 1 FROM data_sources ds WHERE ds.provider_id=p.id)`).get().count;
 const missingPhones = database.prepare(`SELECT COUNT(*) count FROM providers p WHERE p.status!='inactive' AND COALESCE(p.provider_type,'')!='official_lookup' AND p.category_id NOT IN (SELECT id FROM provider_categories WHERE slug IN ('internet','local-government')) AND NOT EXISTS(SELECT 1 FROM provider_contacts pc WHERE pc.provider_id=p.id)`).get().count;
 const missingDates = database.prepare(`SELECT COUNT(*) count FROM providers WHERE status!='inactive' AND last_verified_at IS NULL`).get().count;
@@ -52,6 +53,19 @@ ${counties.map((row) => `- ${row.name}: ${row.zips}`).join("\n")}
 ## Providers by category
 
 ${categories.map((row) => `- ${row.name}: ${row.providers}`).join("\n")}
+
+## Internet comparison coverage
+
+- Commercial Internet providers: ${internet.total_providers}
+- Provider/ZIP relationships: ${internet.relationships}
+- ZIPs with at least 1 possible provider: ${internet.one_plus}
+- ZIPs with 2+ possible providers: ${internet.two_plus}
+- ZIPs with 3+ possible providers: ${internet.three_plus}
+- ZIPs with 4+ possible providers: ${internet.four_plus}
+- ZIPs with only one possible provider: ${internet.only_one}
+- ZIPs with no provider possibilities: ${internet.none}
+
+These are market-supported possibilities, not ZIP-wide service claims. Every commercial option requires an exact-address check.
 
 ## Missing categories by ZIP
 

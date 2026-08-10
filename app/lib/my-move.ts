@@ -11,6 +11,7 @@ export type MyMoveState = {
   completedTaskIds: string[];
   dismissedTaskIds: string[];
   addedTaskIds: string[];
+  internetProviders: string[];
 };
 
 export type MoveTask = {
@@ -23,13 +24,15 @@ export type MoveTask = {
   href?: string;
 };
 
-export const emptyMyMoveState = (): MyMoveState => ({ version: 1, profile: null, completedTaskIds: [], dismissedTaskIds: [], addedTaskIds: [] });
+export const emptyMyMoveState = (): MyMoveState => ({ version: 1, profile: null, completedTaskIds: [], dismissedTaskIds: [], addedTaskIds: [], internetProviders: [] });
 
 export const moveTasks: MoveTask[] = [
   { id: "local-utilities", title: "Review local utility possibilities and official address checks", phase: "Before the move", category: "utilities", href: "/#zip-lookup" },
   { id: "electricity", title: "Confirm electricity", phase: "Before the move", category: "electricity", href: "/resources/find-electric-company" },
   { id: "water-sewer", title: "Confirm water and sewer", phase: "Before the move", category: "water", href: "/resources/find-water-provider" },
-  { id: "internet", title: "Schedule internet installation", phase: "Before the move", category: "internet", href: "/resources/find-internet-providers" },
+  { id: "internet-compare", title: "Compare possible internet providers", phase: "Before the move", category: "internet", href: "/internet/compare" },
+  { id: "internet-address-check", title: "Check each provider for the exact address", phase: "Before the move", category: "internet", href: "/internet" },
+  { id: "internet", title: "Schedule internet installation", phase: "Before the move", category: "internet", href: "/resources/transfer-internet-when-moving" },
   { id: "trash", title: "Confirm trash and recycling", phase: "Before the move", category: "trash", href: "/resources/find-trash-service" },
   { id: "address-updates", title: "Submit USPS change of address", phase: "Before the move", category: "address", href: "/resources/change-your-address" },
   { id: "insurance", title: "Update the property address with your insurer", phase: "Before the move", category: "insurance" },
@@ -45,6 +48,7 @@ export const moveTasks: MoveTask[] = [
   { id: "condition-photos", title: "Photograph the property condition before unpacking", phase: "Move-in day", category: "documentation", audience: "renter", href: "/renters/document-move-in-condition" },
   { id: "outage-contacts", title: "Save utility outage and emergency numbers", phase: "Move-in day", category: "emergency", href: "/resources/printables/outage-emergency-numbers" },
   { id: "internet-status", title: "Confirm internet installation status", phase: "Move-in day", category: "internet" },
+  { id: "internet-installation-record", title: "Save the installation date and support details privately", phase: "First week", category: "internet", href: "/resources/printables/internet-setup-checklist" },
   { id: "driver-license", title: "Review driver license address requirements", phase: "First week", category: "address" },
   { id: "vehicle-registration", title: "Review vehicle registration address requirements", phase: "First week", category: "address" },
   { id: "voter-registration", title: "Review voter registration address information", phase: "First week", category: "address" },
@@ -75,7 +79,7 @@ export function normalizeMyMoveState(value: unknown): MyMoveState {
   if (!value || typeof value !== "object") return emptyMyMoveState();
   const candidate = value as Partial<MyMoveState>;
   const profile = normalizeProfile(candidate.profile);
-  return { version: 1, profile, completedTaskIds: stringArray(candidate.completedTaskIds), dismissedTaskIds: stringArray(candidate.dismissedTaskIds), addedTaskIds: stringArray(candidate.addedTaskIds) };
+  return { version: 1, profile, completedTaskIds: stringArray(candidate.completedTaskIds), dismissedTaskIds: stringArray(candidate.dismissedTaskIds), addedTaskIds: stringArray(candidate.addedTaskIds), internetProviders: stringArray(candidate.internetProviders).slice(0, 4) };
 }
 
 export function parseMyMoveState(raw: string | null) {
@@ -101,6 +105,17 @@ export function writeMyMoveState(state: MyMoveState, storage?: Pick<Storage, "se
 export function addTaskToState(state: MyMoveState, taskId: string) {
   if (!moveTasks.some((task) => task.id === taskId) || state.addedTaskIds.includes(taskId)) return { state, added: false };
   return { state: { ...state, dismissedTaskIds: state.dismissedTaskIds.filter((id) => id !== taskId), addedTaskIds: [...state.addedTaskIds, taskId] }, added: true };
+}
+
+export function saveInternetProviderToMyMove(providerName: string) {
+  if (!providerName || providerName.length > 80) return false;
+  const storage = getBrowserStorage();
+  const current = readMyMoveState(storage).state;
+  const internetProviders = [...new Set([...current.internetProviders, providerName])].sort().slice(0, 4);
+  const addedTaskIds = [...new Set([...current.addedTaskIds, "internet-compare", "internet-address-check", "internet"] )];
+  const saved = writeMyMoveState({ ...current, internetProviders, addedTaskIds }, storage);
+  if (saved) window.dispatchEvent(new CustomEvent("movein:my-move-updated"));
+  return saved;
 }
 
 export function phaseForMoveDate(moveDate: string, now = new Date()) {

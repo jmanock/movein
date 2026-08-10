@@ -1,5 +1,6 @@
 import { join } from "node:path";
 import { readCsv } from "./lib/csv.mjs";
+import { internetProviderById, internetZipRelationships } from "../app/data/internet.ts";
 
 const root = join(process.cwd(), "data", "florida");
 const [zips, providers, areas, contacts, sources] = await Promise.all([
@@ -15,6 +16,7 @@ const validAvailability = new Set(["confirmed", "primary_municipal", "possible",
 const pilotCounties = new Set(["Seminole", "Orange", "Volusia", "Lake", "Osceola"]);
 const contactTypes = new Set(["customer_service", "outage", "emergency", "general"]);
 const today = new Date().toISOString().slice(0, 10);
+const staleBefore = new Date(Date.now() - 180 * 86400000).toISOString().slice(0, 10);
 const unique = (rows, key, label) => {
   const seen = new Set();
   for (const row of rows) {
@@ -45,7 +47,10 @@ for (const row of providers) {
   if (!isHttpsUrl(row.official_website)) errors.push(`Provider ${row.slug} lacks a valid HTTPS official website`);
   if (!row.last_verified_at) errors.push(`Provider ${row.slug} lacks a verification date`);
   for (const field of ["start_service_url", "address_check_url", "support_url", "outage_url", "outage_map_url", "collection_info_url"]) if (row[field] && !isHttpsUrl(row[field])) errors.push(`Provider ${row.slug} has invalid ${field}`);
-  if (row.category_slug === "internet" && row.provider_type !== "official_lookup" && (!row.address_check_url || !row.support_url || !row.technology_type)) errors.push(`Internet provider ${row.slug} needs an availability checker, support link, and technology label`);
+  if (row.category_slug === "internet" && row.status !== "inactive" && row.provider_type !== "official_lookup" && (!row.name || !row.official_website || !row.address_check_url || !row.technology_type)) errors.push(`Internet provider ${row.slug} needs a name, official site, availability checker, and technology label`);
+  if (row.category_slug === "internet" && row.status !== "inactive" && row.provider_type !== "official_lookup" && !internetProviderById.has(row.slug)) errors.push(`Active Internet provider ${row.slug} is missing from the typed Internet model`);
+  if (row.category_slug === "internet" && /guaranteed (?:zip|coverage)|serves every address|available throughout/i.test(`${row.description} ${row.service_notes}`)) warnings.push(`Internet provider ${row.slug} may imply guaranteed ZIP coverage`);
+  if (row.category_slug === "internet" && row.status !== "inactive" && row.last_verified_at < staleBefore) warnings.push(`Internet provider ${row.slug} source is older than 180 days`);
   if (row.last_verified_at > today) errors.push(`Provider ${row.slug} has a future verification date`);
   if (!row.provider_type) errors.push(`Provider ${row.slug} lacks a provider type`);
   const identity = `${row.state_code}|${row.category_slug}|${row.name.trim().toLowerCase()}`;
@@ -53,16 +58,19 @@ for (const row of providers) {
   providerIdentities.add(identity);
 }
 const areaKeys = new Set();
+const modeledInternetAreaKeys = new Set(internetZipRelationships.map((row) => `${row.provider}|${row.zip}`));
 for (const row of areas) {
   if (!zipSet.has(row.zip_code)) errors.push(`Unknown ZIP ${row.zip_code} in service areas`);
   if (!providerSet.has(row.provider_slug)) errors.push(`Unknown provider ${row.provider_slug} in service areas`);
   if (!['primary', 'possible', 'address_required', 'varies', 'unverified'].includes(row.coverage_type)) errors.push(`Invalid coverage type at row ${row.__row}`);
+  if (!["high", "medium", "low", "pending"].includes(row.confidence_level)) errors.push(`Invalid service-area confidence at row ${row.__row}`);
   if (!validAvailability.has(row.service_availability)) errors.push(`Invalid service availability at row ${row.__row}`);
   if (!['0', '1'].includes(row.requires_address_confirmation)) errors.push(`Invalid address-confirmation flag at row ${row.__row}`);
   if (!row.jurisdiction_notes) errors.push(`Service area at row ${row.__row} lacks jurisdiction notes`);
   const provider = providers.find((provider) => provider.slug === row.provider_slug);
   if (["internet", "water", "sewer", "trash-recycling", "natural-gas"].includes(provider?.category_slug) && row.requires_address_confirmation !== "1") errors.push(`Address confirmation must be required for ${row.provider_slug}|${row.zip_code}`);
   const key = `${row.provider_slug}|${row.zip_code}`;
+  if (provider?.category_slug === "internet" && provider.status !== "inactive" && provider.provider_type !== "official_lookup" && !modeledInternetAreaKeys.has(key)) errors.push(`Internet relationship '${key}' lacks typed evidence metadata`);
   if (areaKeys.has(key)) errors.push(`Duplicate service-area link '${key}'`);
   areaKeys.add(key);
 }
@@ -94,10 +102,15 @@ for (const row of sources) {
 }
 const sourced = new Set(sources.map((row) => row.provider_slug));
 for (const slug of providerSet) if (!sourced.has(slug)) errors.push(`Provider ${slug} has no source`);
+for (const relationship of internetZipRelationships) {
+  const key = `${relationship.provider}|${relationship.zip}`;
+  if (!areaKeys.has(key)) errors.push(`Modeled Internet relationship '${key}' is missing from service-area storage`);
+  if (!/^https:\/\//.test(relationship.evidenceSource) || !relationship.evidenceCheckedAt) errors.push(`Internet relationship '${key}' lacks official evidence metadata`);
+}
 const linkedZips = new Set(areas.map((row) => row.zip_code));
 for (const zip of zipSet) if (!linkedZips.has(zip)) errors.push(`ZIP ${zip} has no service-area links`);
 const linkedProviders = new Set(areas.map((row) => row.provider_slug));
-for (const slug of providerSet) if (!linkedProviders.has(slug)) errors.push(`Provider ${slug} has no service-area links`);
+for (const row of providers.filter((provider) => provider.status !== "inactive")) if (!linkedProviders.has(row.slug)) errors.push(`Provider ${row.slug} has no service-area links`);
 for (const zip of zips.filter((row) => row.status === "verified")) {
   const categories = new Set(areas.filter((area) => area.zip_code === zip.zip_code).map((area) => providers.find((provider) => provider.slug === area.provider_slug)).filter((provider) => provider?.status !== "inactive").map((provider) => provider.category_slug));
   for (const category of ["electricity", "water", "sewer", "internet", "trash-recycling", "local-government"]) if (!categories.has(category)) errors.push(`Verified ZIP ${zip.zip_code} lacks ${category}`);

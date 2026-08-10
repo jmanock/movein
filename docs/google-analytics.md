@@ -67,6 +67,12 @@ In the GA4 web data stream, open Enhanced Measurement → Page views → advance
 | `printable_view`, `printable_print` | public printable slug and source page |
 | `first_30_days_view` | source page |
 | `dont_forget_impression`, `dont_forget_action` | public reminder ID and source page |
+| `internet_hub_view`, `internet_compare_view` | source page |
+| `internet_zip_search` | county, state, coverage status, source page; no routine ZIP parameter |
+| `internet_provider_view`, `internet_provider_saved`, `internet_provider_removed` | public provider, technology, coverage status, source page as applicable |
+| `internet_availability_click`, `internet_transfer_click` | provider, technology, coverage status, source page as applicable |
+| `internet_technology_filter` | wired, wireless, or all and source page |
+| `internet_checklist_view`, `internet_checklist_print` | public checklist source page |
 
 The lookup submit event is emitted only after five-digit client validation. Ordinary lookup events never include the entered ZIP value. `zip_coverage_request` is the one intentional exception: after confirming that a valid five-digit ZIP is unsupported, it sends that requested ZIP so aggregate demand can guide research. No email, name, phone, street address, or account identifier is collected with it. Result-page guide sources are normalized to `/lookup/[zip]`.
 
@@ -99,6 +105,7 @@ In GA4, use Admin → Product links → Search Console links, choose the verifie
 - Printable discovery and print intent use `printable_resource_click` with a public resource slug and action.
 - County navigation and guide-to-lookup journeys use coarse public route and county fields.
 - Provider-link events measure exits to official sources without sending visitor-entered addresses or contact details.
+- Internet comparison events measure coarse provider, technology, county, status, and source-page behavior. They never serialize the saved comparison, routine searched ZIP, or exact address.
 
 ## Troubleshooting duplicates
 

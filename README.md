@@ -63,6 +63,9 @@ DATABASE_PATH=/var/lib/movein/movein.sqlite
 - `/` — primary ZIP lookup
 - `/my-move` — private browser-saved homeowner or renter checklist; no account or email
 - `/first-30-days` — four-phase move-in planning hub
+- `/internet` — independent wired and wireless Internet discovery hub
+- `/internet/compare` — browser-saved, neutral provider comparison with no account or street address
+- `/internet/providers/[slug]` — source-backed provider availability and moving guidance
 - `/lookup/[zip]` — server-rendered utility, recently-moved, emergency, and official local-resource page
 - `/request-zip` — privacy-safe demand signal for unsupported five-digit ZIPs; no email is collected
 - `/api/lookup?zip=32771` — controlled JSON lookup
@@ -122,6 +125,8 @@ The seed is idempotent and non-deleting. A changed verified row is refused unles
 - `docs/analytics-events.md` — privacy-safe event names and integration boundary
 - `docs/my-move.md`, `docs/printables.md`, and `docs/content-retention-strategy.md` — local checklist, free-tool, and retention architecture
 - `docs/movein-home-product-concept.md` — future product boundary and evidence requirements; no paid UI is implemented
+- `docs/internet-data-model.md`, `docs/internet-provider-sources.md`, and `docs/internet-comparison.md` — provider evidence, relationship rules, and comparison behavior
+- `docs/internet-deals-strategy.md` — disabled future promotion architecture and neutrality safeguards
 - `docs/google-analytics.md` — GA4 setup, event parameters, testing, privacy, and duplicate prevention
 - `docs/search-console-opportunities.md` — query/page signals, sprint decisions, and the next manual review cadence
 - `docs/domain-canonicalization.md` — non-www application fallback and the required Nginx redirect boundary
