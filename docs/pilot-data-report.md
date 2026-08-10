@@ -1,13 +1,13 @@
 # Florida pilot data report
 
-Last reviewed: August 7, 2026
+Last reviewed: August 10, 2026
 
-MoveIn’s five-county pilot contains 50 ZIP records in Seminole, Orange, Volusia, Lake, and Osceola counties. Twenty-eight ZIPs have complete reviewed records for the public core categories and are indexable. Twenty-two expansion ZIPs are deliberately pending and noindex while utility research continues.
+MoveIn’s five-county pilot contains 50 ZIP records in Seminole, Orange, Volusia, Lake, and Osceola counties. Twenty-nine ZIPs have complete reviewed records for the public core categories and are indexable. Twenty-one expansion ZIPs are deliberately pending and noindex while utility research continues.
 
 ## Current coverage
 
-- Verified and indexable ZIPs: 32114, 32117, 32118, 32119, 32703, 32720, 32724, 32746, 32757, 32771, 32773, 32789, 32801, 32803, 32804, 32806, 32809, 34711, 34715, 34741, 34743, 34744, 34746, 34748, 34769, 34771, 34772, 34788
-- Pending and noindex ZIPs: 22
+- Verified and indexable ZIPs: 32114, 32117, 32118, 32119, 32703, 32720, 32724, 32726, 32746, 32757, 32771, 32773, 32789, 32801, 32803, 32804, 32806, 32809, 34711, 34715, 34741, 34743, 34744, 34746, 34748, 34769, 34771, 34772, 34788
+- Pending and noindex ZIPs: 21
 - Missing core categories on verified ZIPs: 0
 - Confirmed broken official links in the latest generated check: see `docs/link-validation-report.md`
 
@@ -15,7 +15,7 @@ Every verified page includes official starting points for electricity, water, se
 
 Internet results use multiple provider-owned availability checkers and the FCC National Broadband Map. The cards name the likely technology but do not claim that a provider serves every address in a ZIP. Every page instructs the visitor to confirm availability using the exact service address.
 
-The 22 pending records include an official county starting point, an FCC address-level broadband lookup, a unique locality introduction, and a Census ZCTA-to-county relationship source. They remain noindex and are excluded from the sitemap until all core utility categories are researched and approved.
+The 21 pending records include an official county starting point, an FCC address-level broadband lookup, a unique locality introduction, and a Census ZCTA-to-county relationship source. They remain noindex and are excluded from the sitemap until all core utility categories are researched and approved.
 
 ## Important limitations
 

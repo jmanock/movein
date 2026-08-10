@@ -2,7 +2,7 @@
 
 MoveIn is a focused Florida utility and local-services lookup. A visitor enters a five-digit ZIP code, sees reviewed possible providers and official starting points, and is reminded to confirm the exact street address.
 
-The pilot dataset contains 50 ZIP records in Seminole, Orange, Volusia, Lake, and Osceola counties. Twenty-eight ZIPs have complete reviewed core-service records and are indexable; 22 expansion ZIPs remain pending and noindex while utility research continues. It does not claim countywide or statewide coverage.
+The pilot dataset contains 50 ZIP records in Seminole, Orange, Volusia, Lake, and Osceola counties. Twenty-nine ZIPs have complete reviewed core-service records and are indexable; 21 expansion ZIPs remain pending and noindex while utility research continues. It does not claim countywide or statewide coverage.
 
 ## Stack
 
@@ -68,7 +68,7 @@ DATABASE_PATH=/var/lib/movein/movein.sqlite
 - `/homeowners`, `/renters` — focused hubs with substantive setup guides
 - `/learn-your-area`, `/resources`, `/coverage`, `/faq`
 - `/resources/utility-setup` — task-oriented setup hub for electricity, water, internet, trash, transfers, documents, and deposits
-- `/resources/printables/[slug]` — maintainable HTML checklists with print CSS
+- `/resources/printables/[slug]` — free, ungated HTML checklists and fillable worksheets with print CSS
 - `/data-sources`, `/corrections` — correction submissions are reviewed before public data changes
 - `/about`, `/contact`, `/privacy`, `/terms`, `/disclosure`, `/editorial-policy`, `/site-map`
 
@@ -120,6 +120,7 @@ The seed is idempotent and non-deleting. A changed verified row is refused unles
 - `docs/analytics-events.md` — privacy-safe event names and integration boundary
 - `docs/google-analytics.md` — GA4 setup, event parameters, testing, privacy, and duplicate prevention
 - `docs/search-console-opportunities.md` — query/page signals, sprint decisions, and the next manual review cadence
+- `docs/domain-canonicalization.md` — non-www application fallback and the required Nginx redirect boundary
 - `docs/weekend-growth-sprint-report.md` — content, ZIP coverage, analytics, and release changes from the Search Console sprint
 - `docs/phase-3-quality-audit.md` — full-site authority audit, remediation, guardrails, and release evidence
 - `docs/phase-3-content-expansion-report.md` — ZIP promotions, authority hubs, request flow, and release evidence

@@ -14,7 +14,7 @@ Completed: August 7, 2026
 
 - Refreshed the six opportunity pages: 32720, 32757, 34748, 32801, 32746, and 34769.
 - Promoted neighboring pilot ZIPs 32809, 34771, and 34772 after official core-category evidence was present.
-- The pilot now has 28 verified/indexable and 22 pending/noindex ZIPs. No new county or statewide coverage claim was added.
+- That sprint ended with 28 verified/indexable and 22 pending/noindex ZIPs. The August 10 weekly sprint subsequently promoted Eustis 32726 after official-source review, bringing the current state to 29 verified and 21 pending without adding a countywide or statewide coverage claim.
 - Related ZIPs now prefer reviewed same-county and same-city clusters instead of simple numeric proximity.
 
 ## Measurement and presentation
@@ -25,4 +25,4 @@ Completed: August 7, 2026
 
 ## Release evidence
 
-The data validator covers 50 ZIPs, 52 providers or official tools, 343 service-area links, 63 contacts, and 63 sources. Generated SEO, duplication, front-end, link, coverage, research-queue, and health reports should be regenerated as part of every release. The production database must be backed up, migrated, dry-run imported, and then imported with `--confirm-verified` before PM2 restarts.
+The August 7 release validator covered 50 ZIPs, 52 providers or official tools, 343 service-area links, 63 contacts, and 63 sources. Current counts live in `docs/data-coverage-report.md`; generated SEO, duplication, front-end, link, coverage, research-queue, and health reports should be regenerated as part of every release. The production database must be backed up, migrated, dry-run imported, and then imported with `--confirm-verified` before PM2 restarts.

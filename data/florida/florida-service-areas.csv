@@ -342,3 +342,12 @@ spectrum-internet,34772,address_required,Use the official provider checker with 
 xfinity-internet,34772,address_required,Use the official provider checker with the complete street address.,high,0,address_required,1,This listing does not claim ZIP-wide availability.
 att-internet,34772,address_required,Use the official provider checker with the complete street address.,high,0,address_required,1,This listing does not claim ZIP-wide availability.
 quantum-fiber,34772,address_required,Use the official provider checker with the complete street address.,high,0,address_required,1,This listing does not claim ZIP-wide availability.
+duke-electric,32726,possible,The City of Eustis identifies Duke Energy as one of two electric companies serving Eustis; confirm the exact address.,high,0,multiple_possible,1,SECO may serve other addresses in the same ZIP.
+seco-electric,32726,possible,The City of Eustis identifies SECO Energy as one of two electric companies serving Eustis; confirm on the official territory tool.,high,0,multiple_possible,1,Duke Energy may serve other addresses in the same ZIP.
+eustis-water,32726,possible,City water service may apply to eligible Eustis properties.,high,0,primary_municipal,1,Confirm City utility eligibility for the complete parcel.
+eustis-sewer,32726,address_required,City sewer service may apply to connected eligible Eustis properties.,high,0,address_required,1,Sewer connection or septic status varies by parcel.
+eustis-trash,32726,address_required,City residential garbage service may apply to eligible Eustis properties.,high,0,address_required,1,Confirm jurisdiction property type and current collection instructions.
+spectrum-internet,32726,address_required,Use the official provider checker with the complete street address.,high,0,address_required,1,This listing does not claim ZIP-wide availability.
+xfinity-internet,32726,address_required,Use the official provider checker with the complete street address.,high,0,address_required,1,This listing does not claim ZIP-wide availability.
+att-internet,32726,address_required,Use the official provider checker with the complete street address.,high,0,address_required,1,This listing does not claim ZIP-wide availability.
+quantum-fiber,32726,address_required,Use the official provider checker with the complete street address.,high,0,address_required,1,This listing does not claim ZIP-wide availability.

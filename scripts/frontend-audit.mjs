@@ -27,7 +27,7 @@ if (!/aria-label="Toggle navigation"/.test(source)) failures.push("Mobile naviga
 if (!/<label htmlFor=/.test(source)) failures.push("ZIP form label is missing");
 if (/cloudflare:|wrangler|vinext|@cloudflare/i.test(source)) failures.push("Cloudflare-specific production code detected");
 if (/natural[ -]gas/i.test(source)) failures.push("Retired natural-gas content detected in the public application");
-for (const required of ["Recently moved?", "Things to check during the first week", "Emergency information", "Official source", "Request this ZIP", "county_page_navigation", "CollectionPage", "FAQPage", "SearchAction", '"@type": "Service"']) if (!source.includes(required)) failures.push(`Phase 3 authority element is missing: ${required}`);
+for (const required of ["People moving to this ZIP also need", "Things to check during the first week", "Emergency information", "Official source", "Request this ZIP", "county_page_navigation", "CollectionPage", "FAQPage", "SearchAction", '"@type": "WebPage"']) if (!source.includes(required)) failures.push(`Phase 3 authority element is missing: ${required}`);
 const clientFiles = await Promise.all(sourceFiles.filter((file) => file.endsWith(".tsx")).map(async (file) => ({ file, text: await readFile(file, "utf8") })));
 const clients = clientFiles.filter(({ text }) => text.startsWith('"use client"')).map(({ file }) => relative(new URL("../", import.meta.url).pathname, file));
 if (clients.length > 8) warnings.push(`Client component count is ${clients.length}; review bundle impact`);

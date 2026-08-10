@@ -9,10 +9,15 @@ const nextConfig: NextConfig = {
     return [
       { source: "/timeline/:path*", destination: "/homeowners", permanent: true },
       { source: "/checklists/:path*", destination: "/resources", permanent: true },
+      { source: "/florida", destination: "/florida-utilities", permanent: true },
       { source: "/florida/:path*", destination: "/learn-your-area", permanent: true },
       { source: "/welcome/:path*", destination: "/", permanent: true },
       { source: "/blog", destination: "/resources", permanent: true },
       { source: "/resources/set-up-utilities", destination: "/resources/utility-setup", permanent: true },
+      { source: "/renters/move-in-costs", destination: "/renters/renter-move-in-costs", permanent: true },
+      { source: "/renters/apartment-internet-setup", destination: "/renters/internet-installation", permanent: true },
+      { source: "/resources/printables/utility-contact-worksheet", destination: "/resources/printables/new-home-contacts", permanent: true },
+      { source: "/resources/printables/outage-preparation-sheet", destination: "/resources/printables/outage-emergency-numbers", permanent: true },
     ];
   },
 };

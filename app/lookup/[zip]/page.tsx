@@ -35,10 +35,8 @@ export default async function ZipResultPage({ params }: { params: Promise<{ zip:
   if (!result) return <UnsupportedZip zip={zip} />;
   const relatedAreas = getRelatedAreas(result);
   const pageUrl = `${SITE_URL}/lookup/${zip}`;
-  const serviceId = `${pageUrl}#lookup-service`;
   const schema = { "@context": "https://schema.org", "@graph": [
-    { "@type": "WebPage", "@id": `${pageUrl}#webpage`, name: `Utilities for ZIP Code ${zip}${result.city ? ` in ${result.city}, Florida` : ""}`, url: pageUrl, description: result.disclaimer, dateModified: result.lastUpdated ?? undefined, about: ["Electric utilities", "Water and sewer service", "Internet availability", "Trash and recycling", "Local moving resources"], mainEntity: { "@id": serviceId } },
-    { "@type": "Service", "@id": serviceId, name: `Utility and local-service lookup for ZIP Code ${zip}`, serviceType: "Utility provider and moving-resource information", provider: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: "MoveIn" }, areaServed: { "@type": "PostalAddress", postalCode: zip, addressRegion: "FL", addressCountry: "US" }, description: "A reviewed shortlist of possible providers and official local resources. Exact service must be confirmed by address.", isRelatedTo: { "@type": "WebSite", "@id": `${SITE_URL}/#website` } },
+    { "@type": "WebPage", "@id": `${pageUrl}#webpage`, name: `Utilities for ZIP Code ${zip}${result.city ? ` in ${result.city}, Florida` : ""}`, url: pageUrl, description: result.disclaimer, dateModified: result.lastUpdated ?? undefined, about: ["Electric utilities", "Water and sewer service", "Internet availability", "Trash and recycling", "Local moving resources"], isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website` } },
   ] };
   return <main id="main-content"><JsonLd data={schema} /><div className="shell result-page" data-analytics-county={result.county ?? undefined}><Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Florida utilities", href: "/florida-utilities" }, { label: `${result.county} County`, href: countyPath(result.county) }, { label: `ZIP Code ${zip}` }]} /><LookupResults result={result} relatedAreas={relatedAreas} /><section className="search-again"><h2>Check another ZIP code</h2><ZipLookupForm compact /></section></div></main>;
 }

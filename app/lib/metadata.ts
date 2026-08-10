@@ -4,8 +4,13 @@ export const SITE_URL = "https://movein.guide";
 export const SITE_NAME = "MoveIn";
 export const DEFAULT_DESCRIPTION = "Enter a Florida ZIP code to find possible electric, water, internet, trash, and other essential service providers, then confirm your exact address.";
 
+export function canonicalUrl(path = "/") {
+  const requested = new URL(path, SITE_URL);
+  return new URL(`${requested.pathname}${requested.search}${requested.hash}`, SITE_URL).toString();
+}
+
 export function pageMetadata(title: string, description: string, path = "/", options: { noindex?: boolean; article?: boolean; imageTitle?: string } = {}): Metadata {
-  const canonical = new URL(path, SITE_URL).toString();
+  const canonical = canonicalUrl(path);
   const fullTitle = title.includes("MoveIn") ? title : `${title} | MoveIn`;
   const image = new URL(`/og?title=${encodeURIComponent(options.imageTitle ?? title)}&path=${encodeURIComponent(path)}`, SITE_URL).toString();
   return {

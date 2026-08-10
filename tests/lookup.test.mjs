@@ -106,11 +106,11 @@ test("seeded expansion ZIPs stay noindex while exposing safe starting points", (
   assert.equal(result.providers["local-government"][0].name, "Seminole County Government");
 });
 
-test("the reviewed pilot promotes exactly 28 ZIPs only after core coverage is present", () => {
+test("the reviewed pilot promotes exactly 29 ZIPs only after core coverage is present", () => {
   const database = getDatabase();
   const verified = database.prepare("SELECT zip_code FROM zip_codes WHERE status='verified' AND is_indexable=1 ORDER BY zip_code").all();
-  assert.equal(verified.length, 28);
-  for (const zipCode of ["32117", "32724", "32773", "32803", "32809", "34715", "34743", "34771", "34772", "34788"]) {
+  assert.equal(verified.length, 29);
+  for (const zipCode of ["32117", "32724", "32726", "32773", "32803", "32809", "34715", "34743", "34771", "34772", "34788"]) {
     const result = getLookupResult(zipCode);
     assert.equal(result?.status, "verified", zipCode);
     assert.equal(result?.isIndexable, true, zipCode);
@@ -173,7 +173,7 @@ test("data operations support duplicate checks, a research queue, and a non-writ
   const before = getDatabase().prepare("SELECT COUNT(*) AS count FROM providers").get().count;
   const dryRun = spawnSync(process.execPath, ["scripts/import-florida-data.mjs", "--dry-run", "--confirm-verified"], { cwd: root, env: process.env, encoding: "utf8" });
   assert.equal(dryRun.status, 0, dryRun.stderr);
-  assert.match(dryRun.stdout, /Dry run: 50 ZIPs, 52 providers/);
+  assert.match(dryRun.stdout, /Dry run: 50 ZIPs, 55 providers/);
   assert.equal(getDatabase().prepare("SELECT COUNT(*) AS count FROM providers").get().count, before);
 });
 

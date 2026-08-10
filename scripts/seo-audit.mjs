@@ -33,7 +33,8 @@ if (!sitemapSource.includes("getIndexableZipResults")) errors.push("Sitemap bypa
 if (!robotsSource.includes('sitemap: `${SITE_URL}/sitemap.xml`')) errors.push("robots.ts lacks sitemap declaration");
 if (!breadcrumbSource.includes('"BreadcrumbList"')) errors.push("Breadcrumb schema is missing");
 if (!lookupSource.includes("isZipResultIndexable")) errors.push("ZIP metadata bypasses the quality gate");
-if (!lookupSource.includes('"@type": "Service"')) errors.push("ZIP pages lack Service schema");
+if (!lookupSource.includes('"@type": "WebPage"')) errors.push("ZIP pages lack factual WebPage schema");
+if (lookupSource.includes('"@type": "Service"')) errors.push("ZIP pages must not imply that MoveIn supplies utility service");
 if (!homeSource.includes("SearchAction")) errors.push("Homepage lacks SearchAction schema for the working ZIP lookup route");
 if (!resourcesSource.includes("CollectionPage")) errors.push("Resource hub lacks CollectionPage schema");
 
@@ -66,6 +67,6 @@ if (baseUrl) {
 }
 
 const report = `# SEO Validation Report\n\nGenerated: 2026-07-29\n\n## Scope\n\n- ${publicPages.length} manifest-backed public pages\n- ${guides.length} substantive guides\n- ${zipCount} database-backed ZIP pages that pass the indexability gate\n- metadata, canonicals, H1s, schema hooks, sitemap/robots integration, related-guide targets, and content dates\n${baseUrl ? `- runtime crawl against ${baseUrl}` : "- static mode; set SEO_BASE_URL to add the runtime crawl"}\n\n## Blocking findings\n\n${errors.length ? errors.map((item) => `- ${item}`).join("\n") : "None."}\n\n## Warnings\n\n${warnings.length ? warnings.map((item) => `- ${item}`).join("\n") : "None."}\n\n## Runtime results\n\n${runtimeRows.length ? `| Route | Status | H1 | Canonical |\n| --- | ---: | ---: | --- |\n${runtimeRows.map((row) => `| ${row.path} | ${row.status} | ${row.h1 ?? "—"} | ${row.canonical ?? "—"} |`).join("\n")}` : "Not run in static mode."}\n`;
-await writeFile(new URL("../docs/seo-validation-report.md", import.meta.url), report.replace("Generated: 2026-07-29", "Generated: 2026-08-01"));
+await writeFile(new URL("../docs/seo-validation-report.md", import.meta.url), report.replace("Generated: 2026-07-29", "Generated: 2026-08-10"));
 console.log(`SEO audit: ${errors.length} error(s), ${warnings.length} warning(s).`);
 if (errors.length) process.exitCode = 1;

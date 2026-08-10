@@ -22,6 +22,7 @@ export type Guide = {
   eyebrow: string;
   directAnswer: string;
   image?: { src: string; alt: string; width: number; height: number };
+  featuredZips?: { zip: string; city: string }[];
   published: string;
   reviewed: string;
   sections: GuideSection[];
@@ -31,8 +32,8 @@ export type Guide = {
 };
 
 const reviewed = "2026-07-29";
-const fcc: OfficialResource = { title: "National Broadband Map", organization: "Federal Communications Commission", url: "https://broadbandmap.fcc.gov/home", checked: reviewed, note: "Search reported fixed broadband availability by complete street address." };
-const floridaPsc: OfficialResource = { title: "Find Your Utility", organization: "Florida Public Service Commission", url: "https://www.floridapsc.com/find-utility-service", checked: reviewed, note: "Official starting point for regulated electric utility territory information in Florida." };
+const fcc: OfficialResource = { title: "National Broadband Map", organization: "Federal Communications Commission", url: "https://broadbandmap.fcc.gov/home", checked: "2026-08-10", note: "Search provider-reported fixed broadband availability and technology by complete street address." };
+const floridaPsc: OfficialResource = { title: "Find Your Utility Service Territories", organization: "Florida Public Service Commission", url: "https://www.psc.state.fl.us/find-utility-service", checked: "2026-08-10", note: "Official Florida map for electric and other utility service-territory research." };
 const usps: OfficialResource = { title: "Official USPS Change of Address", organization: "United States Postal Service", url: "https://moversguide.usps.com/", checked: reviewed, note: "Submit an official mail-forwarding request directly with USPS." };
 const ready: OfficialResource = { title: "Power Outages", organization: "Ready.gov", url: "https://www.ready.gov/power-outages", checked: reviewed, note: "Federal preparedness guidance for power outages and household safety." };
 const cpsc: OfficialResource = { title: "Home Safety Education", organization: "U.S. Consumer Product Safety Commission", url: "https://www.cpsc.gov/Safety-Education/Safety-Guides/Home", checked: reviewed, note: "Federal home-safety guidance covering common household risks." };
@@ -47,15 +48,24 @@ const quantumAvailability: OfficialResource = { title: "Quantum Fiber address ch
 export const guides: Guide[] = [
   {
     path: "/resources/find-electric-company", section: "resources", slug: "find-electric-company",
-    title: "How to Find Your Electric Company", description: "Find the electric utility that may serve a Florida address, understand overlapping ZIP territories, and confirm service before opening an account.",
+    title: "Find Your Electric Company by ZIP Code", description: "Use a ZIP code to find possible electric utilities, understand Florida service territories, and confirm the exact address before starting or transferring service.",
     h1: "How to find your electric company", eyebrow: "Electric service",
     directAnswer: "Start with your ZIP code to identify possible electric utilities, then confirm the complete service address with the utility. Electric territories can divide a ZIP code, so a mailing city alone is not proof of service.",
-    published: "2026-07-29", reviewed,
+    published: "2026-07-29", reviewed: "2026-08-10",
     sections: [
       { heading: "Use the ZIP result as a shortlist", paragraphs: ["A MoveIn ZIP result can show municipal utilities, electric cooperatives, investor-owned utilities, or more than one possible provider. Read the coverage note beside each record before choosing an action."], steps: ["Enter the property ZIP code.", "Review every possible electric provider shown.", "Open the official start-service or address-check page.", "Confirm the complete address before paying a deposit or scheduling service."] },
       { heading: "Why more than one utility may appear", paragraphs: ["Electric service territories follow infrastructure and regulatory boundaries rather than postal routes. Two homes sharing a ZIP code—or even a mailing city—can have different utilities.", "When the evidence does not support one ZIP-wide provider, MoveIn lists the supported possibilities instead of guessing."] },
+      { heading: "Know the main utility types", paragraphs: ["An investor-owned utility serves an approved territory as a regulated company. A municipal utility is owned by a city or public authority. An electric cooperative is member-owned and serves its defined territory. The organization name or mailing city does not prove which one serves a particular meter."] },
+      { heading: "Start or transfer electric service", paragraphs: ["After confirming the provider, use its official start, stop, or move workflow. Ask for the current lead time, deposit or identity requirements, responsibility date, and confirmation method; those details vary by utility and account."], steps: ["Confirm the service address with the utility.", "Choose the date responsibility begins under the lease or closing documents.", "Use only the official provider payment and document channel.", "Check the first statement for the correct address and date."] },
       { heading: "Save outage information before you need it", paragraphs: ["After confirming the provider, save its outage-reporting number and official outage map. Use the utility’s emergency channel for electrical hazards and call 911 for immediate danger."], steps: ["Save the outage phone number in your contacts.", "Bookmark the official outage map.", "Know where the electrical panel is, but do not open sealed utility equipment."] },
     ],
+    faqs: [
+      { question: "How do I find my electric company?", answer: "Use the ZIP code as a shortlist, then confirm the complete street address with the possible utility or Florida's official territory map before opening an account." },
+      { question: "Can more than one electric utility serve the same ZIP code?", answer: "Yes. A ZIP can cross municipal, cooperative, and investor-owned utility territories, even though one address normally has one assigned electric provider." },
+      { question: "How do I report an electric outage?", answer: "Use the confirmed utility's official outage number, app, or outage map. Call 911 for immediate danger and stay away from downed lines." },
+      { question: "How soon before moving should I start electric service?", answer: "Contact the confirmed utility after the move and responsibility dates are firm. Ask for its current lead time rather than assuming every provider follows the same schedule." },
+    ],
+    featuredZips: [{ zip: "32720", city: "DeLand" }, { zip: "32757", city: "Mount Dora" }, { zip: "34748", city: "Leesburg" }, { zip: "32801", city: "Orlando" }, { zip: "32746", city: "Lake Mary" }],
     related: ["/homeowners/set-up-utilities", "/homeowners/save-outage-information", "/resources/why-providers-vary-by-zip"], sources: [floridaPsc, ready],
   },
   {
@@ -77,15 +87,17 @@ export const guides: Guide[] = [
     h1: "How to find internet providers at your address", eyebrow: "Internet provider address lookup",
     directAnswer: "Use the FCC National Broadband Map and each provider's official address checker. A ZIP code can identify possible providers, but final availability, technology, installation timing, and speeds must be confirmed for the exact street address and unit.",
     image: { src: "/images/resources/internet-move-setup.webp", alt: "Internet router, modem, fiber cable, moving box, and house keys ready for a move", width: 1440, height: 960 },
-    published: "2026-07-29", reviewed: "2026-08-07",
+    published: "2026-07-29", reviewed: "2026-08-10",
     sections: [
       { heading: "Check the exact address in two places", paragraphs: ["Provider-reported coverage can differ between neighboring homes, buildings, and units. New construction may also be missing from one system even when nearby service exists."], steps: ["Enter the complete address in the FCC National Broadband Map.", "Review the providers and technologies reported for that location.", "Open each provider's official address checker.", "Confirm the exact unit, serviceability, installation date, and any construction work before ordering."] },
       { heading: "Why a ZIP-code list is incomplete", paragraphs: ["ZIP codes describe mail delivery areas, not broadband networks. A cable line may stop at one building, fiber may reach only part of a neighborhood, and an apartment may use a building-wide or preferred-provider arrangement. MoveIn ZIP pages therefore show possible providers and address tools rather than guaranteed coverage."] },
       { heading: "Understand the connection types", paragraphs: ["Fiber-to-the-premises runs optical fiber to the home or building. Cable typically uses coaxial or hybrid fiber-coaxial infrastructure. DSL uses copper telephone wiring. Fixed wireless connects to a nearby radio network, while satellite connects through equipment with a suitable view of the sky. Availability, latency, reliability, upload performance, and installation needs differ by address and technology."], steps: ["Filter the FCC map by fiber to check reported fiber availability.", "Confirm the technology again on the provider's address result.", "Ask whether the connection reaches the unit or only the building."] },
       { heading: "Compare the full service, not a temporary price", paragraphs: ["MoveIn does not rank providers or reproduce promotional offers. Compare the regular price after any introductory period, equipment terms, installation charges, data policies, contract or cancellation terms, support options, and the technology actually available at the address."], steps: ["Ask for the regular monthly price and all recurring fees.", "Confirm whether the modem, router, or gateway is included, rented, or customer-owned.", "Ask what must be returned when service ends.", "Keep the order confirmation and equipment receipt privately."] },
+      { heading: "Why advertised speeds may not match the order", paragraphs: ["An advertised maximum can describe a plan, technology, or broader market rather than the serviceable option at one address. The provider's address result, selected plan, network conditions, in-home Wi-Fi, equipment, building wiring, and device capability can all affect the delivered experience. Ask which download and upload tier is actually orderable at the address and whether the result describes wired service or Wi-Fi performance."] },
       { heading: "Schedule installation before the move", paragraphs: ["Appointment availability, equipment delivery, technician access, and new wiring can add lead time. Schedule early enough to avoid relying on a promised same-day activation, but do not overlap two paid accounts longer than needed."], steps: ["Ask the current provider whether service can transfer to the new address.", "Confirm the final service date at the old home and start date at the new one.", "Return or move equipment only as instructed.", "Keep temporary overlap only when it is necessary for work, school, or access."] },
       { heading: "Apartments, HOAs, and communities need an extra check", paragraphs: ["Ask management whether the unit is already wired, whether internet is included or billed through the property, whether a preferred provider serves the building, and whether drilling, exterior cable, equipment placement, or technician access needs approval. An HOA may also control exterior installations or shared conduit without choosing the household's service plan."] },
       { heading: "Confirm service at a new-construction address", paragraphs: ["A newly assigned address may not appear in every provider system. Search the FCC map, contact the provider's serviceability team, and ask the builder or community manager which physical networks reach the parcel. Do not assume that service at the model home proves service at the new residence."] },
+      { heading: "Questions to ask before ordering", paragraphs: ["Get the address-specific answer in writing or in the provider's order summary."], steps: ["Which technology and plan are orderable at this exact unit?", "Does activation require a technician, construction, or property access?", "Is the modem, router, or gateway rented, included, or customer-owned?", "What recurring fees, data terms, contract terms, and return requirements apply?", "What date can service reliably begin, and how can the appointment be changed?"] },
     ],
     faqs: [
       { question: "How do I find every internet provider at my address?", answer: "Start with the FCC National Broadband Map, then verify each reported option with the provider's own address checker. The FCC map reflects provider reports, so direct confirmation is still necessary." },
@@ -94,7 +106,8 @@ export const guides: Guide[] = [
       { question: "When should I schedule internet installation before moving?", answer: "Check availability and appointment lead time as soon as the move date is firm. Choose a start date that provides needed access without creating unnecessary duplicate service." },
       { question: "Can renters install their own internet service?", answer: "Often, but the lease and building rules control physical changes and technician access. Confirm whether service is included, preferred, or restricted before authorizing drilling or new wiring." },
     ],
-    related: ["/resources/check-internet-availability", "/resources/transfer-internet-when-moving", "/renters/internet-installation", "/resources/why-providers-vary-by-zip"], sources: [fcc, spectrumAvailability, xfinityAvailability, attAvailability, quantumAvailability],
+    featuredZips: [{ zip: "32720", city: "DeLand" }, { zip: "32757", city: "Mount Dora" }, { zip: "34748", city: "Leesburg" }, { zip: "32801", city: "Orlando" }, { zip: "32746", city: "Lake Mary" }],
+    related: ["/resources/check-internet-availability", "/resources/fiber-internet-availability", "/resources/transfer-internet-when-moving", "/renters/internet-installation"], sources: [fcc, spectrumAvailability, xfinityAvailability, attAvailability, quantumAvailability],
   },
   {
     path: "/resources/check-internet-availability", section: "resources", slug: "check-internet-availability",
@@ -112,7 +125,26 @@ export const guides: Guide[] = [
       { question: "Does the FCC Broadband Map guarantee service?", answer: "No. It displays availability reported by providers. Confirm serviceability, technology, and installation directly with the provider." },
       { question: "Why is my new address missing from an internet checker?", answer: "New construction and address-format differences may not have reached every provider system. Ask for a serviceability review and verify the location point on the FCC map." },
     ],
-    related: ["/resources/find-internet-providers", "/resources/transfer-internet-when-moving", "/resources/why-providers-vary-by-zip", "/renters/internet-installation"], sources: [fcc],
+    related: ["/resources/find-internet-providers", "/resources/fiber-internet-availability", "/resources/transfer-internet-when-moving", "/renters/internet-installation"], sources: [fcc],
+  },
+  {
+    path: "/resources/fiber-internet-availability", section: "resources", slug: "fiber-internet-availability",
+    title: "How to Check Fiber Internet Availability", description: "Check whether fiber-to-the-premises is reported at an exact address, distinguish fiber from cable or fiber-fed networks, and confirm installation details.",
+    h1: "How to check fiber internet availability at an address", eyebrow: "Fiber address check",
+    directAnswer: "Search the complete address on the FCC National Broadband Map, filter the fixed-broadband results for fiber to the premises, and then confirm the address with the named provider. A fiber network near the property does not prove that fiber reaches the home or apartment unit.",
+    published: "2026-08-10", reviewed: "2026-08-10",
+    sections: [
+      { heading: "Filter the address result for fiber", paragraphs: ["Use the location point for the complete address rather than a city or ZIP result."], steps: ["Open the fixed-broadband view on the FCC map.", "Enter the complete address and select the correct location.", "Filter or review the result for fiber to the premises.", "Open the provider's official address checker.", "Confirm that fiber—not another technology—is orderable before paying."] },
+      { heading: "Fiber nearby is not the same as fiber at home", paragraphs: ["A provider can have fiber in a neighborhood, use fiber deeper in a cable network, or reach a multifamily building without extending fiber to every unit. Ask whether the final connection to the residence is fiber, coaxial cable, copper, or fixed wireless."] },
+      { heading: "Apartments and new construction need extra verification", paragraphs: ["Building wiring, shared telecommunications rooms, access approval, and a newly assigned address can change the answer. Ask management or the builder which networks physically enter the property, then request a provider serviceability review when address tools disagree."] },
+      { heading: "Confirm the installation before ordering", paragraphs: ["Ask whether a technician, optical network terminal, new cable path, exterior equipment, or property approval is needed. Renters and HOA residents should obtain any required authorization before physical changes."] },
+    ],
+    faqs: [
+      { question: "Can I check fiber availability by ZIP code?", answer: "A ZIP can suggest providers, but it cannot confirm fiber for a residence. Search the complete address and unit, then verify with the provider." },
+      { question: "Does a provider's fiber advertisement mean my address has fiber?", answer: "No. Marketing can describe a broader market. Confirm the technology that is actually orderable at the complete address." },
+      { question: "Why is fiber shown at my building but not my unit?", answer: "The network may reach the property without reaching every unit, or the provider and building records may disagree. Ask management and the provider for a unit-level serviceability review." },
+    ],
+    related: ["/resources/find-internet-providers", "/resources/check-internet-availability", "/renters/internet-installation", "/resources/transfer-internet-when-moving"], sources: [fcc, attAvailability, quantumAvailability],
   },
   {
     path: "/resources/transfer-internet-when-moving", section: "resources", slug: "transfer-internet-when-moving",
@@ -160,14 +192,15 @@ export const guides: Guide[] = [
   },
   {
     path: "/resources/when-to-transfer-utilities", section: "resources", slug: "when-to-transfer-utilities",
-    title: "When Should You Transfer Utilities When Moving?", description: "Use a before-move, move-day, and after-move sequence for electricity, water, internet, trash, renter, and homeowner utility responsibilities.",
+    title: "When to Transfer Utilities When Moving", description: "Use a practical 1–2 week, final-days, move-in-day, and after-move schedule for electricity, water, internet, trash, renters, and homeowners.",
     h1: "When should you transfer utilities before moving?", eyebrow: "Moving coordination",
     directAnswer: "Begin after the move date and responsibility date are firm. Confirm each provider by address, ask about lead time, schedule electricity and water for the responsibility date, arrange internet early, and verify trash service before the first collection day.",
-    published: "2026-07-29", reviewed: "2026-08-07",
+    published: "2026-07-29", reviewed: "2026-08-10",
     sections: [
-      { heading: "Before the move", paragraphs: ["Work backward from the date the lease or closing documents make the household responsible. A same-city move can still cross electric, water, trash, or internet boundaries; a long-distance move makes provider changes more likely."], steps: ["Confirm the responsibility date and exact service address.", "Identify possible electricity, water, sewer, internet, and trash providers.", "Ask each provider for current lead time, deposits, documents, and access requirements.", "Schedule electricity and water for the responsibility date.", "Schedule internet early enough for equipment delivery or a technician visit.", "Confirm whether trash starts automatically, through a utility account, or through the property."] },
-      { heading: "On move day", paragraphs: ["Do not request a shutoff for another person's account and do not manipulate meters or sealed equipment."], steps: ["Confirm essential service is active at the new address.", "Keep provider confirmations available privately.", "Record visible meter readings when appropriate.", "Make sure a technician can enter the property if an appointment is scheduled.", "Report missing or unsafe service through the official provider or property contact."] },
-      { heading: "Immediately after the move", paragraphs: ["Close or transfer the old accounts on the authorized date, return rented internet equipment as instructed, and verify the first statements."], steps: ["Check the service address and start or stop date on every account.", "Confirm deposits and approved charges.", "Save electric outage and water or sewer emergency contacts.", "Find the current trash and recycling schedule.", "Contact the provider promptly if the first statement is wrong."] },
+      { heading: "1–2 weeks before moving", paragraphs: ["This is a planning window, not a universal provider deadline. Work backward from the date the lease or closing documents make the household responsible, then ask each confirmed provider for its actual lead time. A same-city move can still cross service territories; a long-distance move makes provider changes more likely."], steps: ["Confirm the responsibility date and exact service address.", "Identify possible electricity, water, sewer, internet, and trash providers.", "Ask each provider about current lead time, deposits, documents, and access.", "Check internet availability and technician timing early.", "Confirm whether the lease, HOA, or property handles any service."] },
+      { heading: "A few days before moving", paragraphs: ["Reconfirm the essential starts and property access without changing another occupant's account."], steps: ["Reconfirm electricity and water for the responsibility date.", "Reconfirm internet equipment delivery or technician access.", "Confirm whether trash starts automatically or needs an account.", "Keep confirmation details privately.", "Plan only the old/new service overlap the household actually needs."] },
+      { heading: "Move-in day", paragraphs: ["Do not request a shutoff for another person's account and do not manipulate meters or sealed equipment."], steps: ["Confirm essential service is active at the new address.", "Record visible meter readings when appropriate.", "Make sure an expected technician can enter approved areas.", "Report missing, leaking, or unsafe service through the official provider or property contact."] },
+      { heading: "Immediately after move-in", paragraphs: ["Close or transfer old accounts on the authorized date, return rented internet equipment as instructed, and verify the first statements."], steps: ["Check the service address and start or stop date on every account.", "Confirm deposits and approved charges.", "Save electric outage and water or sewer emergency contacts.", "Find the current trash and recycling schedule.", "Contact the provider promptly if the first statement is wrong."] },
       { heading: "Renters and homeowners use the same sequence differently", paragraphs: ["Renters should start with the lease because water, trash, or internet may be included or billed through management. Homeowners typically coordinate every service and should also save utility emergency contacts and locate safe household controls."] },
     ],
     faqs: [
@@ -175,7 +208,7 @@ export const guides: Guide[] = [
       { question: "Should electricity be on before move-in day?", answer: "Schedule electricity for the date responsibility begins so cooling, lighting, refrigeration, alarms, and other essential systems can operate." },
       { question: "Do I transfer utilities for a same-city move?", answer: "Often, but first confirm that the same providers serve the new address. Utility territories can change within one city or ZIP code." },
     ],
-    related: ["/resources/transfer-internet-when-moving", "/resources/utility-setup-documents", "/homeowners/set-up-utilities", "/renters/set-up-utilities"], sources: [floridaPsc, fcc],
+    related: ["/resources/transfer-internet-when-moving", "/resources/moving-utility-checklist", "/homeowners/set-up-utilities", "/renters/set-up-utilities"], sources: [floridaPsc, fcc],
   },
   {
     path: "/resources/why-providers-vary-by-zip", section: "resources", slug: "why-providers-vary-by-zip",
@@ -283,16 +316,22 @@ export const guides: Guide[] = [
   },
   {
     path: "/renters/internet-installation", section: "renters", slug: "internet-installation",
-    title: "Internet Installation for Renters", description: "Confirm address-level internet availability, building access, wiring rules, and landlord permission before installation.",
-    h1: "How renters can arrange internet installation", eyebrow: "Rental internet",
+    title: "Internet Setup for a New Apartment", description: "Confirm unit-level internet availability, building access, preferred providers, wiring rules, equipment, and landlord permission before installation.",
+    h1: "How to set up internet in a new apartment", eyebrow: "Apartment internet setup",
     directAnswer: "Check provider availability for the exact unit, review the lease and building rules, and obtain permission before drilling, running exterior cable, or changing shared wiring.",
-    published: "2026-07-29", reviewed,
+    published: "2026-07-29", reviewed: "2026-08-10",
     sections: [
       { heading: "Confirm the unit, not just the building", paragraphs: ["A provider may report service at the street address while a particular unit lacks the required wiring or access."], steps: ["Search the full address and unit.", "Ask whether the building has an approved or exclusive arrangement.", "Confirm equipment and installation charges.", "Coordinate access with management."] },
       { heading: "Get permission for physical changes", paragraphs: ["Do not authorize drilling, new exterior lines, roof access, or wiring changes without the permission required by the lease or property manager."] },
+      { heading: "Ask what the building already provides", paragraphs: ["Some apartments include internet, bill it through the property, maintain a preferred-provider arrangement, or have limited wiring paths. Ask what is included, whether residents may order another provider, and how service issues are handled before opening a separate account."] },
       { heading: "Record equipment and return terms", paragraphs: ["Keep serial numbers, receipts, and return instructions for rented equipment. Confirm how service should be canceled or transferred at move-out."] },
     ],
-    related: ["/resources/find-internet-providers", "/renters/set-up-utilities", "/renters/utility-responsibilities"], sources: [fcc],
+    faqs: [
+      { question: "Can an apartment restrict internet providers?", answer: "Building wiring, access, included service, or property agreements can limit practical options. Review the lease and ask management what residents may order for the exact unit." },
+      { question: "Can a provider serve the building but not my unit?", answer: "Yes. Unit wiring, prior service, access, or provider records can differ. Ask for a unit-level serviceability check." },
+      { question: "Do I need permission for internet installation?", answer: "Obtain any permission required by the lease or property before drilling, exterior cable, shared-room access, or other physical changes." },
+    ],
+    related: ["/resources/find-internet-providers", "/resources/fiber-internet-availability", "/renters/set-up-utilities", "/renters/utility-responsibilities"], sources: [fcc],
   },
   {
     path: "/resources/utility-deposits", section: "resources", slug: "utility-deposits",
@@ -356,16 +395,17 @@ export const guides: Guide[] = [
   },
   {
     path: "/renters/renters-insurance-and-deposits", section: "renters", slug: "renters-insurance-and-deposits",
-    title: "Renters Insurance, Deposits and Move-In Costs", description: "Understand renters insurance, security and utility deposits, move-in condition evidence, pet charges, receipts, and official Florida consumer resources.",
-    h1: "Renters insurance, deposits, and move-in records", eyebrow: "Renter insurance and costs",
+    title: "Renters Insurance, Moving Expenses and Deposits", description: "Understand renters insurance and moving damage, security and utility deposits, application and pet fees, move-in expenses, condition evidence, and receipts.",
+    h1: "Renters insurance, moving expenses, and deposits", eyebrow: "Renter insurance and costs",
     directAnswer: "Read the lease and policy separately, document the rental before unpacking, and keep receipts for every deposit and fee. Renters insurance, security deposits, utility deposits, pet charges, and move-in costs serve different purposes and follow different terms.",
     image: { src: "/images/resources/renter-move-in-records.webp", alt: "Apartment move-in checklist, phone camera, key ring, document folder, and moving box", width: 1440, height: 960 },
-    published: "2026-08-01", reviewed: "2026-08-07",
+    published: "2026-08-01", reviewed: "2026-08-10",
     sections: [
       { heading: "What renters insurance generally covers", paragraphs: ["A renters policy commonly addresses covered loss or damage to personal belongings, personal liability, and additional living expenses after a covered event. The exact causes of loss, exclusions, deductibles, limits, replacement-cost treatment, and temporary-housing rules come from the policy—not a general guide. Ask the insurer or agent to explain them before purchasing."] },
       { heading: "What it generally does not cover", paragraphs: ["A policy may exclude particular causes of loss, property, business use, flooding, pests, gradual damage, or damage that happens during a move. Coverage also does not replace the landlord's duty to maintain the building or automatically reimburse every moving expense. Read the exclusions and endorsements that apply to the actual policy."] },
       { heading: "Why a landlord may require coverage", paragraphs: ["A lease may require a liability limit, proof of coverage, or notice if a policy ends. That requirement does not make the landlord's property policy a substitute for the tenant's belongings coverage. Confirm the lease wording and send proof only through the authorized property process."] },
       { heading: "Separate security, utility, and pet charges", paragraphs: ["A security deposit is tied to the lease and property obligations. Electric, water, or other utility providers may require separate account deposits. Pet deposits, refundable pet charges, and nonrefundable pet fees should be identified by the lease or written property terms. Do not assume one payment covers another."], steps: ["Request an itemized move-in amount.", "Identify which payments are deposits and which are fees.", "Confirm which charges are refundable and under what written terms.", "Keep a receipt for each payment and the document describing it."] },
+      { heading: "Budget for costs beyond the deposit", paragraphs: ["The written move-in amount may also include application or administration charges, rent due before occupancy, parking or access devices, elevator reservations, utility starts, internet installation or equipment, moving and storage services, and basic household purchases. Do not rely on an unsourced national average; build the list from the actual lease, property, providers, and move plan."] },
       { heading: "Document the condition before unpacking", paragraphs: ["Use the lease's move-in form, deadline, and submission method. Take dated wide and close photographs of rooms, fixtures, appliances, keys, and existing damage without capturing people or sensitive paperwork."], steps: ["Complete the required condition report.", "Submit existing damage through the authorized channel.", "Keep proof that the report was received.", "Store original images and a backup throughout the tenancy."] },
       { heading: "Prepare for move-out and deposit review", paragraphs: ["Deposit rules depend on the state, current law, lease, facts, notices, and condition of the rental. Avoid unsupported deadline assumptions. Retain the lease, payment receipts, move-in record, maintenance correspondence, notices, and move-out evidence, then use official consumer information or qualified legal advice for a specific dispute."] },
     ],
@@ -379,13 +419,14 @@ export const guides: Guide[] = [
   },
   {
     path: "/renters/renter-move-in-costs", section: "renters", slug: "renter-move-in-costs",
-    title: "Renter Move-In Costs Checklist", description: "Organize rent, deposits, application and pet charges, utility starts, insurance, internet, moving, parking, and building-access costs before signing.",
-    h1: "Plan renter move-in costs before the keys", eyebrow: "Renter budget",
+    title: "Apartment Move-In Costs: What Renters Should Budget For", description: "Plan rent, deposits, application and pet charges, utility starts, insurance, internet, moving, parking, access, and basic household purchases.",
+    h1: "What apartment move-in costs should renters expect?", eyebrow: "Renter budget",
     directAnswer: "Build an itemized list from the lease and written property terms: rent due at signing, security and pet charges, utility deposits, insurance, internet installation, moving costs, parking, access devices, and any building fees.",
-    published: "2026-08-07", reviewed: "2026-08-07",
+    published: "2026-08-07", reviewed: "2026-08-10",
     sections: [
       { heading: "Request an itemized amount before paying", paragraphs: ["Labels matter because a deposit, nonrefundable fee, utility payment, rent charge, and third-party service cost are not interchangeable."], steps: ["List rent due before occupancy.", "Separate security, pet, key, parking, and building charges.", "Add utility account deposits or connection charges.", "Add renters insurance and internet installation or equipment.", "Budget for the move, storage, parking, and required access reservations."] },
       { heading: "Confirm which utilities the tenant actually opens", paragraphs: ["The lease may include water or trash, allocate a shared bill, or require the tenant to open electricity and internet. Confirm the exact unit and provider before paying a deposit or scheduling installation."] },
+      { heading: "Remember the first-week household costs", paragraphs: ["A move-in budget can miss cleaning supplies, window coverings allowed by the lease, light bulbs, basic kitchen and bathroom items, laundry access, package or mailbox setup, and transportation between the old and new homes. Buy only what the unit actually needs after checking what is included."] },
       { heading: "Keep records without exposing account details", paragraphs: ["Save the lease, itemized charges, receipts, provider confirmations, insurance proof, and move-in condition record privately. MoveIn does not collect payment details, lease files, account numbers, or identity documents."] },
     ],
     faqs: [

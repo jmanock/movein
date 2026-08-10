@@ -1,50 +1,49 @@
 # Search Console opportunities
 
-Manual planning snapshot: August 7, 2026
+Manual planning snapshot: August 10, 2026
 
-This file records early Google Search Console signals supplied for the Weekend Growth Sprint. It is not an automated export and the application does not scrape Search Console.
+This is a user-supplied early Search Console snapshot, not an automated export. The application does not scrape Search Console, and these small numbers are prioritization signals rather than proof of ranking or conversion changes.
 
-## Pages receiving impressions
+## Baseline
+
+- 181 impressions
+- 0 clicks
+- 0% click-through rate
+- Average position 40.2
+- Approximately 63 queries
 
 | Page | Impressions |
 | --- | ---: |
 | `/resources/find-internet-providers` | 57 |
-| `/renters/renters-insurance-and-deposits` | 14 |
+| `/renters/renters-insurance-and-deposits` | 18 |
 | `/lookup/32720` | 13 |
 | `/lookup/32757` | 10 |
 | `/resources/when-to-transfer-utilities` | 10 |
+| `/resources/printables/address-update-checklist` | 8 |
 | `/lookup/34748` | 8 |
 | `/lookup/32801` | 7 |
 | `/lookup/32746` | 5 |
-| `/lookup/34769` | 4 |
 
-These numbers are small and should guide prioritization rather than support broad conclusions about rankings or conversion.
+## Decisions from this sprint
 
-## Current query themes
+1. Keep `/resources/find-internet-providers` as the primary address-level provider guide and add only one distinct supporting intent: `/resources/fiber-internet-availability`. Do not publish a competing `find-isp-by-address` copy.
+2. Strengthen electric-company, transfer-timing, renter-insurance, apartment-internet, and renter-cost pages with direct answers, task-specific FAQs, and descriptive links.
+3. Treat free, ungated printables as the first experiment beyond articles and ZIP pages: utility setup, renter move-in, emergency numbers, and new-home contacts. Keep the address-update and new-home checklists useful and distinct. Do not monetize or require email at this stage.
+4. Add indexable ZIP pages only after official-source review and the shared coverage gate. Eustis ZIP 32726 was the one new reviewed Lake County addition; the other research-stage ZIPs remain noindex.
+5. Consolidate `www` and aliases instead of generating campaign, city, county-template, or location copies.
 
-- Internet-provider and address searches: internet providers address search, internet provider address lookup, ISP provider by address, search ISP by address, find internet providers by address, and check internet availability by address.
-- Renter insurance and moving-expense searches.
-- Exact ZIP-code searches, including 32757.
-- Utility-provider lookup searches.
+## Leading indicator to watch
 
-## Sprint decisions
+The clearest wedge is `/resources/find-internet-providers`. At the next review, first check whether it moves from 57 to 100+ impressions and whether average position improves. That result would support deeper investment in the internet cluster. It would not, by itself, prove clicks or conversions.
 
-1. Expand `/resources/find-internet-providers` around exact-address verification, technology, installation, equipment, apartments, transfers, and new construction.
-2. Add `/resources/check-internet-availability` for the distinct task of validating serviceability and resolving conflicting address results.
-3. Add `/resources/transfer-internet-when-moving` for transfer dates, duplicate-service avoidance, equipment, and property access.
-4. Do not add `/resources/find-isp-by-address`. That intent substantially overlaps the improved primary internet-provider guide and would create a competing near-duplicate.
-5. Improve renter insurance, deposit, condition-record, and move-in-cost coverage without presenting legal advice.
-6. Recheck the six impression-producing ZIP pages and build small related-ZIP clusters from verified pages only.
-7. Promote nearby ZIP coverage only when every core category has reviewed official starting points and exact-address caveats.
+The address-update printable's eight impressions justify testing genuinely useful tools. Watch printable impressions, clicks, print actions, and organic links before considering a designed PDF, moving kit, or paid product.
 
-## What to review next
+## Weekly comparison log
 
-At the next manual Search Console review, compare:
+Append a row each week; retain prior observations.
 
-- impressions, clicks, click-through rate, and average position for the pages above;
-- query growth for address-level internet availability and transfer intent;
-- whether the new renter move-in-cost guide receives distinct queries rather than cannibalizing the insurance page;
-- impressions for the utility-setup hub and its descriptive internal links;
-- ZIP impressions by city and county before choosing the next research cluster.
+| Review date | Date range | Impressions | Clicks | CTR | Avg. position | Internet-guide impressions | Address-printable impressions | Notes |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | --- |
+| 2026-08-10 | User-supplied baseline | 181 | 0 | 0% | 40.2 | 57 | 8 | Pre-release baseline |
 
-Record the date range and preserve the prior snapshot so changes are comparable. Do not create location pages solely from a query fragment; indexing still requires complete, useful, verified content.
+Also compare query growth for address-level internet, fiber, transfer timing, renter costs, electric-company lookup, exact ZIPs, county hubs, and printable terms. Do not claim ranking improvement without a comparable Search Console date range.

@@ -16,9 +16,13 @@ test("front-end growth routes and states remain explicit", async () => {
 });
 
 test("print resources and responsive system have accessibility safeguards", async () => {
-  const [printPage, printButton, css] = await Promise.all([read("../app/resources/printables/[slug]/page.tsx"), read("../app/components/PrintButton.tsx"), read("../app/globals.css")]);
+  const [printPage, printButton, printableData, css] = await Promise.all([read("../app/resources/printables/[slug]/page.tsx"), read("../app/components/PrintButton.tsx"), read("../app/data/printables.ts"), read("../app/globals.css")]);
   assert.match(printPage, /aria-hidden="true"/);
+  assert.match(printPage, /BreadcrumbList/);
+  assert.match(printPage, /Free · No email/);
   assert.match(printButton, /window\.print/);
+  for (const slug of ["utility-setup-checklist", "renter-move-in-checklist", "outage-emergency-numbers", "new-home-contacts", "address-update-checklist"]) assert.match(printableData, new RegExp(slug));
+  assert.doesNotMatch(printableData, /utility-contact-worksheet|outage-preparation-sheet/);
   assert.match(css, /@media print/);
   assert.match(css, /@media \(max-width: 760px\)/);
   assert.match(css, /prefers-reduced-motion/);
@@ -32,7 +36,7 @@ test("front-end audit checks serious quality regressions", async () => {
 
 test("Phase 3 ZIP pages include practical local authority content", async () => {
   const [results, localResources, styles] = await Promise.all([read("../app/components/LookupResults.tsx"), read("../app/data/local-resources.ts"), read("../app/globals.css")]);
-  for (const section of ["Recently moved?", "Things to check during the first week", "Emergency information", "Moving to this ZIP code"]) assert.match(results, new RegExp(section.replace("?", "\\?")));
+  for (const section of ["People moving to this ZIP also need", "Things to check during the first week", "Emergency information", "Moving to this ZIP code"]) assert.match(results, new RegExp(section));
   for (const action of ["Change your mailing address", "Update your license or vehicle record", "Register or update your voter record", "Check flood risk", "Prepare for Florida hazards"]) assert.match(localResources, new RegExp(action));
   for (const county of ["Seminole", "Orange", "Volusia", "Lake", "Osceola"]) assert.match(localResources, new RegExp(`${county}:`));
   assert.equal((localResources.match(/^\s+"\d{5}":/gm) ?? []).length, 50);

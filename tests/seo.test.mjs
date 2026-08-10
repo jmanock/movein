@@ -3,6 +3,7 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 import { guides } from "../app/data/guides.ts";
 import { publicPages } from "../app/data/pages.ts";
+import { canonicalUrl, SITE_URL } from "../app/lib/metadata.ts";
 
 const read = (path) => readFile(new URL(path, import.meta.url), "utf8");
 
@@ -36,7 +37,7 @@ test("Search Console opportunity pages own distinct intents and remain substanti
   assert.ok(renter?.sections.length >= 6);
   assert.ok(renter?.faqs?.length >= 4);
   assert.match(renter?.image?.src ?? "", /renter-move-in-records\.webp/);
-  for (const path of ["/resources/check-internet-availability", "/resources/transfer-internet-when-moving", "/renters/renter-move-in-costs"]) assert.ok(byPath.has(path), `${path} is missing`);
+  for (const path of ["/resources/check-internet-availability", "/resources/fiber-internet-availability", "/resources/transfer-internet-when-moving", "/renters/renter-move-in-costs"]) assert.ok(byPath.has(path), `${path} is missing`);
   assert.equal(byPath.has("/resources/find-isp-by-address"), false, "overlapping ISP page should not be created");
 });
 
@@ -49,6 +50,12 @@ test("metadata, canonicals, social cards, and noindex rules share one architectu
   assert.match(corrections, /noindex: true/);
 });
 
+test("canonical URL generation always consolidates on the secure non-www host", () => {
+  assert.equal(SITE_URL, "https://movein.guide");
+  assert.equal(canonicalUrl("/lookup/32720?source=test"), "https://movein.guide/lookup/32720?source=test");
+  assert.equal(canonicalUrl("http://www.movein.guide/lookup/32720?source=test"), "https://movein.guide/lookup/32720?source=test");
+});
+
 test("schema and sitemap implementations use visible source data", async () => {
   const [breadcrumbs, guide, faq, zip, zipPage, home, resources, sitemap, htmlMap] = await Promise.all([read("../app/components/PageHero.tsx"), read("../app/components/GuideArticle.tsx"), read("../app/faq/page.tsx"), read("../app/components/LookupResults.tsx"), read("../app/lookup/[zip]/page.tsx"), read("../app/page.tsx"), read("../app/resources/page.tsx"), read("../app/sitemap.ts"), read("../app/site-map/page.tsx")]);
   assert.match(breadcrumbs, /BreadcrumbList/);
@@ -57,7 +64,8 @@ test("schema and sitemap implementations use visible source data", async () => {
   assert.match(guide, /"BreadcrumbList"/);
   assert.match(faq, /faqItems\.map/);
   assert.match(zip, /buildLocalFaq/);
-  assert.match(zipPage, /"@type": "Service"/);
+  assert.match(zipPage, /"@type": "WebPage"/);
+  assert.doesNotMatch(zipPage, /"@type": "Service"/);
   assert.match(home, /SearchAction/);
   assert.match(resources, /CollectionPage/);
   assert.match(sitemap, /getIndexableZipResults/);
@@ -77,6 +85,13 @@ test("campaign and broad location templates are not indexable copies", async () 
   const [config, pages] = await Promise.all([read("../next.config.ts"), read("../app/data/pages.ts")]);
   assert.match(config, /\/welcome\/:path\*/);
   assert.doesNotMatch(pages, /\/welcome\/|\/florida\/|\/county\/|\/city\//);
+});
+
+test("www traffic has an application fallback while Nginx remains the primary redirect", async () => {
+  const [proxy, config] = await Promise.all([read("../proxy.ts"), read("../next.config.ts")]);
+  assert.match(proxy, /host === "www\.movein\.guide"/);
+  assert.match(proxy, /canonicalUrl\.hostname = "movein\.guide"/);
+  assert.match(config, /florida-utilities/);
 });
 
 test("privacy-safe analytics sends a ZIP only for an explicit coverage request", async () => {

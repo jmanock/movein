@@ -1,6 +1,6 @@
 # MoveIn production health report
 
-Generated: 2026-08-07T11:01:55.395Z
+Generated: 2026-08-10T11:36:46.119Z
 
 ## Overall status
 
@@ -9,37 +9,37 @@ Generated: 2026-08-07T11:01:55.395Z
 ## ZIP coverage
 
 - Active ZIP records: 50
-- Verified and indexable ZIPs: 28
-- Pending and noindex ZIPs: 22
+- Verified and indexable ZIPs: 29
+- Pending and noindex ZIPs: 21
 - Counties covered: 5
 - Missing core provider categories on verified ZIPs: 0
-- Missing core provider items across pending ZIPs: 88
+- Missing core provider items across pending ZIPs: 84
 
 ## Provider counts
 
 | Category | Providers or official tools | ZIP records |
 | --- | ---: | ---: |
-| Electricity | 8 | 28 |
-| Water | 11 | 28 |
-| Sewer | 11 | 28 |
+| Electricity | 8 | 29 |
+| Water | 12 | 29 |
+| Sewer | 12 | 29 |
 | Internet | 5 | 50 |
-| Trash & recycling | 12 | 28 |
+| Trash & recycling | 13 | 29 |
 | Local information | 5 | 50 |
 
 ## Missing provider information
 
-No core-category gaps remain on the 28 verified ZIP pages. Pending ZIP gaps stay in the research queue and do not affect indexing.
+No core-category gaps remain on the 29 verified ZIP pages. Pending ZIP gaps stay in the research queue and do not affect indexing.
 
 ## Official links
 
-- URLs in latest link report: 66
+- URLs in latest link report: 69
 - Confirmed broken links: 0
-- Network-uncertain links: 13
+- Network-uncertain links: 0
 - No confirmed 404/410 or server-error links in the latest report.
 
 ## Search and analytics health
 
-- Sitemap quality gate: PASS
+- Sitemap quality gate: FAIL
 - Robots sitemap declaration: PASS
 - GA4 root installation and manual page-view control: PASS
 - GA4 runtime status: enabled in production only when `NEXT_PUBLIC_GA_MEASUREMENT_ID` is present

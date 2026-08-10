@@ -84,6 +84,14 @@ Use the local `NEXT_PUBLIC_GA_DEBUG=true` flag or Google Tag Assistant for your 
 
 In GA4, use Admin → Product links → Search Console links, choose the verified `https://movein.guide` Search Console property, select the MoveIn web stream, review, and submit. This is an account-level action and is not performed by application code. After linking, Search Console reporting can take time to populate.
 
+## Growth questions this setup can answer
+
+- Supported ZIP demand can be compared by the `/lookup/[zip]` page path; no custom lookup event sends that ZIP.
+- Unsupported ZIP demand is counted only after the visitor explicitly requests a valid unsupported ZIP through `zip_coverage_request`.
+- Printable discovery and print intent use `printable_resource_click` with a public resource slug and action.
+- County navigation and guide-to-lookup journeys use coarse public route and county fields.
+- Provider-link events measure exits to official sources without sending visitor-entered addresses or contact details.
+
 ## Troubleshooting duplicates
 
 Use Tag Assistant and the browser Network panel to confirm there is one `gtag/js` request and one `page_view` collection request per pathname. If duplicates appear, check for GTM, an injected host-level tag, another layout script, or Enhanced Measurement history tracking. Keep one owner for page views: this root `GoogleAnalytics` component.

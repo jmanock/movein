@@ -7,10 +7,15 @@
 | Set up utilities | `/resources/utility-setup` | documents, timing, deposits, printable | Build an ordered plan |
 | Find electric company | `/resources/find-electric-company` | outage guide, ZIP result | Confirm territory and outage details |
 | Find water/sewer | `/resources/find-water-provider` | city-vs-county and jurisdiction guides | Confirm parcel and system context |
-| Find internet | `/resources/find-internet-providers` | renter installation, FCC tool | Check exact address or unit |
+| Find internet provider | `/resources/find-internet-providers` | availability, transfer, renter installation, FCC tool | Build a shortlist and check exact address or unit |
+| Check fiber availability | `/resources/fiber-internet-availability` | provider guide, FCC tool | Verify fiber-to-the-premises at the complete address |
 | Find trash | `/resources/find-trash-service` | renter and HOA responsibilities | Identify the responsible party |
 | Homeowner after closing | `/homeowners` | setup, shutoff, outage, HOA | Prioritize service and safety |
 | Renter move-in | `/renters` | responsibilities, setup, printable | Separate lease and tenant duties |
 | Current availability | `/coverage` | indexable ZIPs, data sources | See reviewed areas without overclaiming |
+| Print a utility plan | `/resources/printables/utility-setup-checklist` | timing and provider guides | Carry an ordered, ungated setup checklist |
+| Print a renter plan | `/resources/printables/renter-move-in-checklist` | renter hub and cost guides | Separate lease, condition, service, and first-week tasks |
+| Record emergency contacts | `/resources/printables/outage-emergency-numbers` | outage guide and ZIP results | Keep a fillable offline reference |
+| Record home contacts | `/resources/printables/new-home-contacts` | ZIP results and setup hub | Keep providers and property contacts together |
 
 Campaign and broad-location variants remain redirects, not indexable copies. New local pages require verified, sourced, distinctive value and must pass the shared quality gate.
