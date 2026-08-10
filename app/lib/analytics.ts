@@ -13,6 +13,13 @@ type ProviderParameters = {
   link_type?: string;
 };
 
+type MyMoveParameters = {
+  homeowner_or_renter?: "homeowner" | "renter";
+  move_phase?: string;
+  task_category?: string;
+  source_page: string;
+};
+
 export type AnalyticsEventParameters = {
   zip_lookup_submit: { source_page: string };
   zip_lookup_success: LookupParameters;
@@ -30,6 +37,16 @@ export type AnalyticsEventParameters = {
   county_page_navigation: { county: string; source_page: string };
   correction_form_success: { source_page: string };
   printable_resource_click: { resource_slug: string; source_page: string; action?: "open" | "print" };
+  my_move_started: MyMoveParameters;
+  my_move_task_completed: MyMoveParameters;
+  my_move_reset: MyMoveParameters;
+  add_to_my_move: { task_category: string; source_page: string };
+  printable_view: { printable_slug: string; source_page: string };
+  printable_print: { printable_slug: string; source_page: string };
+  first_30_days_view: { source_page: string };
+  dont_forget_impression: { reminder_id: string; source_page: string };
+  dont_forget_action: { reminder_id: string; source_page: string };
+  utility_added_to_my_move: { task_category: string; source_page: string };
 };
 
 export type AnalyticsEvent = keyof AnalyticsEventParameters;
@@ -65,6 +82,6 @@ function analyticsIsAvailable() {
 }
 
 function sanitizeParameters(parameters: Record<string, string | number | boolean | undefined>) {
-  const blockedKeys = new Set(["email", "reply_email", "zip", "zip_code", "street_address", "exact_address", "phone_number", "account_number", "details", "description", "ssn"]);
+  const blockedKeys = new Set(["email", "reply_email", "zip", "zip_code", "move_date", "notes", "checklist_text", "task_text", "street_address", "exact_address", "phone_number", "account_number", "details", "description", "ssn"]);
   return Object.fromEntries(Object.entries(parameters).filter(([key, value]) => value !== undefined && !blockedKeys.has(key)).map(([key, value]) => [key, typeof value === "string" ? value.slice(0, 100) : value]));
 }

@@ -1,5 +1,8 @@
 # Privacy implementation notes
 
+- My Move uses browser `localStorage` for the move date, five-digit ZIP, homeowner/renter choice, completed task IDs, dismissed task IDs, and allowlisted tasks added from content pages. It does not sync this state to the application database. Clearing browser storage or using Reset My Move removes it. If storage is blocked, the current session remains usable without a persistence promise.
+- My Move analytics receives coarse task categories, audience, derived move phase, public resource slugs, reminder IDs, and source routes. It does not receive the move date, checklist text, notes, exact street address, account data, or private home records.
+
 - ZIP searches are read-only database queries and are not stored by the application.
 - The lookup asks for no email, account, name, or exact street address.
 - The newsletter form and API are removed. The historical SQLite table is retained only to avoid destructive migration; no new writes occur.

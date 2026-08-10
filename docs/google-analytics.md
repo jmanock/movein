@@ -59,6 +59,14 @@ In the GA4 web data stream, open Enhanced Measurement → Page views → advance
 | `county_page_navigation` | `county`, `source_page` |
 | `correction_form_success` | `source_page=/corrections` only |
 | `printable_resource_click` | `resource_slug`, `source_page`, `action` |
+| `my_move_started` | `homeowner_or_renter`, derived `move_phase`, `source_page` |
+| `my_move_task_completed` | audience, `task_category`, derived phase, source page |
+| `my_move_reset` | audience, derived phase, source page |
+| `add_to_my_move` | allowlisted task category and source page |
+| `utility_added_to_my_move` | utility task category and source page |
+| `printable_view`, `printable_print` | public printable slug and source page |
+| `first_30_days_view` | source page |
+| `dont_forget_impression`, `dont_forget_action` | public reminder ID and source page |
 
 The lookup submit event is emitted only after five-digit client validation. Ordinary lookup events never include the entered ZIP value. `zip_coverage_request` is the one intentional exception: after confirming that a valid five-digit ZIP is unsupported, it sends that requested ZIP so aggregate demand can guide research. No email, name, phone, street address, or account identifier is collected with it. Result-page guide sources are normalized to `/lookup/[zip]`.
 

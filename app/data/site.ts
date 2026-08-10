@@ -1,5 +1,6 @@
 export const primaryNavigation = [
   { label: "Home", href: "/" },
+  { label: "My Move", href: "/my-move" },
   { label: "Homeowners", href: "/homeowners" },
   { label: "Renters", href: "/renters" },
   { label: "Learn Your Area", href: "/learn-your-area" },

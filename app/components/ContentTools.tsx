@@ -19,7 +19,8 @@ export function RelatedGuides({ paths, title = "Related guides" }: { paths: stri
 }
 
 export function NextStep({ href = "/#zip-lookup", label = "Find services for your ZIP code" }: { href?: string; label?: string }) {
-  return <aside className="next-step"><div><span className="eyebrow">Next step</span><h2>Use official information for your address.</h2><p>Start with the ZIP lookup, then confirm every provider directly before opening or transferring service.</p></div><Link className="button" href={href}>{label} <ArrowRight size={17} aria-hidden="true" /></Link></aside>;
+  const isMyMove = href === "/my-move";
+  return <aside className="next-step"><div><span className="eyebrow">Next step</span><h2>{isMyMove ? "Keep the useful step with your move." : "Use official information for your address."}</h2><p>{isMyMove ? "My Move turns this guide into a private browser-saved checklist without an account." : "Start with the ZIP lookup, then confirm every provider directly before opening or transferring service."}</p></div><Link className="button" href={href}>{label} <ArrowRight size={17} aria-hidden="true" /></Link></aside>;
 }
 
 function formatDate(value: string) { return new Intl.DateTimeFormat("en-US", { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" }).format(new Date(`${value}T00:00:00Z`)); }

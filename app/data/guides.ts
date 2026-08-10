@@ -44,6 +44,8 @@ const spectrumAvailability: OfficialResource = { title: "Spectrum address check"
 const xfinityAvailability: OfficialResource = { title: "Xfinity internet availability", organization: "Xfinity", url: "https://www.xfinity.com/learn/internet-service", checked: "2026-08-07", note: "Use the provider's current address flow to confirm service at the property." };
 const attAvailability: OfficialResource = { title: "AT&T internet availability", organization: "AT&T", url: "https://www.att.com/buy/broadband/availability.html", checked: "2026-08-07", note: "Check the exact address for available AT&T internet technology." };
 const quantumAvailability: OfficialResource = { title: "Quantum Fiber address check", organization: "Quantum Fiber", url: "https://www.quantumfiber.com/shop/", checked: "2026-08-07", note: "Confirm whether fiber service is available at the complete address." };
+const flhsmvAddress: OfficialResource = { title: "Name and Address Changes", organization: "Florida Highway Safety and Motor Vehicles", url: "https://www.flhsmv.gov/name-and-address-changes/", checked: "2026-08-10", note: "Review current official driver license and motor-vehicle address requirements and use the authorized service channel." };
+const floridaVoter: OfficialResource = { title: "Register or Update Voter Information", organization: "Florida Department of State", url: "https://registertovoteflorida.gov/home", checked: "2026-08-10", note: "Review eligibility and submit or update Florida voter registration through the official state system." };
 
 export const guides: Guide[] = [
   {
@@ -520,6 +522,26 @@ export const guides: Guide[] = [
       { question: "Which property contacts should a renter save?", answer: "Save separate emergency and routine maintenance channels along with authorized building access, utility outage, and local emergency information." },
     ],
     related: ["/renters/document-move-in-condition", "/renters/maintenance-parking-and-pet-checklist", "/resources/moving-utility-checklist"], sources: [floridaLandlordTenant],
+  },
+  {
+    path: "/resources/things-people-forget-when-moving", section: "resources", slug: "things-people-forget-when-moving",
+    title: "Things People Forget to Do After Moving", description: "A practical list of address, utility, safety, insurance, household, pet, emergency, and home-record tasks people often miss after moving.",
+    h1: "Things people forget to do after moving", eyebrow: "The list after the list",
+    directAnswer: "After the essential utilities work, check the records and household details that moving day pushes aside: government and financial addresses, old account stop dates, trash routines, alarm tests, meter photos, outage contacts, pet records, emergency information, and first-month home records.",
+    published: "2026-08-10", reviewed: "2026-08-10",
+    sections: [
+      { heading: "Update more than USPS", paragraphs: ["Mail forwarding is a safety net, not a complete address update. Use official channels and update only organizations that actually hold your information."], steps: ["Review driver license or state ID requirements.", "Review vehicle registration and voter registration information.", "Update banks, cards, insurers, employer, payroll, and retirement accounts.", "Update recurring deliveries, subscriptions, shopping profiles, schools, health providers, veterinarian, and pet microchip contact details."] },
+      { heading: "Close the utility handoff", paragraphs: ["Take a photo of visible meter readings before the moving truck leaves. It gives you a private record of where service started without touching sealed equipment."], steps: ["Confirm new electricity and water start dates.", "Close or transfer old accounts only on the authorized date.", "Return rented internet equipment and verify the new installation.", "Confirm trash day, recycling rules, and moving-box disposal.", "Save electric outage and water or sewer emergency contacts."] },
+      { heading: "Learn the controls before an emergency", paragraphs: ["Recognition and documentation matter more than DIY repair. Ask a property manager or qualified professional when equipment is damaged, unfamiliar, or unsafe."], steps: ["Locate the homeowner-accessible water shutoff and electrical panel.", "Test smoke and carbon-monoxide alarms using their instructions.", "Confirm keys, locks, fobs, garage remotes, and access codes.", "Review county alerts, evacuation information, and household emergency supplies."] },
+      { heading: "Create first-month records", paragraphs: ["A short private record prevents model numbers, receipts, and inspection priorities from disappearing into moving boxes."], steps: ["Inspect the HVAC filter and record its size and manufacturer guidance.", "Create a private home inventory.", "Record appliance models, serial numbers, warranties, and service contacts privately.", "Review HOA, lease, parking, pet, package, and maintenance routines.", "Turn inspection or move-in condition findings into a prioritized follow-up list."] },
+      { heading: "Use a checklist without giving up your data", paragraphs: ["My Move stores progress in the current browser without an account. The printable version works without an email and can be saved as a PDF through the browser print dialog."], steps: ["Add the forgotten-item review to My Move.", "Open the printable for an offline copy.", "Keep account numbers, access codes, identity documents, exact addresses, and private notes out of analytics and public worksheets."] },
+    ],
+    faqs: [
+      { question: "What is most often forgotten after moving?", answer: "Address updates beyond USPS, old utility stop dates, trash routines, meter photos, outage contacts, pet records, alarm tests, HVAC filter information, and a private home inventory are common practical misses." },
+      { question: "What should I do before unpacking?", answer: "Photograph rental or property condition, visible meter readings, rooms, fixtures, and existing issues before boxes hide the details. Keep the images private." },
+      { question: "Should I update every address at once?", answer: "Prioritize government, financial, insurance, employer, health, and essential service records, then work through recurring deliveries and household accounts. Use official channels." },
+    ],
+    related: ["/resources/change-your-address", "/resources/when-to-transfer-utilities", "/homeowners/first-week-home-safety", "/renters/document-move-in-condition"], sources: [usps, flhsmvAddress, floridaVoter, cpsc, readyPlan],
   },
 ];
 

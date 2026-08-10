@@ -1,6 +1,6 @@
 # MoveIn production health report
 
-Generated: 2026-08-10T11:36:46.119Z
+Generated: 2026-08-10T13:03:40.710Z
 
 ## Overall status
 
@@ -39,11 +39,11 @@ No core-category gaps remain on the 29 verified ZIP pages. Pending ZIP gaps stay
 
 ## Search and analytics health
 
-- Sitemap quality gate: FAIL
+- Sitemap quality gate: PASS
 - Robots sitemap declaration: PASS
 - GA4 root installation and manual page-view control: PASS
 - GA4 runtime status: enabled in production only when `NEXT_PUBLIC_GA_MEASUREMENT_ID` is present
-- Privacy: typed events omit routine lookup ZIPs and submitted form content; a ZIP is sent only when a visitor explicitly requests unsupported coverage
+- Privacy: typed events omit routine lookup ZIPs, move dates, checklist text, notes, exact addresses, and submitted form content; a ZIP is sent only when a visitor explicitly requests unsupported coverage
 
 ## Automated checks
 

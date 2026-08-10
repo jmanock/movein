@@ -3,6 +3,8 @@ export type Printable = {
   title: string;
   description: string;
   audience: string;
+  myMoveTaskId: string;
+  myMoveLabel: string;
   intro: string;
   reviewed: string;
   sections: Array<{ title: string; kind?: "checklist" | "fields"; items: string[] }>;
@@ -17,6 +19,8 @@ export const printables: Printable[] = [
     title: "Utility Setup Checklist for Moving",
     description: "Print a step-by-step checklist for electricity, water, internet, trash, transfers, service dates, account records, and outage contacts.",
     audience: "Every move",
+    myMoveTaskId: "electricity",
+    myMoveLabel: "Add utility setup to My Move",
     intro: "Plan the handoff without guessing. Ask each confirmed provider for its current lead time, schedule service for the date you become responsible, and keep sensitive account details off this sheet.",
     reviewed,
     sections: [
@@ -36,6 +40,8 @@ export const printables: Printable[] = [
     title: "Renter Move-In Checklist",
     description: "Print a renter checklist for lease responsibilities, utilities, internet access, deposits, condition photos, keys, parking, and move-in records.",
     audience: "Renters",
+    myMoveTaskId: "condition-photos",
+    myMoveLabel: "Add renter move-in tasks to My Move",
     intro: "Use the lease and written property instructions to decide what applies. This checklist organizes the questions; it does not replace your lease or state law.",
     reviewed,
     sections: [
@@ -55,6 +61,8 @@ export const printables: Printable[] = [
     title: "Outage and Emergency Numbers Sheet",
     description: "Print a household reference sheet for electric outages, water emergencies, property maintenance, local alerts, and trusted emergency contacts.",
     audience: "Every household",
+    myMoveTaskId: "outage-contacts",
+    myMoveLabel: "Add emergency contacts to My Move",
     intro: "Fill this in from official provider, property, and local-government sources. Call 911 for immediate police, fire, or medical danger; never approach a downed line.",
     reviewed,
     sections: [
@@ -74,6 +82,8 @@ export const printables: Printable[] = [
     title: "New-Home Contacts Sheet",
     description: "Print one organized sheet for utility, property, repair, insurance, local-government, and household contacts after moving into a home.",
     audience: "New homeowners",
+    myMoveTaskId: "outage-contacts",
+    myMoveLabel: "Add home contacts to My Move",
     intro: "Keep useful public and household contact details in one place. Do not write account numbers, passwords, Social Security numbers, or payment information on this sheet.",
     reviewed,
     sections: [
@@ -93,6 +103,8 @@ export const printables: Printable[] = [
     title: "Address Update Checklist After Moving",
     description: "Print a thorough change-of-address checklist for government records, finances, insurance, work, health care, schools, subscriptions, and household services.",
     audience: "Every move",
+    myMoveTaskId: "address-updates",
+    myMoveLabel: "Add address updates to My Move",
     intro: "Update only organizations that actually hold your information, begin with official websites, and never send identity documents through an unverified link.",
     reviewed,
     sections: [
@@ -109,9 +121,11 @@ export const printables: Printable[] = [
   },
   {
     slug: "new-home-checklist",
-    title: "New-Home First Week Checklist",
-    description: "Print a focused first-week checklist for utilities, safety, house controls, records, deliveries, trash, and essential homeowner contacts.",
+    title: "Homeowner Move-In Checklist",
+    description: "Print a homeowner move-in checklist for utilities, safety, house controls, records, deliveries, trash, and essential first-month contacts.",
     audience: "Homeowners",
+    myMoveTaskId: "water-shutoff",
+    myMoveLabel: "Add homeowner setup to My Move",
     intro: "Prioritize active services, safety, and accurate records before cosmetic projects. Use qualified help for anything unsafe or beyond normal homeowner access.",
     reviewed,
     sections: [
@@ -125,6 +139,57 @@ export const printables: Printable[] = [
       { label: "First-week home safety guide", href: "/homeowners/first-week-home-safety" },
       { label: "Homeowner resource hub", href: "/homeowners" },
     ],
+  },
+  {
+    slug: "first-30-days-new-home",
+    title: "First 30 Days in Your New Home",
+    description: "Print a four-phase checklist for the days before moving, move-in day, the first week, and the first 30 days in a new home.",
+    audience: "Homeowners and renters",
+    myMoveTaskId: "forgotten-items",
+    myMoveLabel: "Add first-month planning to My Move",
+    intro: "Use the sections in order, skip what does not apply, and confirm property-specific responsibilities with the lease, closing documents, provider, or property manager.",
+    reviewed,
+    sections: [
+      { title: "Before moving", items: ["Confirm electricity, water, internet, and trash responsibilities", "Schedule service for the date responsibility begins", "Submit official USPS mail forwarding", "Confirm insurance, access, keys, fobs, parking, and move-in rules", "Pack medications, documents, chargers, and first-night supplies separately"] },
+      { title: "Move-in day", items: ["Confirm essential utilities are active", "Photograph visible meter readings and property condition", "Locate the accessible water shutoff and electrical panel", "Test smoke and carbon-monoxide alarms", "Save outage, property, and emergency contacts"] },
+      { title: "First week", items: ["Update government, financial, insurance, employer, and shipping addresses", "Confirm trash and recycling days", "Review HOA, lease, parking, pet, package, and maintenance rules", "Check internet installation and equipment", "Store service confirmations and condition records privately"] },
+      { title: "First 30 days", items: ["Inspect the HVAC filter and record the size", "Create a private home inventory", "Record appliance models and serial numbers where useful", "Review emergency supplies and local alerts", "Turn inspection, lease, or handoff findings into a short priority list"] },
+    ],
+    related: [{ label: "First 30 Days hub", href: "/first-30-days" }, { label: "Open My Move", href: "/my-move" }, { label: "Things people forget", href: "/resources/things-people-forget-when-moving" }],
+  },
+  {
+    slug: "things-people-forget-after-moving",
+    title: "Things People Forget After Moving",
+    description: "Print practical reminders for address changes, safety checks, utilities, deliveries, pet records, emergency contacts, home records, and everyday routines.",
+    audience: "Every move",
+    myMoveTaskId: "forgotten-items",
+    myMoveLabel: "Add forgotten-item review to My Move",
+    intro: "The moving truck leaving is not the finish line. Use this list for the small records, safety checks, and household routines that are easy to miss during the first month.",
+    reviewed,
+    sections: [
+      { title: "Addresses and records", items: ["Driver license or state ID", "Vehicle registration", "Voter registration", "Banks, cards, insurer, employer, and payroll", "Subscriptions, deliveries, shopping profiles, veterinarian, and pet microchip"] },
+      { title: "Services and contacts", items: ["Old account stop dates", "New utility start dates", "Internet installation and returned equipment", "Trash and recycling days", "Electric, water, property, and local emergency contacts"] },
+      { title: "Safety and controls", items: ["Visible meter reading photos", "Accessible water shutoff", "Electrical panel directory", "Smoke and carbon-monoxide alarm tests", "Emergency alerts, evacuation information, and supplies"] },
+      { title: "First-month records", items: ["HVAC filter size and guidance", "Private home inventory", "Appliance model and serial numbers", "HOA or lease routines", "Inspection, condition, maintenance, or warranty follow-up"] },
+    ],
+    related: [{ label: "Complete things people forget guide", href: "/resources/things-people-forget-when-moving" }, { label: "Address update checklist", href: "/resources/printables/address-update-checklist" }, { label: "Open My Move", href: "/my-move" }],
+  },
+  {
+    slug: "utility-contact-information",
+    title: "Utility Contact Information Worksheet",
+    description: "Print a fillable worksheet for possible providers, official websites, service dates, outage contacts, address checks, and confirmation notes.",
+    audience: "Every move",
+    myMoveTaskId: "outage-contacts",
+    myMoveLabel: "Add utility contacts to My Move",
+    intro: "Fill this in only after checking the complete address. Keep account numbers, passwords, payment details, and identity information somewhere secure—not on this worksheet.",
+    reviewed,
+    sections: [
+      { title: "Electricity", kind: "fields", items: ["Possible provider", "Official website", "Start or transfer date", "Customer-service phone", "Outage phone and map"] },
+      { title: "Water, sewer, and trash", kind: "fields", items: ["Possible water provider", "Possible sewer provider", "Water or sewer emergency phone", "Trash and recycling contact", "Collection days and special instructions"] },
+      { title: "Internet", kind: "fields", items: ["Possible provider", "Exact-address check completed", "Installation date or equipment delivery", "Support contact", "Property or landlord approval needed"] },
+      { title: "Local and property contacts", kind: "fields", items: ["City or county utility help", "County emergency management", "Property manager or HOA", "After-hours maintenance", "Reviewed date"] },
+    ],
+    related: [{ label: "Find providers by ZIP", href: "/#zip-lookup" }, { label: "Utility setup checklist", href: "/resources/printables/utility-setup-checklist" }, { label: "Open My Move", href: "/my-move" }],
   },
 ];
 

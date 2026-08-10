@@ -61,6 +61,8 @@ DATABASE_PATH=/var/lib/movein/movein.sqlite
 ## Product routes
 
 - `/` — primary ZIP lookup
+- `/my-move` — private browser-saved homeowner or renter checklist; no account or email
+- `/first-30-days` — four-phase move-in planning hub
 - `/lookup/[zip]` — server-rendered utility, recently-moved, emergency, and official local-resource page
 - `/request-zip` — privacy-safe demand signal for unsupported five-digit ZIPs; no email is collected
 - `/api/lookup?zip=32771` — controlled JSON lookup
@@ -68,7 +70,7 @@ DATABASE_PATH=/var/lib/movein/movein.sqlite
 - `/homeowners`, `/renters` — focused hubs with substantive setup guides
 - `/learn-your-area`, `/resources`, `/coverage`, `/faq`
 - `/resources/utility-setup` — task-oriented setup hub for electricity, water, internet, trash, transfers, documents, and deposits
-- `/resources/printables/[slug]` — free, ungated HTML checklists and fillable worksheets with print CSS
+- `/resources/printables` and `/resources/printables/[slug]` — free, ungated HTML checklists and fillable worksheets with browser persistence and print CSS
 - `/data-sources`, `/corrections` — correction submissions are reviewed before public data changes
 - `/about`, `/contact`, `/privacy`, `/terms`, `/disclosure`, `/editorial-policy`, `/site-map`
 
@@ -118,6 +120,8 @@ The seed is idempotent and non-deleting. A changed verified row is refused unles
 - `docs/frontend-validation-report.md` — browser, journey, and release checks
 - `docs/accessibility.md` and `docs/performance.md` — front-end quality guardrails
 - `docs/analytics-events.md` — privacy-safe event names and integration boundary
+- `docs/my-move.md`, `docs/printables.md`, and `docs/content-retention-strategy.md` — local checklist, free-tool, and retention architecture
+- `docs/movein-home-product-concept.md` — future product boundary and evidence requirements; no paid UI is implemented
 - `docs/google-analytics.md` — GA4 setup, event parameters, testing, privacy, and duplicate prevention
 - `docs/search-console-opportunities.md` — query/page signals, sprint decisions, and the next manual review cadence
 - `docs/domain-canonicalization.md` — non-www application fallback and the required Nginx redirect boundary

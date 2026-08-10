@@ -32,7 +32,7 @@ const [layout, analytics, robots, sitemap] = await Promise.all([
 ]);
 const gaConfigured = layout.includes("NEXT_PUBLIC_GA_MEASUREMENT_ID") && (layout.match(/<GoogleAnalytics/g) ?? []).length === 1 && analytics.includes("send_page_view: false") && analytics.includes("usePathname");
 const robotsHealthy = robots.includes("/sitemap.xml") && robots.includes("SITE_URL");
-const sitemapHealthy = sitemap.includes("getIndexableZipResults") && sitemap.includes("SITE_URL");
+const sitemapHealthy = sitemap.includes("getIndexableZipResults") && sitemap.includes("canonicalUrl");
 const failed = checks.filter((check) => !check.passed);
 const report = `# MoveIn production health report
 
@@ -74,7 +74,7 @@ ${brokenLinks.length ? brokenLinks.map((row) => `- ${row.original_url} — ${row
 - Robots sitemap declaration: ${robotsHealthy ? "PASS" : "FAIL"}
 - GA4 root installation and manual page-view control: ${gaConfigured ? "PASS" : "FAIL"}
 - GA4 runtime status: enabled in production only when \`NEXT_PUBLIC_GA_MEASUREMENT_ID\` is present
-- Privacy: typed events omit routine lookup ZIPs and submitted form content; a ZIP is sent only when a visitor explicitly requests unsupported coverage
+- Privacy: typed events omit routine lookup ZIPs, move dates, checklist text, notes, exact addresses, and submitted form content; a ZIP is sent only when a visitor explicitly requests unsupported coverage
 
 ## Automated checks
 
