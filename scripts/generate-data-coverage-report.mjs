@@ -1,7 +1,7 @@
-import { writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { openDatabase } from "./lib/database.mjs";
 import { readCsv } from "./lib/csv.mjs";
+import { runtimeOrSnapshot, writeRuntimeReport } from "./lib/runtime-reports.mjs";
 
 const root = process.cwd();
 const { database } = openDatabase();
@@ -19,7 +19,7 @@ database.close();
 
 const queue = await readCsv(join(root, "data", "florida", "research-queue.csv"));
 let links = [];
-try { links = await readCsv(join(root, "data", "florida", "provider-link-status.csv")); } catch {}
+try { links = await readCsv(await runtimeOrSnapshot("provider-link-status.csv", join(root, "data", "florida", "provider-link-status.csv"))); } catch {}
 const linkCounts = Object.entries(Object.groupBy(links, (row) => row.state)).map(([state, rows]) => `${state}: ${rows.length}`).join(", ") || "not run";
 const missingByZip = Object.entries(Object.groupBy(queue.filter((row) => row.task_type === "missing-provider"), (row) => row.zip_code)).map(([zip, rows]) => `- ${zip}: ${rows.map((row) => row.missing_category).join(", ")}`).join("\n");
 const ready = missingSources === 0 && missingDates === 0 && stale === 0 && !links.some((row) => ["not-found", "server-error"].includes(row.state));
@@ -73,5 +73,5 @@ ${missingByZip || "None."}
 
 The remaining rows are retained because ZIP-wide internet assignments and local utility boundaries cannot be determined responsibly without stronger address-level evidence. See \`data/florida/research-queue.csv\`.
 `;
-await writeFile(join(root, "docs", "data-coverage-report.md"), markdown, "utf8");
-console.log("Updated docs/data-coverage-report.md");
+await writeRuntimeReport("data-coverage-report.md", markdown);
+console.log("Updated runtime-reports/data-coverage-report.md");

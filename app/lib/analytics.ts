@@ -67,6 +67,16 @@ export type AnalyticsEventParameters = {
   internet_technology_filter: InternetParameters;
   internet_checklist_view: InternetParameters;
   internet_checklist_print: InternetParameters;
+  renter_hub_view: { source_page: string; homeowner_or_renter: "renter" };
+  renter_insurance_guide_view: { source_page: string; homeowner_or_renter: "renter" };
+  move_in_cost_guide_view: { source_page: string; homeowner_or_renter: "renter" };
+  move_in_calculator_started: { source_page: string; homeowner_or_renter: "renter" };
+  move_in_calculator_completed: { source_page: string; homeowner_or_renter: "renter"; expense_category_count: number };
+  renter_condition_checklist_view: { source_page: string; homeowner_or_renter: "renter" };
+  renter_condition_checklist_print: { source_page: string; homeowner_or_renter: "renter" };
+  renter_expense_planner_print: { source_page: string; homeowner_or_renter: "renter" };
+  free_renter_kit_view: { source_page: string; homeowner_or_renter: "renter" };
+  renter_add_to_my_move: { source_page: string; task_category: string; homeowner_or_renter: "renter" };
 };
 
 export type AnalyticsEvent = keyof AnalyticsEventParameters;
@@ -102,6 +112,6 @@ function analyticsIsAvailable() {
 }
 
 function sanitizeParameters(parameters: Record<string, string | number | boolean | undefined>) {
-  const blockedKeys = new Set(["email", "reply_email", "zip", "zip_code", "move_date", "notes", "checklist_text", "task_text", "street_address", "exact_address", "phone_number", "account_number", "details", "description", "ssn"]);
+  const blockedKeys = new Set(["email", "reply_email", "zip", "zip_code", "move_date", "notes", "checklist_text", "task_text", "street_address", "exact_address", "phone_number", "account_number", "details", "description", "ssn", "amount", "cost", "rent", "deposit", "dollar", "lease_details"]);
   return Object.fromEntries(Object.entries(parameters).filter(([key, value]) => value !== undefined && !blockedKeys.has(key)).map(([key, value]) => [key, typeof value === "string" ? value.slice(0, 100) : value]));
 }

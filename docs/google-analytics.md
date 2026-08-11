@@ -73,12 +73,17 @@ In the GA4 web data stream, open Enhanced Measurement → Page views → advance
 | `internet_availability_click`, `internet_transfer_click` | provider, technology, coverage status, source page as applicable |
 | `internet_technology_filter` | wired, wireless, or all and source page |
 | `internet_checklist_view`, `internet_checklist_print` | public checklist source page |
+| `renter_hub_view`, `renter_insurance_guide_view`, `move_in_cost_guide_view`, `free_renter_kit_view` | public source page and `homeowner_or_renter=renter` |
+| `move_in_calculator_started` | public source page and renter audience; no entered amounts |
+| `move_in_calculator_completed` | public source page, renter audience, and aggregate `expense_category_count`; no entered amounts |
+| `renter_condition_checklist_view`, `renter_condition_checklist_print`, `renter_expense_planner_print` | public resource source page and renter audience |
+| `renter_add_to_my_move` | allowlisted renter task category, public source page, and renter audience |
 
 The lookup submit event is emitted only after five-digit client validation. Ordinary lookup events never include the entered ZIP value. `zip_coverage_request` is the one intentional exception: after confirming that a valid five-digit ZIP is unsupported, it sends that requested ZIP so aggregate demand can guide research. No email, name, phone, street address, or account identifier is collected with it. Result-page guide sources are normalized to `/lookup/[zip]`.
 
 ## Privacy restrictions
 
-Do not add email, correction descriptions, full IP addresses, exact street addresses, utility accounts, Social Security numbers, visitor-entered phone numbers, or other form content to event parameters. Google signals and ad-personalization signals are disabled in the tag configuration. Provider names and published provider phone types are business-directory context; the telephone number itself is never sent.
+Do not add email, correction descriptions, full IP addresses, exact street addresses, utility accounts, Social Security numbers, visitor-entered phone numbers, rent or deposit amounts, any other calculator amount, lease details, or other form content to event parameters. Google signals and ad-personalization signals are disabled in the tag configuration. Provider names and published provider phone types are business-directory context; the telephone number itself is never sent.
 
 ## Testing
 

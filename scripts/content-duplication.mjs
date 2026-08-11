@@ -1,4 +1,4 @@
-import { writeFile } from "node:fs/promises";
+import { writeRuntimeReport } from "./lib/runtime-reports.mjs";
 import { guides } from "../app/data/guides.ts";
 import { zipMoveOverviews } from "../app/data/local-resources.ts";
 import { publicPages } from "../app/data/pages.ts";
@@ -37,6 +37,6 @@ for (const [[leftZip, leftCopy], [rightZip, rightCopy]] of pairs(Object.entries(
 
 const errors = findings.filter((finding) => finding.level === "error");
 const report = `# Content Duplication Report\n\nGenerated: 2026-08-01\n\n## Scope\n\nChecked ${publicPages.length} public-page titles, descriptions, and H1s, ${guides.length} guide bodies, and ${Object.keys(zipMoveOverviews).length} ZIP-specific moving overviews using normalized exact matching and Jaccard token similarity. Shared navigation, legal disclaimers, provider data, and reusable CTA copy are excluded from body comparison.\n\n## Result\n\n${findings.length ? findings.map((finding) => `- **${finding.level.toUpperCase()}** ${finding.check}: ${finding.pages.join(" and ")} (${Math.round(finding.score * 100)}% similarity)`).join("\n") : "No exact metadata duplicates, missing ZIP overviews, or high-similarity guide and ZIP overview bodies were found."}\n\n## Release rule\n\nExact duplicate metadata, a missing reviewed-ZIP overview, or content similarity at or above 88% fails the command. Similarity from 72% through 87% is a manual-review warning. Campaign, state, county, and city pages must not be generated without distinct sourced value and an explicit indexability decision.\n`;
-await writeFile(new URL("../docs/content-duplication-report.md", import.meta.url), report);
+await writeRuntimeReport("content-duplication-report.md", report.replace("Generated: 2026-08-01", `Generated: ${new Date().toISOString().slice(0, 10)}`));
 console.log(`Checked ${publicPages.length} pages and ${guides.length} guides: ${errors.length} blocking duplication finding(s).`);
 if (errors.length) process.exitCode = 1;

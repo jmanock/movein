@@ -31,7 +31,7 @@ test("homeowner and renter checklists expose distinct responsibilities", () => {
   const ownerIds = new Set(tasksForProfile(homeowner).map((task) => task.id));
   const renterIds = new Set(tasksForProfile(renter).map((task) => task.id));
   for (const id of ["water-shutoff", "breaker-panel", "homestead-review", "hvac-filter"]) assert.equal(ownerIds.has(id), true, id);
-  for (const id of ["condition-photos", "renter-maintenance", "renter-rules"]) assert.equal(renterIds.has(id), true, id);
+  for (const id of ["condition-photos", "renter-maintenance", "renter-rules", "renter-lease-utilities", "renter-move-budget", "renter-financial-setup", "renter-lease-copy", "renter-inspection-form", "renter-payment-receipt", "renter-correspondence"]) assert.equal(renterIds.has(id), true, id);
   assert.equal(ownerIds.has("condition-photos"), false);
   assert.equal(renterIds.has("homestead-review"), false);
 });
@@ -77,5 +77,5 @@ test("printable and retention tools share checklist logic and privacy-safe analy
   assert.match(css, /site-header.*display: none/s);
   for (const event of ["my_move_started", "my_move_task_completed", "my_move_reset", "add_to_my_move", "printable_view", "printable_print", "first_30_days_view", "dont_forget_impression", "dont_forget_action", "utility_added_to_my_move", "internet_provider_saved", "internet_availability_click", "internet_checklist_print"]) assert.match(analytics, new RegExp(`${event}:`));
   for (const blocked of ["move_date", "notes", "checklist_text", "task_text"]) assert.match(analytics, new RegExp(blocked));
-  for (const slug of ["first-30-days-new-home", "address-update-checklist", "utility-setup-checklist", "new-home-contacts", "things-people-forget-after-moving", "renter-move-in-checklist", "new-home-checklist", "utility-contact-information", "internet-setup-checklist"]) assert.match(data, new RegExp(slug));
+  for (const slug of ["first-30-days-new-home", "address-update-checklist", "utility-setup-checklist", "new-home-contacts", "things-people-forget-after-moving", "renter-move-in-checklist", "new-home-checklist", "utility-contact-information", "internet-setup-checklist", "renter-move-in-expense-planner", "renter-move-in-condition-checklist"]) assert.match(data, new RegExp(slug));
 });

@@ -7,11 +7,11 @@ export type Printable = {
   myMoveLabel: string;
   intro: string;
   reviewed: string;
-  sections: Array<{ title: string; kind?: "checklist" | "fields"; items: string[] }>;
+  sections: Array<{ title: string; kind?: "checklist" | "fields" | "expense-table" | "condition-table"; items: string[] }>;
   related: Array<{ label: string; href: string }>;
 };
 
-const reviewed = "2026-08-10";
+const reviewed = "2026-08-11";
 
 export const printables: Printable[] = [
   {
@@ -51,9 +51,52 @@ export const printables: Printable[] = [
       { title: "Access and first week", items: ["Count keys, fobs, parking passes, and mailbox access", "Save routine and emergency maintenance contacts", "Confirm trash location and collection rules", "Test smoke and carbon-monoxide alarms as permitted", "Store the lease, condition record, and account confirmations"] },
     ],
     related: [
-      { label: "Plan renter move-in costs", href: "/renters/renter-move-in-costs" },
+      { label: "Plan renter move-in costs", href: "/renters/move-in-costs" },
       { label: "Insurance, deposits, and records", href: "/renters/renters-insurance-and-deposits" },
       { label: "Set up utilities as a renter", href: "/renters/set-up-utilities" },
+    ],
+  },
+  {
+    slug: "renter-move-in-expense-planner",
+    title: "Renter Move-In Expense Planner",
+    description: "Print a free renter expense worksheet with planned, actual, paid, and due-date columns for rent, deposits, utilities, insurance, internet, moving, and household costs.",
+    audience: "Renters",
+    myMoveTaskId: "renter-move-budget",
+    myMoveLabel: "Add move-in budget to My Move",
+    intro: "Use written amounts from the lease, property, providers, insurer, and moving vendors. Leave unknown amounts blank, distinguish deposits from fees, and keep account or payment details somewhere private.",
+    reviewed,
+    sections: [
+      { title: "Housing and property", kind: "expense-table", items: ["Rent due before move-in", "Security deposit", "Application or screening", "Pet charges", "Parking or access", "Other property charge"] },
+      { title: "Services", kind: "expense-table", items: ["Electric or water deposit", "Internet setup or equipment", "Renters insurance", "Other utility or service"] },
+      { title: "Moving and first week", kind: "expense-table", items: ["Movers or truck", "Storage", "Moving supplies", "Household supplies", "Laundry or transportation", "Other"] },
+    ],
+    related: [
+      { label: "Move-in cost calculator", href: "/renters/move-in-cost-calculator" },
+      { label: "Apartment move-in cost guide", href: "/renters/move-in-costs" },
+      { label: "Free renter move-in kit", href: "/renters/free-move-in-kit" },
+    ],
+  },
+  {
+    slug: "renter-move-in-condition-checklist",
+    title: "Renter Move-In Condition Checklist",
+    description: "Print a room-by-room apartment condition checklist with space for condition notes, photo status, and reporting to the landlord or property manager.",
+    audience: "Renters",
+    myMoveTaskId: "condition-photos",
+    myMoveLabel: "Add apartment inspection to My Move",
+    intro: "Before unpacking, take timestamped wide and close photos or video, complete the property's required inspection form, preserve the originals, and keep proof of anything submitted. Documentation can support your record but does not guarantee a deposit outcome.",
+    reviewed,
+    sections: [
+      { title: "Entry", kind: "condition-table", items: ["Door", "Locks", "Keys or access devices", "Door frame"] },
+      { title: "Living areas", kind: "condition-table", items: ["Walls and ceilings", "Floors", "Windows", "Blinds or coverings", "Lighting", "Outlets and covers"] },
+      { title: "Kitchen", kind: "condition-table", items: ["Refrigerator", "Freezer", "Stove", "Oven", "Dishwasher", "Sink", "Cabinets", "Countertops"] },
+      { title: "Bathroom", kind: "condition-table", items: ["Toilet", "Sink", "Shower or tub", "Exhaust fan", "Fixtures"] },
+      { title: "Bedroom", kind: "condition-table", items: ["Doors", "Closets", "Windows", "Flooring"] },
+      { title: "Utilities and safety", kind: "condition-table", items: ["Smoke alarms", "Carbon-monoxide alarms where present or required", "HVAC controls", "Hot water", "Breaker-panel access", "Visible water leaks"] },
+    ],
+    related: [
+      { label: "What renters should photograph", href: "/renters/what-to-photograph-before-moving-in" },
+      { label: "Document move-in condition", href: "/renters/document-move-in-condition" },
+      { label: "Free renter move-in kit", href: "/renters/free-move-in-kit" },
     ],
   },
   {

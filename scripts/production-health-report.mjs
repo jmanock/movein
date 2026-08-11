@@ -1,8 +1,9 @@
 import { spawnSync } from "node:child_process";
-import { readFile, writeFile } from "node:fs/promises";
+import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { openDatabase } from "./lib/database.mjs";
 import { readCsv } from "./lib/csv.mjs";
+import { runtimeOrSnapshot, writeRuntimeReport } from "./lib/runtime-reports.mjs";
 
 const root = process.cwd();
 const checks = [
@@ -21,7 +22,7 @@ const pendingMissing = database.prepare(`SELECT COUNT(*) count FROM zip_codes z 
 database.close();
 
 let linkRows = [];
-try { linkRows = await readCsv(join(root, "data", "florida", "provider-link-status.csv")); } catch {}
+try { linkRows = await readCsv(await runtimeOrSnapshot("provider-link-status.csv", join(root, "data", "florida", "provider-link-status.csv"))); } catch {}
 const brokenLinks = linkRows.filter((row) => ["not-found", "server-error"].includes(row.state));
 const uncertainLinks = linkRows.filter((row) => ["timeout", "unknown"].includes(row.state));
 const [layout, analytics, robots, sitemap] = await Promise.all([
@@ -84,9 +85,9 @@ ${checks.map((check) => `| ${check.name} | ${check.passed ? "PASS" : "FAIL"} |`)
 
 The test suite covers lookup behavior, provider actions, homepage lookup states, SEO safeguards, analytics duplication controls, and pending-page noindex behavior. The front-end audit uses static checks unless a production server is available through \`FRONTEND_AUDIT_URL\`.
 `;
-await writeFile(join(root, "docs", "production-health-report.md"), report, "utf8");
+await writeRuntimeReport("production-health-report.md", report);
 console.log(`Production health: ${totals.verified} verified, ${totals.pending} pending, ${missingVerified.length} verified-ZIP gaps, ${brokenLinks.length} broken links, ${failed.length} failed automated checks.`);
-console.log("Updated docs/production-health-report.md");
+console.log("Updated runtime-reports/production-health-report.md");
 if (failed.length || brokenLinks.length || missingVerified.length || !gaConfigured || !robotsHealthy || !sitemapHealthy) process.exitCode = 1;
 
 function run(name, args, shell = false) {

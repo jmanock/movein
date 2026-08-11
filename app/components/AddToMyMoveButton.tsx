@@ -19,6 +19,7 @@ export function AddToMyMoveButton({ taskId, label = "Add to My Move", sourcePage
       window.dispatchEvent(new CustomEvent("movein:my-move-updated"));
       if (result.added) {
         trackEvent("add_to_my_move", { task_category: taskId, source_page: sourcePage });
+        if (taskId.startsWith("renter-") || taskId === "condition-photos") trackEvent("renter_add_to_my_move", { task_category: taskId, source_page: sourcePage, homeowner_or_renter: "renter" });
         if (["local-utilities", "electricity", "water-sewer", "internet", "utilities-transfer", "trash"].includes(taskId)) trackEvent("utility_added_to_my_move", { task_category: taskId, source_page: sourcePage });
       }
     } catch { setStatus("unavailable"); }

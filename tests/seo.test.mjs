@@ -37,8 +37,20 @@ test("Search Console opportunity pages own distinct intents and remain substanti
   assert.ok(renter?.sections.length >= 6);
   assert.ok(renter?.faqs?.length >= 4);
   assert.match(renter?.image?.src ?? "", /renter-move-in-records\.webp/);
-  for (const path of ["/resources/check-internet-availability", "/resources/fiber-internet-availability", "/resources/transfer-internet-when-moving", "/renters/renter-move-in-costs"]) assert.ok(byPath.has(path), `${path} is missing`);
+  for (const path of ["/resources/check-internet-availability", "/resources/fiber-internet-availability", "/resources/transfer-internet-when-moving", "/renters/move-in-costs", "/renters/what-utilities-do-renters-pay", "/renters/what-to-photograph-before-moving-in", "/renters/questions-before-signing-a-lease"]) assert.ok(byPath.has(path), `${path} is missing`);
   assert.equal(byPath.has("/resources/find-isp-by-address"), false, "overlapping ISP page should not be created");
+});
+
+test("renter growth pages have distinct tools, safe analytics, and legacy redirects", async () => {
+  const [hub, calculator, kit, printables, analytics, redirects] = await Promise.all([read("../app/renters/page.tsx"), read("../app/components/MoveInCostCalculator.tsx"), read("../app/renters/free-move-in-kit/page.tsx"), read("../app/data/printables.ts"), read("../app/lib/analytics.ts"), read("../next.config.ts")]);
+  for (const phrase of ["Six practical steps", "Free renter tools", "Questions before signing"]) assert.match(hub, new RegExp(phrase));
+  for (const field of ["monthlyRent", "securityDeposit", "utilityDeposits", "internetSetup", "movingCosts", "petCosts", "insurance"]) assert.match(calculator, new RegExp(field));
+  assert.doesNotMatch(calculator, /localStorage|fetch\(/);
+  assert.match(kit, /Free · Private · Ungated/);
+  for (const slug of ["renter-move-in-expense-planner", "renter-move-in-condition-checklist"]) assert.match(printables, new RegExp(slug));
+  for (const event of ["renter_hub_view", "move_in_calculator_started", "move_in_calculator_completed", "renter_condition_checklist_print", "renter_expense_planner_print", "free_renter_kit_view", "renter_add_to_my_move"]) assert.match(analytics, new RegExp(`${event}:`));
+  assert.match(redirects, /renters\/renter-move-in-costs.*renters\/move-in-costs/s);
+  assert.match(redirects, /renters\/utility-responsibilities.*renters\/what-utilities-do-renters-pay/s);
 });
 
 test("metadata, canonicals, social cards, and noindex rules share one architecture", async () => {

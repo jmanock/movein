@@ -1,7 +1,8 @@
-import { readFile, writeFile } from "node:fs/promises";
+import { readFile } from "node:fs/promises";
 import { publicPages } from "../app/data/pages.ts";
 import { guides, guidesByPath } from "../app/data/guides.ts";
 import { getIndexableZipResults } from "../app/lib/seo.ts";
+import { writeRuntimeReport } from "./lib/runtime-reports.mjs";
 
 const errors = []; const warnings = []; const runtimeRows = [];
 const unique = (field) => {
@@ -67,6 +68,6 @@ if (baseUrl) {
 }
 
 const report = `# SEO Validation Report\n\nGenerated: 2026-07-29\n\n## Scope\n\n- ${publicPages.length} manifest-backed public pages\n- ${guides.length} substantive guides\n- ${zipCount} database-backed ZIP pages that pass the indexability gate\n- metadata, canonicals, H1s, schema hooks, sitemap/robots integration, related-guide targets, and content dates\n${baseUrl ? `- runtime crawl against ${baseUrl}` : "- static mode; set SEO_BASE_URL to add the runtime crawl"}\n\n## Blocking findings\n\n${errors.length ? errors.map((item) => `- ${item}`).join("\n") : "None."}\n\n## Warnings\n\n${warnings.length ? warnings.map((item) => `- ${item}`).join("\n") : "None."}\n\n## Runtime results\n\n${runtimeRows.length ? `| Route | Status | H1 | Canonical |\n| --- | ---: | ---: | --- |\n${runtimeRows.map((row) => `| ${row.path} | ${row.status} | ${row.h1 ?? "—"} | ${row.canonical ?? "—"} |`).join("\n")}` : "Not run in static mode."}\n`;
-await writeFile(new URL("../docs/seo-validation-report.md", import.meta.url), report.replace("Generated: 2026-07-29", "Generated: 2026-08-10"));
+await writeRuntimeReport("seo-validation-report.md", report.replace("Generated: 2026-07-29", `Generated: ${new Date().toISOString().slice(0, 10)}`));
 console.log(`SEO audit: ${errors.length} error(s), ${warnings.length} warning(s).`);
 if (errors.length) process.exitCode = 1;

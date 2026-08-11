@@ -12,7 +12,7 @@ sqlite3 /var/lib/movein/movein.sqlite ".backup '/var/backups/movein/movein-befor
 test -s /var/backups/movein/movein-before-internet-sprint.sqlite
 ```
 
-## Release commands for this front-end release
+## Release commands for the renter growth release
 
 ```bash
 cd /var/www/movein
@@ -23,9 +23,6 @@ export NEXT_PUBLIC_GA_MEASUREMENT_ID=G-QC9FYWHVZZ
 export DATABASE_PATH=/var/lib/movein/movein.sqlite
 npm ci
 npm run data:validate
-npm run db:migrate
-npm run data:import -- --dry-run
-npm run data:import -- --confirm-verified
 npm run seo:duplicates
 npm run seo:audit
 npm run lint
@@ -34,9 +31,14 @@ npm run build
 npm run data:coverage
 pm2 restart movein --update-env
 pm2 save
+FRONTEND_AUDIT_URL=http://127.0.0.1:3006 npm run frontend:audit
+SEO_BASE_URL=http://127.0.0.1:3006 npm run seo:audit
+BASE_URL=http://127.0.0.1:3006 npm run check:links
+npm run health:report
+git status --short
 ```
 
-This release adds reviewed CSV coverage without a new schema migration. Keep the idempotent migration step in the release sequence, back up the persistent database, dry-run the import, then apply it with the verified-row confirmation shown above. The exact direct smoke-test command is:
+This release changes renter content and tools without changing the database schema or provider seed data. Do not run a data import for this release. Runtime reports write to the ignored `runtime-reports/` directory, so the final `git status --short` should print nothing. The exact direct smoke-test command is:
 
 ```bash
 PORT=3006 DATABASE_PATH=/var/lib/movein/movein.sqlite npm run start -- -H 127.0.0.1
@@ -68,6 +70,15 @@ curl -I http://127.0.0.1:3006/internet/providers/verizon
 curl -I http://127.0.0.1:3006/resources/printables/internet-setup-checklist
 curl -I http://127.0.0.1:3006/resources/utility-setup
 curl -I http://127.0.0.1:3006/renters/renters-insurance-and-deposits
+curl -I http://127.0.0.1:3006/renters/move-in-costs
+curl -I http://127.0.0.1:3006/renters/move-in-cost-calculator
+curl -I http://127.0.0.1:3006/renters/what-to-photograph-before-moving-in
+curl -I http://127.0.0.1:3006/renters/what-utilities-do-renters-pay
+curl -I http://127.0.0.1:3006/renters/questions-before-signing-a-lease
+curl -I http://127.0.0.1:3006/renters/free-move-in-kit
+curl -I http://127.0.0.1:3006/resources/printables/renter-move-in-expense-planner
+curl -I http://127.0.0.1:3006/resources/printables/renter-move-in-condition-checklist
+curl -I http://127.0.0.1:3006/my-move
 curl -I http://127.0.0.1:3006/florida-utilities
 curl -I http://127.0.0.1:3006/orange-county-utilities
 curl -I 'http://127.0.0.1:3006/request-zip?zip=99999'

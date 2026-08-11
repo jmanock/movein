@@ -1,6 +1,6 @@
 # Domain canonicalization
 
-Last verified: August 10, 2026
+Last verified: August 11, 2026
 
 The only canonical origin is `https://movein.guide`. Application metadata, Open Graph URLs, JSON-LD, breadcrumbs, robots, and sitemap entries already use that origin. The application proxy now provides a defensive permanent redirect from a `www.movein.guide` Host header while preserving the path and query string.
 
@@ -9,8 +9,8 @@ The only canonical origin is `https://movein.guide`. Application metadata, Open 
 The live origin currently behaves as follows:
 
 - `http://movein.guide/...` → one 301 to `https://movein.guide/...` — correct.
-- `http://www.movein.guide/...` → one 301 to `https://www.movein.guide/...` — incomplete.
-- `https://www.movein.guide/...` → 200 — duplicate host risk.
+- `http://www.movein.guide/...` → 301 to `https://www.movein.guide/...`, then the application redirects to non-www — functional but an unnecessary two-hop chain.
+- `https://www.movein.guide/...` → application-level 308 to `https://movein.guide/...` — canonicalized, but Nginx should own this redirect before traffic reaches Next.js.
 
 The Nginx redirect should be the primary fix so duplicate-host requests never reach Next.js. Do not create a redirect chain through HTTPS `www`.
 
@@ -56,3 +56,12 @@ server {
 ```
 
 Validate with `sudo nginx -t` before reloading. Then verify all three alternate origins return one permanent redirect directly to the non-www HTTPS URL.
+
+```bash
+curl -I http://movein.guide/lookup/32720
+curl -I http://www.movein.guide/lookup/32720
+curl -I https://www.movein.guide/lookup/32720
+curl -I https://movein.guide/lookup/32720
+```
+
+The first three commands should return one `301` or `308` with `Location: https://movein.guide/lookup/32720`. The canonical HTTPS command should return `200` and must not redirect.

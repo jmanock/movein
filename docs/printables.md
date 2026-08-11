@@ -16,6 +16,6 @@ The canonical library is `/resources/printables`. Every resource is a useful ind
 - Utility Contact Information Worksheet
 - Outage and Emergency Numbers Sheet
 
-Checklist printables can also be checked off in the browser. Progress uses a printable-specific local-storage key and is not sent to MoveIn. Fillable worksheets remain intentionally blank on screen and paper.
+Checklist printables can also be checked off in the browser. Progress uses a printable-specific local-storage key and is not sent to MoveIn. Fillable worksheets remain intentionally blank on screen and paper. The renter expense planner and condition checklist use print-first tables with writable cells, reviewed dates, and source-confirmation disclaimers.
 
 Print CSS hides navigation, footers, decorative reminders, interactive controls, and browser-only actions. It preserves headings, checkboxes, field lines, warnings, URLs, provider/contact fields, branding, and reviewed dates. Sections and list rows avoid page breaks when practical and use low-ink colors. There are no print-only indexable routes and no PDF-generation dependency.

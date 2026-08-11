@@ -1,15 +1,17 @@
-import { writeFile } from "node:fs/promises";
+import { mkdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { readCsv } from "./lib/csv.mjs";
+import { runtimeReportDir, runtimeReportPath } from "./lib/runtime-reports.mjs";
 
 const root = process.cwd();
 const providerPath = process.env.PROVIDER_DATA_PATH ?? join(root, "data", "florida", "florida-providers.csv");
-const outputPath = process.env.LINK_STATUS_PATH ?? join(root, "data", "florida", "provider-link-status.csv");
-const reportPath = process.env.LINK_REPORT_PATH ?? join(root, "docs", "link-validation-report.md");
+const outputPath = process.env.LINK_STATUS_PATH ?? runtimeReportPath("provider-link-status.csv");
+const reportPath = process.env.LINK_REPORT_PATH ?? runtimeReportPath("link-validation-report.md");
 const providers = await readCsv(providerPath);
 const fields = ["official_website", "start_service_url", "address_check_url", "support_url", "outage_url", "outage_map_url", "collection_info_url"];
 const urls = [...new Set(providers.filter((row) => row.status !== "inactive").flatMap((row) => fields.map((field) => row[field]).filter(Boolean)))];
 const results = [];
+await mkdir(runtimeReportDir, { recursive: true });
 
 for (const originalUrl of urls) results.push(await check(originalUrl));
 
