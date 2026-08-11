@@ -24,7 +24,7 @@ test("My Move safely handles unavailable and corrupted browser storage", () => {
   assert.equal(readMyMoveState(blocked).state.profile, null);
   assert.equal(writeMyMoveState(emptyMyMoveState(), blocked), false);
   assert.equal(normalizeMyMoveState({ profile: { moveDate: "bad", zip: "abc", audience: "renter" }, completedTaskIds: ["safe", 4] }).profile, null);
-  assert.deepEqual(normalizeMyMoveState({ internetProviders: ["Spectrum", "AT&T", "Spectrum"] }).internetProviders, ["Spectrum", "AT&T"]);
+  assert.deepEqual(normalizeMyMoveState({ internetProviders: ["Fixture A", "Fixture B", "Fixture A"] }).internetProviders, ["Fixture A", "Fixture B"]);
 });
 
 test("homeowner and renter checklists expose distinct responsibilities", () => {

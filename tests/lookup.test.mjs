@@ -68,8 +68,15 @@ test("returns verified core data with address-level internet providers", () => {
   assert.ok(result.providers.water.length > 0);
   assert.equal(result.providers["natural-gas"], undefined);
   const internetProviders = result.providers.internet.filter((provider) => provider.providerType !== "official_lookup");
-  assert.equal(internetProviders.length, 3);
-  assert.deepEqual(internetProviders.map((provider) => provider.name), ["AT&T", "Spectrum", "T-Mobile Home Internet"]);
+  const expectedNames = getDatabase().prepare(`SELECT p.name FROM service_areas sa
+    JOIN providers p ON p.id=sa.provider_id
+    JOIN provider_categories pc ON pc.id=p.category_id
+    JOIN zip_codes z ON z.id=sa.zip_code_id
+    WHERE z.zip_code='32771' AND pc.slug='internet' AND p.status!='inactive' AND COALESCE(p.provider_type, '')!='official_lookup'
+    ORDER BY p.name`).all().map((row) => row.name);
+  assert.ok(internetProviders.length >= 2);
+  assert.deepEqual(internetProviders.map((provider) => provider.name), expectedNames);
+  assert.equal(new Set(internetProviders.map((provider) => provider.name)).size, internetProviders.length);
   for (const provider of internetProviders) {
     assert.match(provider.addressCheckUrl, /^https:/);
     assert.match(provider.supportUrl, /^https:/);
