@@ -77,6 +77,14 @@ export type AnalyticsEventParameters = {
   renter_expense_planner_print: { source_page: string; homeowner_or_renter: "renter" };
   free_renter_kit_view: { source_page: string; homeowner_or_renter: "renter" };
   renter_add_to_my_move: { source_page: string; task_category: string; homeowner_or_renter: "renter" };
+  change_address_page_view: { source_page: string };
+  address_checklist_started: { source_page: string };
+  address_task_completed: { source_page: string; task_category: string };
+  address_checklist_print: { source_page: string };
+  address_tasks_added_to_my_move: { source_page: string; task_category: string; task_count: number };
+  official_usps_click: { source_page: string; link_type: string };
+  government_address_resource_click: { source_page: string; organization: string; link_type: string };
+  address_progress_return_visit: { source_page: string };
 };
 
 export type AnalyticsEvent = keyof AnalyticsEventParameters;

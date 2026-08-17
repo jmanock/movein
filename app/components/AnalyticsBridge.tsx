@@ -8,6 +8,13 @@ export function AnalyticsBridge() {
     const click = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
       const anchor = target.closest<HTMLAnchorElement>("a[href]");
+      const addressResource = target.closest<HTMLAnchorElement>("a[data-address-resource]");
+      if (addressResource) {
+        const source_page = addressResource.dataset.addressSourcePage ?? sourcePage();
+        if (addressResource.dataset.addressResource === "usps") trackEvent("official_usps_click", { source_page, link_type: "official_resource" });
+        else trackEvent("government_address_resource_click", { source_page, organization: addressResource.dataset.addressOrganization ?? "government", link_type: "official_resource" });
+        return;
+      }
       const resultPage = target.closest<HTMLElement>(".result-page");
       const providerCard = target.closest<HTMLElement>(".provider-card");
       const providerParameters = {

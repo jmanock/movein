@@ -20,6 +20,7 @@ const plans = [
   ["Prepare utility setup documents", "Know what a provider may request and keep sensitive information private.", "/resources/utility-setup-documents"],
   ["Review deposits and account requirements", "Confirm deposits, refund terms, waivers, and official payment channels.", "/resources/utility-deposits"],
   ["Open the moving utility checklist", "Track service starts, installation appointments, confirmations, and first bills.", "/resources/moving-utility-checklist"],
+  ["Change your address after moving", "Forward mail, then update government and household records directly.", "/resources/change-your-address"],
 ] as const;
 
 export default function UtilitySetupPage() {

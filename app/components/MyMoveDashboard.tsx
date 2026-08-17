@@ -4,9 +4,10 @@ import { CalendarDays, CheckCircle2, MapPin, Printer, RotateCcw, ShieldCheck } f
 import Link from "next/link";
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import { trackEvent } from "../lib/analytics";
-import { emptyMyMoveState, getBrowserStorage, type MoveProfile, type MyMoveState, phaseForMoveDate, readMyMoveState, tasksForProfile, writeMyMoveState } from "../lib/my-move";
+import { ADDRESS_CHANGE_TASK_IDS, emptyMyMoveState, getBrowserStorage, type MoveProfile, type MyMoveState, phaseForMoveDate, readMyMoveState, tasksForProfile, writeMyMoveState } from "../lib/my-move";
 import { Checklist } from "./Checklist";
 import { DontForget } from "./DontForget";
+import { AddAddressTasksToMyMoveButton } from "./AddAddressTasksToMyMoveButton";
 
 type LocationState = { kind: "idle" | "loading" | "supported" | "unsupported" | "error"; county?: string; city?: string; providerSummary?: Array<{ label: string; names: string[] }> };
 const phases = ["Before the move", "Move-in day", "First week", "First 30 days"] as const;
@@ -68,6 +69,7 @@ export function MyMoveDashboard() {
     {state.profile ? <>
       <section className="move-status"><div><CalendarDays aria-hidden="true" /><span>Current phase</span><strong>{timing.label}</strong></div><div><CheckCircle2 aria-hidden="true" /><span>Progress</span><strong>{completed.size} of {visibleTasks.length} complete</strong></div><div><MapPin aria-hidden="true" /><span>Move</span><strong>{state.profile.audience === "homeowner" ? "Homeowner" : "Renter"} · {state.profile.zip}</strong></div></section>
       <LocationContext location={location} zip={state.profile.zip} />
+      <section className="my-move-address"><div><span className="eyebrow">Address changes</span><h2>Update records beyond mail forwarding.</h2><p>{ADDRESS_CHANGE_TASK_IDS.filter((id) => completed.has(id)).length} of {ADDRESS_CHANGE_TASK_IDS.length} address tasks complete. Add the full set, then use official channels for every record.</p><Link href="/resources/change-your-address">Open the change-of-address guide</Link></div><AddAddressTasksToMyMoveButton sourcePage="/my-move" /></section>
       {state.internetProviders.length ? <section className="my-move-internet"><span className="eyebrow">Internet</span><h2>Possible providers you saved</h2><p>{state.internetProviders.join(" · ")}</p><p>Compare providers, check the exact address, schedule installation, and keep account details private.</p><Link href="/internet/compare">Continue comparing internet options</Link></section> : null}
       <div className="my-move-checklists">{phases.map((phase) => { const tasks = visibleTasks.filter((task) => task.phase === phase); return <section key={phase}><div className="checklist-section-heading"><div><span className="eyebrow">{phase}</span><h2>{phase === "Before the move" ? "Set up the handoff" : phase === "Move-in day" ? "Document and check the essentials" : phase === "First week" ? "Update records and learn the routine" : "Create the records future-you will need"}</h2></div><span>{tasks.filter((task) => completed.has(task.id)).length}/{tasks.length}</span></div><Checklist items={tasks.map((task) => ({ ...task, added: state.addedTaskIds.includes(task.id) }))} completed={completed} onToggle={(id, checked) => { const next = new Set(state.completedTaskIds); if (checked) next.add(id); else next.delete(id); persist({ ...state, completedTaskIds: [...next] }); if (checked) { const task = visibleTasks.find((item) => item.id === id); trackEvent("my_move_task_completed", { homeowner_or_renter: state.profile!.audience, task_category: task?.category ?? "other", move_phase: timing.phase, source_page: "/my-move" }); } }} onDismiss={(id) => persist({ ...state, dismissedTaskIds: [...new Set([...state.dismissedTaskIds, id])], completedTaskIds: state.completedTaskIds.filter((taskId) => taskId !== id) })} /></section>; })}</div>
       <DontForget sourcePage="/my-move" />

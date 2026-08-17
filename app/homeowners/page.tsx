@@ -15,6 +15,7 @@ const services = [
   ["Water and sewer", "Confirm both services separately and identify whether a well or septic system applies.", "/resources/find-water-provider"],
   ["Internet", "Check the complete address and plan any installation access.", "/resources/find-internet-providers"],
   ["Trash and recycling", "Verify city, county, HOA, or private collection responsibility.", "/resources/find-trash-service"],
+  ["Address changes", "Forward mail, then update government, financial, insurance, work, health, and household records.", "/resources/change-your-address"],
 ] as const;
 
 export default function HomeownersPage() {

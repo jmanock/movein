@@ -7,9 +7,9 @@ export function ReviewedDate({ published, reviewed }: { published?: string; revi
   return <p className="content-dates">{published ? <span>Published {formatDate(published)}</span> : null}<span>Last reviewed {formatDate(reviewed)}</span></p>;
 }
 
-export function OfficialResources({ resources }: { resources: OfficialResource[] }) {
+export function OfficialResources({ resources, sourcePage }: { resources: OfficialResource[]; sourcePage?: string }) {
   if (!resources.length) return null;
-  return <section className="official-resource-section"><div className="section-heading compact"><span className="eyebrow">Official resources</span><h2>Confirm details at the source.</h2></div><div className="official-resource-list">{resources.map((resource) => <article className="official-resource" key={resource.url}><ShieldCheck size={20} aria-hidden="true" /><div><h3>{resource.title}</h3><p><strong>{resource.organization}</strong> · Checked {formatDate(resource.checked)}</p><p>{resource.note}</p><a href={resource.url} target="_blank" rel="noopener noreferrer">Visit {resource.organization} <ExternalLink size={15} aria-hidden="true" /></a></div></article>)}</div></section>;
+  return <section className="official-resource-section"><div className="section-heading compact"><span className="eyebrow">Official resources</span><h2>Confirm details at the source.</h2></div><div className="official-resource-list">{resources.map((resource) => <article className="official-resource" key={resource.url}><ShieldCheck size={20} aria-hidden="true" /><div><h3>{resource.title}</h3><p><strong>{resource.organization}</strong> · Checked {formatDate(resource.checked)}</p><p>{resource.note}</p><a href={resource.url} target="_blank" rel="noopener noreferrer" data-address-resource={sourcePage === "/resources/change-your-address" ? (resource.organization === "United States Postal Service" ? "usps" : "government") : undefined} data-address-organization={resource.organization} data-address-source-page={sourcePage}>Visit {resource.organization} <ExternalLink size={15} aria-hidden="true" /></a></div></article>)}</div></section>;
 }
 
 export function RelatedGuides({ paths, title = "Related guides" }: { paths: string[]; title?: string }) {

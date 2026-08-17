@@ -11,6 +11,7 @@ export function PrintButton({ resourceSlug, label = "Print this checklist", sour
     if (resourceSlug === "internet-setup-checklist") trackEvent("internet_checklist_print", { source_page });
     if (resourceSlug === "renter-move-in-condition-checklist") trackEvent("renter_condition_checklist_print", { source_page, homeowner_or_renter: "renter" });
     if (resourceSlug === "renter-move-in-expense-planner") trackEvent("renter_expense_planner_print", { source_page, homeowner_or_renter: "renter" });
+    if (resourceSlug === "address-update-checklist") trackEvent("address_checklist_print", { source_page });
     try { window.print(); } catch { /* Printing is browser-controlled and must never break the page. */ }
   };
   return <button className="button print-button" type="button" onClick={print}><Printer size={17} aria-hidden="true" />{label}</button>;

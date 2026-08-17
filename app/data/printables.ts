@@ -7,7 +7,7 @@ export type Printable = {
   myMoveLabel: string;
   intro: string;
   reviewed: string;
-  sections: Array<{ title: string; kind?: "checklist" | "fields" | "expense-table" | "condition-table"; items: string[] }>;
+  sections: Array<{ title: string; analyticsCategory?: string; kind?: "checklist" | "fields" | "expense-table" | "condition-table"; items: string[] }>;
   related: Array<{ label: string; href: string }>;
 };
 
@@ -151,15 +151,36 @@ export const printables: Printable[] = [
     intro: "Update only organizations that actually hold your information, begin with official websites, and never send identity documents through an unverified link.",
     reviewed,
     sections: [
-      { title: "Government and identity", items: ["USPS mail forwarding", "Driver license or state identification", "Vehicle registration and title records", "Voter registration", "Tax or benefit agencies that hold your address"] },
-      { title: "Money and insurance", items: ["Banks and credit unions", "Credit cards and lenders", "Home, renters, auto, and other insurers", "Employer payroll and retirement accounts", "Professional or business registrations"] },
-      { title: "Health, work, and education", items: ["Employer and benefits administrator", "Health providers and pharmacy", "Health insurance account", "Schools, childcare, or student records", "Licensing or membership organizations"] },
-      { title: "Home and everyday services", items: ["Electric, water, internet, and trash accounts", "Mobile phone and delivery profiles", "Subscriptions and recurring shipments", "Friends, family, and emergency contacts", "Pet registration, veterinarian, and microchip record"] },
+      { title: "Government and identity", analyticsCategory: "government", items: ["USPS mail forwarding", "Driver license or state identification", "Vehicle registration and title records", "Voter registration", "Tax or benefit agencies that hold your address"] },
+      { title: "Money and insurance", analyticsCategory: "financial_insurance", items: ["Banks and credit unions", "Credit cards and lenders", "Home, renters, auto, and other insurers", "Employer payroll and retirement accounts", "Professional or business registrations"] },
+      { title: "Health, work, and education", analyticsCategory: "health_work_education", items: ["Employer and benefits administrator", "Health providers and pharmacy", "Health insurance account", "Schools, childcare, or student records", "Licensing or membership organizations"] },
+      { title: "Home and everyday services", analyticsCategory: "household_services", items: ["Electric, water, internet, and trash accounts", "Mobile phone and delivery profiles", "Subscriptions and recurring shipments", "Friends, family, and emergency contacts", "Pet registration, veterinarian, and microchip record"] },
     ],
     related: [
       { label: "Official address-change guide", href: "/resources/change-your-address" },
       { label: "Utility setup checklist", href: "/resources/printables/utility-setup-checklist" },
       { label: "Official USPS change of address", href: "https://moversguide.usps.com/" },
+    ],
+  },
+  {
+    slug: "new-address-information-sheet",
+    title: "New Address Information Sheet",
+    description: "Print a private new-address worksheet for move details, utilities, property contacts, insurance, and emergency information without sending the address to MoveIn.",
+    audience: "Every move",
+    myMoveTaskId: "address-updates",
+    myMoveLabel: "Add address updates to My Move",
+    intro: "Write on the printed sheet or a PDF you control. MoveIn does not save or track anything entered here. Keep account numbers, passwords, identity documents, and payment information somewhere more secure.",
+    reviewed: "2026-08-17",
+    sections: [
+      { title: "New home", kind: "fields", items: ["New street address", "Apartment or unit", "City, state, ZIP", "Move-in date", "Mailing notes"] },
+      { title: "Utilities and services", kind: "fields", items: ["Electric provider", "Water and sewer provider", "Internet provider", "Trash and recycling", "Service start notes"] },
+      { title: "Property and protection", kind: "fields", items: ["Home or renters insurer", "Auto insurer", "Property manager, landlord, or HOA", "Routine maintenance contact", "After-hours property contact"] },
+      { title: "Household contacts", kind: "fields", items: ["Local emergency management", "Trusted nearby contact", "Out-of-area contact", "Health or pharmacy contact", "Veterinarian or pet contact"] },
+    ],
+    related: [
+      { label: "Complete change-of-address guide", href: "/resources/change-your-address" },
+      { label: "Moving admin task hub", href: "/resources/moving-admin" },
+      { label: "New-home contacts sheet", href: "/resources/printables/new-home-contacts" },
     ],
   },
   {

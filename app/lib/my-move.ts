@@ -35,7 +35,7 @@ export const moveTasks: MoveTask[] = [
   { id: "internet", title: "Schedule internet installation", phase: "Before the move", category: "internet", href: "/resources/transfer-internet-when-moving" },
   { id: "trash", title: "Confirm trash and recycling", phase: "Before the move", category: "trash", href: "/resources/find-trash-service" },
   { id: "address-updates", title: "Submit USPS change of address", phase: "Before the move", category: "address", href: "/resources/change-your-address" },
-  { id: "insurance", title: "Update the property address with your insurer", phase: "Before the move", category: "insurance" },
+  { id: "insurance", title: "Update home or renters insurance address", phase: "Before the move", category: "address", href: "/resources/change-your-address" },
   { id: "essential-box", title: "Prepare an essential move-in box", description: "Include medications, chargers, basic tools, documents, water, and first-night supplies.", phase: "Before the move", category: "planning" },
   { id: "access", title: "Confirm key, fob, parking, or move-in access", phase: "Before the move", category: "access" },
   { id: "renter-insurance", title: "Confirm renters-insurance proof requirements", phase: "Before the move", category: "insurance", audience: "renter", href: "/renters/renters-insurance-and-deposits" },
@@ -59,9 +59,14 @@ export const moveTasks: MoveTask[] = [
   { id: "driver-license", title: "Review driver license address requirements", phase: "First week", category: "address" },
   { id: "vehicle-registration", title: "Review vehicle registration address requirements", phase: "First week", category: "address" },
   { id: "voter-registration", title: "Review voter registration address information", phase: "First week", category: "address" },
-  { id: "banks", title: "Update banks and credit cards", phase: "First week", category: "address" },
+  { id: "banks", title: "Update banks and credit unions", phase: "First week", category: "address", href: "/resources/change-your-address" },
+  { id: "credit-cards", title: "Update credit cards and lenders", phase: "First week", category: "address", href: "/resources/change-your-address" },
   { id: "payroll", title: "Update employer and payroll address", phase: "First week", category: "address" },
   { id: "shipping-addresses", title: "Update default shopping and shipping addresses", phase: "First week", category: "address" },
+  { id: "auto-insurance-address", title: "Update auto insurance address", phase: "First week", category: "address", href: "/resources/change-your-address" },
+  { id: "medical-address", title: "Update health providers and pharmacy", phase: "First week", category: "address", href: "/resources/change-your-address" },
+  { id: "subscriptions-address", title: "Update subscriptions and recurring deliveries", phase: "First week", category: "address", href: "/resources/change-your-address" },
+  { id: "pet-records-address", title: "Update veterinarian, license, and pet microchip records", phase: "First week", category: "address", href: "/resources/change-your-address" },
   { id: "community-rules", title: "Review HOA or community rules", phase: "First week", category: "community", audience: "homeowner" },
   { id: "renter-rules", title: "Confirm maintenance, trash, parking, and building rules", phase: "First week", category: "renter", audience: "renter", href: "/renters/maintenance-parking-and-pet-checklist" },
   { id: "trash-schedule", title: "Confirm trash and recycling days", phase: "First week", category: "trash" },
@@ -77,6 +82,8 @@ export const moveTasks: MoveTask[] = [
   { id: "forgotten-items", title: "Review the things people often forget after moving", phase: "First week", category: "planning", href: "/resources/things-people-forget-when-moving" },
   { id: "utilities-transfer", title: "Transfer or close old utility accounts on the authorized date", phase: "Before the move", category: "utilities", href: "/resources/when-to-transfer-utilities" },
 ];
+
+export const ADDRESS_CHANGE_TASK_IDS = ["address-updates", "driver-license", "vehicle-registration", "voter-registration", "payroll", "banks", "credit-cards", "insurance", "auto-insurance-address", "medical-address", "shipping-addresses", "subscriptions-address", "pet-records-address"] as const;
 
 export function tasksForProfile(profile: MoveProfile | null) {
   return moveTasks.filter((task) => !task.audience || !profile || task.audience === profile.audience);

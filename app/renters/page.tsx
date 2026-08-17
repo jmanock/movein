@@ -22,6 +22,7 @@ const tools = [
   [FileText, "Expense planner", "Print planned and actual cost fields.", "/resources/printables/renter-move-in-expense-planner"],
   [Camera, "Condition checklist", "Print a room-by-room record.", "/resources/printables/renter-move-in-condition-checklist"],
   [KeyRound, "Free renter kit", "Open every renter tool in one place.", "/renters/free-move-in-kit"],
+  [ClipboardCheck, "Address update checklist", "Track mail, government, financial, insurance, work, health, and household changes.", "/resources/change-your-address"],
 ] as const;
 
 export default function RentersPage() {
