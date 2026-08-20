@@ -60,6 +60,7 @@ In the GA4 web data stream, open Enhanced Measurement → Page views → advance
 | `correction_form_success` | `source_page=/corrections` only |
 | `printable_resource_click` | `resource_slug`, `source_page`, `action` |
 | `my_move_started` | `homeowner_or_renter`, derived `move_phase`, `source_page` |
+| `my_move_resumed` | audience, derived move phase, and source page; no task titles or profile content |
 | `my_move_task_completed` | audience, `task_category`, derived phase, source page |
 | `my_move_reset` | audience, derived phase, source page |
 | `add_to_my_move` | allowlisted task category and source page |
@@ -68,9 +69,11 @@ In the GA4 web data stream, open Enhanced Measurement → Page views → advance
 | `first_30_days_view` | source page |
 | `dont_forget_impression`, `dont_forget_action` | public reminder ID and source page |
 | `internet_hub_view`, `internet_compare_view` | source page |
+| `internet_transfer_guide_view` | source page |
 | `internet_zip_search` | county, state, coverage status, source page; no routine ZIP parameter |
 | `internet_provider_view`, `internet_provider_saved`, `internet_provider_removed` | public provider, technology, coverage status, source page as applicable |
 | `internet_availability_click`, `internet_transfer_click` | provider, technology, coverage status, source page as applicable |
+| `internet_provider_compared` | provider, technology, coarse coverage status, county when known, and source page |
 | `internet_technology_filter` | wired, wireless, or all and source page |
 | `internet_checklist_view`, `internet_checklist_print` | public checklist source page |
 | `renter_hub_view`, `renter_insurance_guide_view`, `move_in_cost_guide_view`, `free_renter_kit_view` | public source page and `homeowner_or_renter=renter` |

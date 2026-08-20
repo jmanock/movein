@@ -1,24 +1,27 @@
 "use client";
 
 import { Check, Plus } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { trackEvent } from "../lib/analytics";
-import { addTaskToState, MY_MOVE_STORAGE_KEY, parseMyMoveState, writeMyMoveState } from "../lib/my-move";
+import { ADDRESS_CHANGE_TASK_IDS, addTaskToState, MY_MOVE_STORAGE_KEY, parseMyMoveState, writeMyMoveState } from "../lib/my-move";
 
 export function AddToMyMoveButton({ taskId, label = "Add to My Move", sourcePage, className = "add-to-move" }: { taskId: string; label?: string; sourcePage: string; className?: string }) {
   const [status, setStatus] = useState<"idle" | "added" | "saved" | "unavailable">("idle");
+  const taskIds: readonly string[] = useMemo(() => taskId === "address-updates" ? ADDRESS_CHANGE_TASK_IDS : [taskId], [taskId]);
   useEffect(() => {
-    queueMicrotask(() => { try { if (parseMyMoveState(localStorage.getItem(MY_MOVE_STORAGE_KEY)).addedTaskIds.includes(taskId)) setStatus("saved"); } catch { /* The action reports storage availability when used. */ } });
-  }, [taskId]);
+    queueMicrotask(() => { try { if (taskIds.every((id) => parseMyMoveState(localStorage.getItem(MY_MOVE_STORAGE_KEY)).addedTaskIds.includes(id))) setStatus("saved"); } catch { /* The action reports storage availability when used. */ } });
+  }, [taskIds]);
   const add = () => {
     try {
-      const current = parseMyMoveState(localStorage.getItem(MY_MOVE_STORAGE_KEY));
-      const result = addTaskToState(current, taskId);
-      if (!writeMyMoveState(result.state, localStorage)) throw new Error("storage unavailable");
-      setStatus(result.added ? "added" : "saved");
+      let state = parseMyMoveState(localStorage.getItem(MY_MOVE_STORAGE_KEY));
+      let added = 0;
+      for (const id of taskIds) { const result = addTaskToState(state, id); state = result.state; if (result.added) added += 1; }
+      if (!writeMyMoveState(state, localStorage)) throw new Error("storage unavailable");
+      setStatus(added ? "added" : "saved");
       window.dispatchEvent(new CustomEvent("movein:my-move-updated"));
-      if (result.added) {
-        trackEvent("add_to_my_move", { task_category: taskId, source_page: sourcePage });
+      if (added) {
+        trackEvent("add_to_my_move", { task_category: taskId === "address-updates" ? "address_admin" : taskId, source_page: sourcePage });
+        if (taskId === "address-updates") trackEvent("address_tasks_added_to_my_move", { source_page: sourcePage, task_category: "address_admin", task_count: added });
         if (taskId.startsWith("renter-") || taskId === "condition-photos") trackEvent("renter_add_to_my_move", { task_category: taskId, source_page: sourcePage, homeowner_or_renter: "renter" });
         if (["local-utilities", "electricity", "water-sewer", "internet", "utilities-transfer", "trash"].includes(taskId)) trackEvent("utility_added_to_my_move", { task_category: taskId, source_page: sourcePage });
       }

@@ -147,7 +147,7 @@ export const printables: Printable[] = [
     description: "Print a thorough change-of-address checklist for government records, finances, insurance, work, health care, schools, subscriptions, and household services.",
     audience: "Every move",
     myMoveTaskId: "address-updates",
-    myMoveLabel: "Add address updates to My Move",
+    myMoveLabel: "Add all address tasks to My Move",
     intro: "Update only organizations that actually hold your information, begin with official websites, and never send identity documents through an unverified link.",
     reviewed,
     sections: [

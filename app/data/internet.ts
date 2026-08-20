@@ -31,6 +31,7 @@ export type InternetProviderRecord = InternetOfferFields & {
   notes: string;
   active: boolean;
   installationNote: string;
+  movingNote: string;
 };
 
 export type InternetZipRelationship = {
@@ -52,9 +53,10 @@ export const internetProviders: InternetProviderRecord[] = [
   {
     id: "spectrum-internet", slug: "spectrum", providerName: "Spectrum", providerType: "wired", technologyTypes: ["cable"],
     officialWebsite: "https://www.spectrum.com/internet-service", availabilityCheckerUrl: "https://www.spectrum.com/address/localization",
-    movingOrTransferUrl: "https://www.spectrum.com/resources/internet-wifi/what-internet-is-available-in-my-area", supportUrl: "https://www.spectrum.net/support/internet",
+    movingOrTransferUrl: "https://www.spectrum.com/moving", supportUrl: "https://www.spectrum.net/support/internet",
     sourceUrl: spectrumMarket, sourceCheckedAt: reviewed, notes: "Spectrum publishes Central Florida city service pages, but service and the final connection still vary by address.", active: true,
     installationNote: "Self-installation or a technician visit may be required after the address check.",
+    movingNote: "Check Spectrum at the complete new address, then confirm whether the current equipment is compatible and whether self-installation or a technician is required.",
   },
   {
     id: "att-internet", slug: "att", providerName: "AT&T", providerType: "wired", technologyTypes: ["fiber", "dsl"],
@@ -62,6 +64,7 @@ export const internetProviders: InternetProviderRecord[] = [
     movingOrTransferUrl: "https://www.att.com/help/moving/", supportUrl: "https://www.att.com/support/internet/",
     sourceUrl: attMarket, sourceCheckedAt: reviewed, notes: "AT&T documents internet and fiber availability in Central Florida communities; the address result determines the actual technology.", active: true,
     installationNote: "The address result determines whether self-installation, a technician, or construction is needed.",
+    movingNote: "AT&T's official move flow checks the new address first, then presents transfer or new-plan options and says whether self-installation or a technician applies.",
   },
   {
     id: "t-mobile-home-internet", slug: "t-mobile", providerName: "T-Mobile Home Internet", providerType: "fixed-wireless", technologyTypes: ["5g-home", "fixed-wireless"],
@@ -69,13 +72,15 @@ export const internetProviders: InternetProviderRecord[] = [
     movingOrTransferUrl: "https://www.t-mobile.com/home-internet/transfer-internet-service", supportUrl: "https://www.t-mobile.com/support/home-internet",
     sourceUrl: tMobileMarket, sourceCheckedAt: reviewed, notes: "T-Mobile identifies both Central Florida pilot metros as Home Internet markets, while eligibility still depends on address and network capacity.", active: true,
     installationNote: "Usually self-installed, but eligibility and usable signal must be confirmed for the approved service address.",
+    movingNote: "T-Mobile Home Internet is approved for a specific service location. Confirm eligibility, update the service address, and follow current gateway instructions before using it at the new home.",
   },
   {
     id: "verizon-home-internet", slug: "verizon", providerName: "Verizon Home Internet", providerType: "fixed-wireless", technologyTypes: ["5g-home", "lte-home", "fixed-wireless"],
     officialWebsite: "https://www.verizon.com/home/internet/", availabilityCheckerUrl: "https://www.verizon.com/home/internet/5g/",
-    movingOrTransferUrl: "https://www.verizon.com/support/residential/account/manage-service/move.html", supportUrl: "https://www.verizon.com/support/5g-home/",
+    movingOrTransferUrl: "https://www.verizon.com/home/internet/moving/", supportUrl: "https://www.verizon.com/support/5g-home/",
     sourceUrl: verizonMarket, sourceCheckedAt: reviewed, notes: "Verizon lists Orlando as a 5G Home Internet market. Only Orlando mailing ZIPs are associated until broader official evidence is reviewed.", active: true,
     installationNote: "Self-setup is common, but signal, equipment placement, and building restrictions can affect installation.",
+    movingNote: "Verizon requires a new-address availability check before a Home Internet move. Available technology and equipment instructions can change with the location.",
   },
 ];
 

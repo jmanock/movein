@@ -23,7 +23,7 @@ export function MyMoveDashboard() {
   useEffect(() => {
     const storage = getBrowserStorage();
     const loaded = readMyMoveState(storage);
-    queueMicrotask(() => { setState(loaded.state); setStorageAvailable(loaded.available); setReady(true); if (loaded.state.profile) setDraft(loaded.state.profile); });
+    queueMicrotask(() => { setState(loaded.state); setStorageAvailable(loaded.available); setReady(true); if (loaded.state.profile) { setDraft(loaded.state.profile); trackEvent("my_move_resumed", { homeowner_or_renter: loaded.state.profile.audience, move_phase: phaseForMoveDate(loaded.state.profile.moveDate).phase, source_page: "/my-move" }); } });
     const refresh = () => { const next = readMyMoveState(storage).state; setState(next); if (next.profile) setDraft(next.profile); };
     window.addEventListener("movein:my-move-updated", refresh);
     return () => window.removeEventListener("movein:my-move-updated", refresh);

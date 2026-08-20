@@ -82,3 +82,35 @@ Decision: do not target or define HSI on MoveIn now. If a future Search Console 
 ### Next comparison
 
 Evaluate the flagship change-address page’s impressions, clicks, click-through rate, and average position; address-checklist impressions and print actions; the moving-admin hub’s discovery; Internet address-lookup and transfer themes; the electric-provider-by-ZIP theme; and `/lookup/32757` clicks. Analytics was not available for this planning decision, so no behavior or conversion conclusion is claimed.
+
+## August 20, 2026 weekly search-demand sprint
+
+This third user-supplied snapshot contains approximately 292 query variations. Page metrics are compared only with the August 17 snapshot where the same page was supplied; they are not presented as ranking or conversion proof.
+
+| Page | Aug. 17 impressions | Aug. 20 impressions | Change | Growth |
+| --- | ---: | ---: | ---: | ---: |
+| `/resources/change-your-address` | 181 | 207 | +26 | +14.4% |
+| `/resources/transfer-internet-when-moving` | 44 | 73 | +29 | +65.9% |
+| `/resources/find-internet-providers` | 59 | 59 | 0 | 0% |
+| `/resources/check-internet-availability` | 49 | 56 | +7 | +14.3% |
+| `/internet/providers/verizon` | 23 | 23 | 0 | 0% |
+| `/renters/renters-insurance-and-deposits` | 18 | 18 | 0 | 0% |
+| `/resources/set-up-utilities` | 17 | 17 | 0 | 0% |
+| `/resources/when-to-transfer-utilities` | 16 | 16 | 0 | 0% |
+| `/lookup/32720` | 14 | 14 | 0 | 0% |
+| `/lookup/32757` | 11 / 1 click | 11 / 1 click | 0 | 0% |
+
+Query variation count rose from approximately 261 to 292: +31, or about +11.9%. The strongest comparable page movement is the Internet-transfer guide. The change-address guide remains the largest supplied page-level demand signal.
+
+Decisions for this sprint:
+
+1. Preserve `/resources/change-your-address` as the sole canonical flagship for broad change-of-address intent. Improve its checklist connections without creating overlapping notification pages.
+2. Expand `/resources/transfer-internet-when-moving` into the complete operational workflow and add `/internet/transfer-or-switch` only for the distinct decision intent.
+3. Treat Comcast and Xfinity as one provider identity. Mention the official Xfinity moving workflow without publishing an Xfinity ZIP claim or a thin provider page while its dataset record remains inactive.
+4. Keep Quantum Fiber unpublished for the same evidence reason. Active provider pages remain neutral and are linked to official address checks and moving guidance.
+5. Use browser-local continuation counts to support returning visitors without accounts, email collection, or personal-data analytics.
+6. Continue treating 32757 as the clicked QA benchmark and 32720 as a second model implementation; both must retain property-level qualification.
+
+### Next weekly check
+
+Compare the same page set and date range. Watch whether the Internet-transfer guide sustains its growth, whether the transfer-or-switch decision page earns distinct queries, whether the flagship address page gains clicks as well as impressions, and whether address checklist usage, provider saves, provider comparisons, and My Move resumptions appear in privacy-safe analytics. Do not infer traffic quality from impressions alone.

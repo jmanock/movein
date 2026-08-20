@@ -61,18 +61,21 @@ test("saved comparison persists, deduplicates, removes, and clears without perso
   assert.doesNotMatch(JSON.stringify(provider), /street|email|phone|account|notes/i);
 });
 
-test("Internet UI is a mobile-safe comparison tool without rankings or prices", async () => {
-  const [hub, compare, card, options, chooser, css, analytics, config, printable] = await Promise.all([read("../app/internet/page.tsx"), read("../app/components/InternetCompare.tsx"), read("../app/components/InternetProviderCard.tsx"), read("../app/components/InternetOptions.tsx"), read("../app/components/MovingInternetChooser.tsx"), read("../app/globals.css"), read("../app/lib/analytics.ts"), read("../next.config.ts"), read("../app/data/printables.ts")]);
+test("Internet UI is a mobile-safe comparison and moving tool without rankings or prices", async () => {
+  const [hub, compare, card, options, chooser, transferDecision, transferGuide, providerPage, css, analytics, config, printable] = await Promise.all([read("../app/internet/page.tsx"), read("../app/components/InternetCompare.tsx"), read("../app/components/InternetProviderCard.tsx"), read("../app/components/InternetOptions.tsx"), read("../app/components/MovingInternetChooser.tsx"), read("../app/internet/transfer-or-switch/page.tsx"), read("../app/data/guides.ts"), read("../app/internet/providers/[slug]/page.tsx"), read("../app/globals.css"), read("../app/lib/analytics.ts"), read("../next.config.ts"), read("../app/data/printables.ts")]);
   for (const value of ["ZIP lookup finds possibilities", "Wired Internet", "Wireless home Internet", "Internet FAQ"]) assert.match(hub, new RegExp(value));
   assert.match(chooser, /Moving your Internet/);
+  for (const value of ["Transfer your Internet—or compare new options", "exact new address", "MovingInternetChooser"]) assert.match(transferDecision, new RegExp(value));
+  for (const value of ["Keep old service through moving day", "Return old equipment", "Comcast is the company name and Xfinity is its consumer-service brand"]) assert.match(transferGuide, new RegExp(value));
+  for (const value of ["Moving with", "movingNote", "transfer or switch Internet"]) assert.match(providerPage, new RegExp(value));
   for (const value of ["Save for comparison", "Save provider to My Move", "Check your address", "opens in a new tab"]) assert.match(card, new RegExp(value));
   assert.match(options, /wired\.length/); assert.match(options, /wireless\.length/);
   assert.match(compare, /Clear comparison/); assert.match(compare, /internet_technology_filter/);
   assert.match(css, /@media \(max-width: 760px\).*\.internet-compare-grid/s);
-  for (const event of ["internet_hub_view", "internet_zip_search", "internet_provider_saved", "internet_provider_removed", "internet_compare_view", "internet_availability_click", "internet_transfer_click", "internet_technology_filter", "internet_checklist_view", "internet_checklist_print"]) assert.match(analytics, new RegExp(`${event}:`));
+  for (const event of ["internet_hub_view", "internet_zip_search", "internet_provider_saved", "internet_provider_removed", "internet_provider_compared", "internet_compare_view", "internet_transfer_guide_view", "internet_availability_click", "internet_transfer_click", "internet_technology_filter", "internet_checklist_view", "internet_checklist_print"]) assert.match(analytics, new RegExp(`${event}:`));
   assert.match(config, /find-isp-by-address.*find-internet-providers/s);
   assert.match(printable, /internet-setup-checklist/);
-  assert.doesNotMatch(`${hub}${compare}${card}`, /Editor's Choice|MoveIn Recommended|star rating|affiliate=true|\$\d+/i);
+  assert.doesNotMatch(`${hub}${compare}${card}${transferDecision}${providerPage}`, /Editor's Choice|MoveIn Recommended|star rating|affiliate=true|\$\d+/i);
 });
 
 test("future deal fields exist but no public deals page or offer content ships", async () => {

@@ -47,6 +47,7 @@ export type AnalyticsEventParameters = {
   correction_form_success: { source_page: string };
   printable_resource_click: { resource_slug: string; source_page: string; action?: "open" | "print" };
   my_move_started: MyMoveParameters;
+  my_move_resumed: MyMoveParameters;
   my_move_task_completed: MyMoveParameters;
   my_move_reset: MyMoveParameters;
   add_to_my_move: { task_category: string; source_page: string };
@@ -64,6 +65,8 @@ export type AnalyticsEventParameters = {
   internet_compare_view: InternetParameters;
   internet_availability_click: InternetParameters;
   internet_transfer_click: InternetParameters;
+  internet_transfer_guide_view: { source_page: string };
+  internet_provider_compared: InternetParameters;
   internet_technology_filter: InternetParameters;
   internet_checklist_view: InternetParameters;
   internet_checklist_print: InternetParameters;

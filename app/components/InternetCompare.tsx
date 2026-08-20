@@ -1,7 +1,7 @@
 "use client";
 
 import { Search, Trash2 } from "lucide-react";
-import { FormEvent, useEffect, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import { InternetProviderCard, type InternetCardProvider } from "./InternetProviderCard";
 import { clearInternetComparison, readInternetComparison, type SavedInternetProvider } from "../lib/internet-comparison";
 import { trackEvent } from "../lib/analytics";
@@ -17,6 +17,7 @@ export function InternetCompare({ initialZip = "" }: { initialZip?: string }) {
   const [filter, setFilter] = useState<Filter>("all");
   const [message, setMessage] = useState("Enter a ZIP to see reviewed provider possibilities, or continue with saved options below.");
   const [loading, setLoading] = useState(false);
+  const compared = useRef(new Set<string>());
 
   useEffect(() => {
     const refresh = () => setSaved(readInternetComparison().providers);
@@ -26,6 +27,8 @@ export function InternetCompare({ initialZip = "" }: { initialZip?: string }) {
   // Initial ZIP should run once; user searches are explicit.
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => { for (const provider of providers) { if (compared.current.has(provider.slug)) continue; compared.current.add(provider.slug); trackEvent("internet_provider_compared", { provider: provider.name, technology: provider.technologyTypes.join(" | "), source_page: "/internet/compare", coverage_status: provider.coverageLabel }); } }, [providers]);
 
   async function runSearch(value: string) {
     setLoading(true); setMessage("Checking reviewed Internet possibilities…");
