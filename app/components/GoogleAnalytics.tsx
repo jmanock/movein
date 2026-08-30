@@ -3,7 +3,8 @@
 import Script from "next/script";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
-import { trackPageView } from "../lib/analytics";
+import { configureAnalyticsDebug, trackPageView } from "../lib/analytics";
+import { nextPageView } from "../lib/page-view";
 
 export function GoogleAnalytics({ measurementId, debug = false }: { measurementId?: string; debug?: boolean }) {
   const pathname = usePathname();
@@ -11,6 +12,7 @@ export function GoogleAnalytics({ measurementId, debug = false }: { measurementI
   const initialized = useRef(false);
 
   useEffect(() => {
+    configureAnalyticsDebug(debug);
     if (!measurementId || trackingIsDisabled(measurementId)) return;
     if (!initialized.current) {
       window.dataLayer ??= [];
@@ -25,9 +27,10 @@ export function GoogleAnalytics({ measurementId, debug = false }: { measurementI
       });
       initialized.current = true;
     }
-    if (!pathname || lastPage.current === pathname) return;
-    lastPage.current = pathname;
-    trackPageView(pathname);
+    const page = nextPageView(lastPage.current, pathname);
+    if (!page) return;
+    lastPage.current = page;
+    trackPageView(page);
   }, [debug, measurementId, pathname]);
 
   if (!measurementId) return null;

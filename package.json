@@ -15,6 +15,7 @@
     "seo:audit": "node scripts/seo-audit.mjs",
     "seo:duplicates": "node scripts/content-duplication.mjs",
     "frontend:audit": "node scripts/frontend-audit.mjs",
+    "analytics:check": "node scripts/analytics-check.mjs",
     "db:generate": "node scripts/db-generate.mjs",
     "db:migrate": "node scripts/db-migrate.mjs",
     "db:seed": "node scripts/import-florida-data.mjs",
@@ -30,6 +31,7 @@
     "health:report": "node scripts/production-health-report.mjs"
   },
   "dependencies": {
+    "@next/env": "16.2.12",
     "better-sqlite3": "13.0.1",
     "lucide-react": "^1.27.0",
     "next": "16.2.12",

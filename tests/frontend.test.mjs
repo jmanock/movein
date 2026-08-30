@@ -56,6 +56,8 @@ test("GA4 loads once from the root and manually measures App Router page views",
   assert.match(component, /strategy="afterInteractive"/);
   assert.match(component, /process\.env\.NODE_ENV === "test"/);
   assert.match(component, /doNotTrack/);
+  assert.match(component, /configureAnalyticsDebug/);
+  assert.match(analytics, /\[MoveIn GA4\]/);
   assert.match(analytics, /"page_view"/);
   for (const eventName of [
     "zip_lookup_submit",

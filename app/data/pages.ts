@@ -1,7 +1,7 @@
 import { guides } from "./guides.ts";
 import { printables } from "./printables.ts";
 import { countyProfiles } from "./counties.ts";
-import { internetProviders } from "./internet.ts";
+import { internetProviderPageTitle, internetProviders } from "./internet.ts";
 
 export type PublicPage = {
   path: string;
@@ -43,6 +43,6 @@ const staticPages: PublicPage[] = [
 ];
 
 const countyPages: PublicPage[] = countyProfiles.map((county) => ({ path: `/${county.slug}`, title: `${county.name} County Utilities and Moving Resources`, description: county.description, h1: `${county.name} County utilities and moving resources`, group: "main", lastModified: "2026-08-10", changeFrequency: "weekly", priority: .78 }));
-const internetProviderPages: PublicPage[] = internetProviders.map((provider) => ({ path: `/internet/providers/${provider.slug}`, title: `${provider.providerName} Address Check and Moving Guide`, description: `Check ${provider.providerName} at a new address, review connection and installation considerations, and use the official transfer resource without promotional rankings.`, h1: `${provider.providerName}: check the new address first.`, group: "resources", lastModified: provider.sourceCheckedAt, changeFrequency: "monthly", priority: .68 }));
+const internetProviderPages: PublicPage[] = internetProviders.map((provider) => ({ path: `/internet/providers/${provider.slug}`, title: internetProviderPageTitle(provider), description: `Check ${provider.providerName} at a new address, review connection and installation considerations, and use the official transfer resource without promotional rankings.`, h1: `${provider.providerName}: check the new address first.`, group: "resources", lastModified: provider.sourceCheckedAt, changeFrequency: "monthly", priority: .68 }));
 
 export const publicPages: PublicPage[] = [...staticPages, ...countyPages, ...internetProviderPages, ...guides.map((guide) => ({ path: guide.path, title: guide.title, description: guide.description, h1: guide.h1, group: guide.section, lastModified: guide.reviewed, changeFrequency: "monthly" as const, priority: .7 })), ...printables.map((item) => ({ path: `/resources/printables/${item.slug}`, title: item.title, description: item.description, h1: item.title, group: "resources" as const, lastModified: item.reviewed, changeFrequency: "monthly" as const, priority: .65 }))];

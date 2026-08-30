@@ -12,15 +12,19 @@ sqlite3 /var/lib/movein/movein.sqlite ".backup '/var/backups/movein/movein-befor
 test -s /var/backups/movein/movein-before-internet-sprint.sqlite
 ```
 
-## Release commands for the renter growth release
+## Release commands
 
 ```bash
 cd /var/www/movein
 git pull --ff-only origin main
 source ~/.bashrc
 nvm use 22
-export NEXT_PUBLIC_GA_MEASUREMENT_ID=G-QC9FYWHVZZ
 export DATABASE_PATH=/var/lib/movein/movein.sqlite
+test -f .env.production
+grep -x 'NEXT_PUBLIC_GA_MEASUREMENT_ID=G-QC9FYWHVZZ' .env.production
+set -a
+. ./.env.production
+set +a
 npm ci
 npm run data:validate
 npm run seo:duplicates
@@ -28,6 +32,7 @@ npm run seo:audit
 npm run lint
 npm test
 npm run build
+npm run analytics:check
 npm run data:coverage
 pm2 restart movein --update-env
 pm2 save
@@ -38,13 +43,23 @@ npm run health:report
 git status --short
 ```
 
-This release changes renter content and tools without changing the database schema or provider seed data. Do not run a data import for this release. Runtime reports write to the ignored `runtime-reports/` directory, so the final `git status --short` should print nothing. The exact direct smoke-test command is:
+This release does not change the database schema or provider seed data. Do not run a data import for this release. Runtime reports write to the ignored `runtime-reports/` directory, so the final `git status --short` should print nothing. The exact direct smoke-test command is:
 
 ```bash
-PORT=3006 DATABASE_PATH=/var/lib/movein/movein.sqlite npm run start -- -H 127.0.0.1
+PORT=3006 DATABASE_PATH=/var/lib/movein/movein.sqlite NEXT_PUBLIC_GA_MEASUREMENT_ID=G-QC9FYWHVZZ npm run start -- -H 127.0.0.1
 ```
 
-`ecosystem.config.cjs` already sets port 3006, loopback host, production mode, one instance, and the persistent database path. GA4 is a public build-time value; export it before `npm run build`, then use `pm2 restart movein --update-env` so dynamic responses receive the same value.
+`ecosystem.config.cjs` sets port 3006, loopback host, production mode, one instance, the persistent database path, the public GA4 measurement ID, and debug mode false. GA4 is still a build-time value: `.env.production` must contain `NEXT_PUBLIC_GA_MEASUREMENT_ID=G-QC9FYWHVZZ` before `npm run build`. PM2 cannot repair a build that omitted it. Use `pm2 restart movein --update-env` so dynamic responses receive the same value.
+
+After building, `npm run analytics:check` must pass. To inspect the public value without printing unrelated environment settings:
+
+```bash
+grep -x 'NEXT_PUBLIC_GA_MEASUREMENT_ID=G-QC9FYWHVZZ' .env.production
+rg -l 'G-QC9FYWHVZZ' .next/server .next/static | head
+rg -o 'googletagmanager\.com/gtag/js\?id=G-[A-Z0-9]+' .next/server/app/index.html
+```
+
+The GA measurement ID is public. Do not dump the rest of `.env.production` or the PM2 environment into logs.
 
 ## Nginx expectations
 
@@ -61,6 +76,7 @@ curl -I http://127.0.0.1:3006/resources
 curl -I http://127.0.0.1:3006/resources/find-internet-providers
 curl -I http://127.0.0.1:3006/resources/check-internet-availability
 curl -I http://127.0.0.1:3006/resources/transfer-internet-when-moving
+curl -I http://127.0.0.1:3006/internet/transfer-or-switch
 curl -I http://127.0.0.1:3006/internet
 curl -I 'http://127.0.0.1:3006/internet/compare?zip=32801'
 curl -I http://127.0.0.1:3006/internet/providers/spectrum
@@ -96,6 +112,7 @@ curl -I http://127.0.0.1:3006/robots.txt
 curl -I http://127.0.0.1:3006/sitemap.xml
 curl 'http://127.0.0.1:3006/api/lookup?zip=34741'
 pm2 logs movein --lines 100
+npm run analytics:check
 ```
 
 Then run `SEO_BASE_URL=http://127.0.0.1:3006 npm run seo:audit` and `BASE_URL=http://127.0.0.1:3006 npm run check:links`.

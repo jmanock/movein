@@ -99,6 +99,12 @@ export const internetZipRelationships: InternetZipRelationship[] = [
 export const internetProviderById = new Map(internetProviders.map((provider) => [provider.id, provider]));
 export const internetProviderBySlug = new Map(internetProviders.map((provider) => [provider.slug, provider]));
 
+export function internetProviderPageTitle(provider: InternetProviderRecord) {
+  if (provider.slug === "att") return "AT&T Internet When Moving: Check Your New Address";
+  if (provider.slug === "verizon") return "Verizon Home Internet When Moving: Address Check";
+  return `${provider.providerName} Internet Moving and Address Check`;
+}
+
 export function internetProvidersForZip(zip: string) {
   const ids = new Set(internetZipRelationships.filter((item) => item.zip === zip && item.relationshipStatus !== "research-pending").map((item) => item.provider));
   return internetProviders.filter((provider) => ids.has(provider.id)).sort((a, b) => a.providerName.localeCompare(b.providerName));

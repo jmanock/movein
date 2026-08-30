@@ -114,3 +114,11 @@ Decisions for this sprint:
 ### Next weekly check
 
 Compare the same page set and date range. Watch whether the Internet-transfer guide sustains its growth, whether the transfer-or-switch decision page earns distinct queries, whether the flagship address page gains clicks as well as impressions, and whether address checklist usage, provider saves, provider comparisons, and My Move resumptions appear in privacy-safe analytics. Do not infer traffic quality from impressions alone.
+
+## August 29, 2026 GA4 and Internet follow-up
+
+The latest supplied Search Console view continues to expose two relevant query themes: checking Internet availability and AT&T Internet transfer. The counts remain too small to justify phrase-specific pages or a broader provider expansion. The existing availability guide, transfer guide, AT&T provider page, neutral comparison, and transfer-or-switch decision page already own the distinct intents.
+
+This sprint strengthens those URLs in place. The availability guide now answers the ZIP-versus-address question immediately and places the ZIP lookup beside a three-step process. The transfer guide now follows the complete nine-step moving workflow, adds official moving links for every active provider record, and connects naturally to address administration and My Move. The AT&T content points to stored official availability and moving resources without pricing or copied marketing claims. Xfinity/Comcast remains an explanatory section, not a public pilot provider page; Quantum Fiber remains unpublished until the stored evidence supports activation.
+
+GA4 reporting showed zero data during planning, so no engagement or conversion claim informed these changes. After production verification, compare landing-page visits, ZIP lookups, official address checks, provider saves, comparisons, My Move activity, and print actions against the same Search Console page/query set.

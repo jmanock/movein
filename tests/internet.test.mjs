@@ -66,8 +66,8 @@ test("Internet UI is a mobile-safe comparison and moving tool without rankings o
   for (const value of ["ZIP lookup finds possibilities", "Wired Internet", "Wireless home Internet", "Internet FAQ"]) assert.match(hub, new RegExp(value));
   assert.match(chooser, /Moving your Internet/);
   for (const value of ["Transfer your Internet—or compare new options", "exact new address", "MovingInternetChooser"]) assert.match(transferDecision, new RegExp(value));
-  for (const value of ["Keep old service through moving day", "Return old equipment", "Comcast is the company name and Xfinity is its consumer-service brand"]) assert.match(transferGuide, new RegExp(value));
-  for (const value of ["Moving with", "movingNote", "transfer or switch Internet"]) assert.match(providerPage, new RegExp(value));
+  for (const value of ["1. Check the current provider", "2. Compare alternatives", "3. Check exact-address availability", "4. Review installation", "5. Schedule activation", "6. Keep the old connection", "7. Test the new connection", "8. Return old equipment", "9. Close the old account", "Moving AT&T Internet", "Comcast is the company name and Xfinity is its consumer-service brand"]) assert.match(transferGuide, new RegExp(value));
+  for (const value of ["Moving with", "movingNote", "transfer or switch Internet", "AT&T Internet transfer", "availabilityCheckerUrl", "movingOrTransferUrl"]) assert.match(providerPage, new RegExp(value));
   for (const value of ["Save for comparison", "Save provider to My Move", "Check your address", "opens in a new tab"]) assert.match(card, new RegExp(value));
   assert.match(options, /wired\.length/); assert.match(options, /wireless\.length/);
   assert.match(compare, /Clear comparison/); assert.match(compare, /internet_technology_filter/);
@@ -75,6 +75,8 @@ test("Internet UI is a mobile-safe comparison and moving tool without rankings o
   for (const event of ["internet_hub_view", "internet_zip_search", "internet_provider_saved", "internet_provider_removed", "internet_provider_compared", "internet_compare_view", "internet_transfer_guide_view", "internet_availability_click", "internet_transfer_click", "internet_technology_filter", "internet_checklist_view", "internet_checklist_print"]) assert.match(analytics, new RegExp(`${event}:`));
   assert.match(config, /find-isp-by-address.*find-internet-providers/s);
   assert.match(printable, /internet-setup-checklist/);
+  assert.match(transferGuide, /https:\/\/www\.att\.com\/help\/moving/);
+  assert.match(transferGuide, /https:\/\/www\.spectrum\.com\/moving/);
   assert.doesNotMatch(`${hub}${compare}${card}${transferDecision}${providerPage}`, /Editor's Choice|MoveIn Recommended|star rating|affiliate=true|\$\d+/i);
 });
 

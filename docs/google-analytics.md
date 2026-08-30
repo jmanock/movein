@@ -1,5 +1,8 @@
 # Google Analytics 4
 
+Property: **MoveIn Guide**
+Measurement ID: `G-QC9FYWHVZZ`
+
 ## Configuration
 
 MoveIn loads one Google tag from the root App Router layout when all of these are true:
@@ -32,6 +35,8 @@ NEXT_PUBLIC_GA_MEASUREMENT_ID=G-QC9FYWHVZZ
 ```
 
 Because `NEXT_PUBLIC_` values are embedded during `next build`, changing the ID requires a new production build and PM2 restart.
+
+The variable must exist **before** `npm run build`. Setting it only in PM2 after the build cannot add the tag to static output. Run `npm run analytics:check` immediately after every production build; it verifies the current environment, bundle, and rendered homepage without contacting Google.
 
 ## Page views and duplicate prevention
 
@@ -118,3 +123,21 @@ In GA4, use Admin → Product links → Search Console links, choose the verifie
 ## Troubleshooting duplicates
 
 Use Tag Assistant and the browser Network panel to confirm there is one `gtag/js` request and one `page_view` collection request per pathname. If duplicates appear, check for GTM, an injected host-level tag, another layout script, or Enhanced Measurement history tracking. Keep one owner for page views: this root `GoogleAnalytics` component.
+
+## Diagnosing zero data
+
+1. Confirm the intended property is **MoveIn Guide** and the web stream uses `G-QC9FYWHVZZ`.
+2. Confirm the date range, property timezone, internal/developer traffic filters, and data-filter status.
+3. On the server, load `.env.production` before building and run `npm run analytics:check` after the build.
+4. Confirm the public homepage HTML contains one `googletagmanager.com/gtag/js?id=G-QC9FYWHVZZ` reference.
+5. Test in a browser without an ad blocker, Do Not Track, Global Privacy Control, or the `ga-disable-G-QC9FYWHVZZ` flag.
+6. Use Realtime for an ordinary visit and DebugView only for a deliberate debug visit.
+7. Remember that Search Console impressions are search-result appearances, not visits. Compare Search Console clicks with GA landing-page sessions before concluding data is missing.
+
+## Safe debug logging
+
+Set `NEXT_PUBLIC_GA_DEBUG=true` only for a deliberate debug build. The console reports page-view calls, event names, and sanitized parameters prefixed with `[MoveIn GA4]`. It never logs blocked personal fields. The production default is false and there is no public debug interface.
+
+## Verification after every deployment
+
+Run the production diagnostic, check one initial page load and several App Router navigations, confirm one logical page view per pathname, trigger one privacy-safe custom event, and verify the result in Realtime. See `docs/ga4-production-audit.md` for the August 29 production findings and `docs/analytics-privacy-audit.md` for the reviewed data boundary.

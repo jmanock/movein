@@ -13,6 +13,8 @@ module.exports = {
         NODE_ENV: "production",
         PORT: 3006,
         DATABASE_PATH: "/var/lib/movein/movein.sqlite",
+        NEXT_PUBLIC_GA_MEASUREMENT_ID: "G-QC9FYWHVZZ",
+        NEXT_PUBLIC_GA_DEBUG: "false",
       },
     },
   ],

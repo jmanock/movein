@@ -25,5 +25,6 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   const measurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID?.trim();
   const validMeasurementId = measurementId && /^G-[A-Z0-9]+$/.test(measurementId) ? measurementId : undefined;
   const analyticsEnabled = process.env.NODE_ENV !== "test" && (process.env.NODE_ENV === "production" || process.env.NEXT_PUBLIC_GA_ENABLE_DEV === "true");
-  return <html lang="en"><body className={geistSans.variable}><GoogleAnalytics measurementId={analyticsEnabled ? validMeasurementId : undefined} debug={process.env.NEXT_PUBLIC_GA_DEBUG === "true"} /><AnalyticsBridge /><a className="skip-link" href="#main-content">Skip to content</a><SiteChrome>{children}</SiteChrome></body></html>;
+  const analyticsDebug = process.env.NEXT_PUBLIC_GA_DEBUG === "true";
+  return <html lang="en"><body className={geistSans.variable}><GoogleAnalytics measurementId={analyticsEnabled ? validMeasurementId : undefined} debug={analyticsDebug} /><AnalyticsBridge /><a className="skip-link" href="#main-content">Skip to content</a><SiteChrome>{children}</SiteChrome></body></html>;
 }

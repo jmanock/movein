@@ -92,10 +92,17 @@ export type AnalyticsEventParameters = {
 
 export type AnalyticsEvent = keyof AnalyticsEventParameters;
 
+let debugEnabled = false;
+
+export function configureAnalyticsDebug(enabled: boolean) {
+  debugEnabled = enabled && process.env.NODE_ENV !== "test";
+}
+
 export function trackEvent<Name extends AnalyticsEvent>(name: Name, parameters: AnalyticsEventParameters[Name]) {
-  if (!analyticsIsAvailable()) return;
   try {
     const safeParameters = sanitizeParameters(parameters);
+    debugAnalytics(name, safeParameters);
+    if (!analyticsIsAvailable()) return;
     window.gtag?.("event", name, safeParameters);
     window.dispatchEvent(new CustomEvent("movein:analytics", { detail: { name, ...safeParameters } }));
   } catch {
@@ -104,13 +111,16 @@ export function trackEvent<Name extends AnalyticsEvent>(name: Name, parameters: 
 }
 
 export function trackPageView(pathname: string) {
-  if (!analyticsIsAvailable() || !pathname.startsWith("/")) return;
+  if (!pathname.startsWith("/")) return;
   try {
-    window.gtag?.("event", "page_view", {
+    const parameters = {
       page_path: pathname,
-      page_location: `${window.location.origin}${pathname}`,
-      page_title: document.title,
-    });
+      page_location: typeof window === "undefined" ? pathname : `${window.location.origin}${pathname}`,
+      page_title: typeof document === "undefined" ? "" : document.title,
+    };
+    debugAnalytics("page_view", parameters);
+    if (!analyticsIsAvailable()) return;
+    window.gtag?.("event", "page_view", parameters);
   } catch {
     // Page rendering and navigation never depend on analytics.
   }
@@ -125,4 +135,9 @@ function analyticsIsAvailable() {
 function sanitizeParameters(parameters: Record<string, string | number | boolean | undefined>) {
   const blockedKeys = new Set(["email", "reply_email", "zip", "zip_code", "move_date", "notes", "checklist_text", "task_text", "street_address", "exact_address", "phone_number", "account_number", "details", "description", "ssn", "amount", "cost", "rent", "deposit", "dollar", "lease_details"]);
   return Object.fromEntries(Object.entries(parameters).filter(([key, value]) => value !== undefined && !blockedKeys.has(key)).map(([key, value]) => [key, typeof value === "string" ? value.slice(0, 100) : value]));
+}
+
+function debugAnalytics(name: string, parameters: Record<string, string | number | boolean | undefined>) {
+  if (!debugEnabled || typeof console === "undefined") return;
+  console.debug("[MoveIn GA4]", name, parameters);
 }
