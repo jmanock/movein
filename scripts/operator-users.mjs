@@ -11,10 +11,10 @@ if (process.argv.length !== 3 || !['create','list','reset-password'].includes(co
 }
 let database;
 async function hiddenPassword(label) {
-  process.stdout.write(label);
   emitKeypressEvents(process.stdin);
   const wasRaw = process.stdin.isRaw;
   process.stdin.setRawMode(true); process.stdin.resume();
+  process.stdout.write(label);
   return new Promise((resolve, reject) => {
     let value = '';
     const finish = (error) => {
@@ -23,7 +23,7 @@ async function hiddenPassword(label) {
       value = '';
     };
     const keypress = (text, key = {}) => {
-      if (key.ctrl && key.name === 'c') return finish(new Error('Cancelled.'));
+      if (key.ctrl && ['c','d'].includes(key.name)) return finish(new Error('Cancelled.'));
       if (key.name === 'return' || key.name === 'enter') return finish();
       if (key.name === 'backspace') value = value.slice(0,-1);
       else if (!key.ctrl && !key.meta && text && !/[\x00-\x1f\x7f]/.test(text) && value.length < 129) value += text;
