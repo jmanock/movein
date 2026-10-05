@@ -1,6 +1,6 @@
 # MoveIn Home product concept
 
-Status: future concept only — not implemented
+Status: broader home concept remains future work; receipts entered an experimental MVP foundation on October 2, 2026. See [receipts.md](receipts.md) for its limited scope. The local development flow now connects real Ollama image extraction, review, save, and My Home inventory. Production household access remains unimplemented.
 
 ## User problem
 

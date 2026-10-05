@@ -6,8 +6,8 @@ const read = (path) => readFile(new URL(path, import.meta.url), "utf8");
 
 test("front-end growth routes and states remain explicit", async () => {
   const [home, coverage, lookup, resources] = await Promise.all([read("../app/page.tsx"), read("../app/coverage/page.tsx"), read("../app/lookup/[zip]/page.tsx"), read("../app/resources/page.tsx")]);
-  assert.match(home, /context="homepage_hero"/);
-  assert.match(home, /pathway-icon/);
+  assert.match(home, /context="homepage_footer"/);
+  assert.match(home, /href="\/homeowners"/);
   assert.match(coverage, /getCoverageResults/);
   assert.match(coverage, /isZipResultIndexable/);
   assert.match(lookup, /UnsupportedZip/);
@@ -79,7 +79,7 @@ test("GA4 loads once from the root and manually measures App Router page views",
   ]) assert.match(analytics, new RegExp(`${eventName}:`));
   assert.match(analytics, /blockedKeys/);
   assert.match(declarations, /gtag\?: GtagFunction/);
-  assert.match(environment, /G-QC9FYWHVZZ/);
+  assert.match(environment, /^NEXT_PUBLIC_GA_MEASUREMENT_ID=$/m);
 });
 
 test("county hubs and demand-driven ZIP requests form a crawl-safe content network", async () => {

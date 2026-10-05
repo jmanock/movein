@@ -10,7 +10,7 @@ const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"], dis
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: { default: "Find Utilities and Essential Services by ZIP Code | MoveIn", template: "%s | MoveIn" },
+  title: { default: "Moving In Is Just the Beginning | MoveIn", template: "%s | MoveIn" },
   description: DEFAULT_DESCRIPTION,
   applicationName: "MoveIn",
   authors: [{ name: "MoveIn", url: SITE_URL }],
@@ -26,5 +26,5 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   const validMeasurementId = measurementId && /^G-[A-Z0-9]+$/.test(measurementId) ? measurementId : undefined;
   const analyticsEnabled = process.env.NODE_ENV !== "test" && (process.env.NODE_ENV === "production" || process.env.NEXT_PUBLIC_GA_ENABLE_DEV === "true");
   const analyticsDebug = process.env.NEXT_PUBLIC_GA_DEBUG === "true";
-  return <html lang="en"><body className={geistSans.variable}><GoogleAnalytics measurementId={analyticsEnabled ? validMeasurementId : undefined} debug={analyticsDebug} /><AnalyticsBridge /><a className="skip-link" href="#main-content">Skip to content</a><SiteChrome>{children}</SiteChrome></body></html>;
+  return <html lang="en" data-scroll-behavior="smooth"><body className={geistSans.variable}><GoogleAnalytics measurementId={analyticsEnabled ? validMeasurementId : undefined} debug={analyticsDebug} /><AnalyticsBridge /><a className="skip-link" href="#main-content">Skip to content</a><SiteChrome>{children}</SiteChrome></body></html>;
 }

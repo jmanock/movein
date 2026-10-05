@@ -3,8 +3,21 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   poweredByHeader: false,
   compress: true,
+  logging: { incomingRequests: { ignore: [/\/api\/auth\/magic-link\/verify/] } },
   serverExternalPackages: ["better-sqlite3"],
   images: { formats: ["image/avif", "image/webp"], qualities: [75, 88] },
+  async headers() {
+    return [
+      { source: '/:path*', headers: [
+        { key: 'X-Content-Type-Options', value: 'nosniff' },
+        { key: 'X-Frame-Options', value: 'DENY' },
+        { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+        { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=()' },
+      ] },
+      { source: '/api/auth/:path*', headers: [{ key: 'Referrer-Policy', value: 'no-referrer' }] },
+      { source: '/sign-in', headers: [{ key: 'Referrer-Policy', value: 'no-referrer' }] },
+    ];
+  },
   async redirects() {
     return [
       { source: "/timeline/:path*", destination: "/homeowners", permanent: true },

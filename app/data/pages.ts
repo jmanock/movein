@@ -1,3 +1,4 @@
+import { DEFAULT_DESCRIPTION } from "../lib/metadata.ts";
 import { guides } from "./guides.ts";
 import { printables } from "./printables.ts";
 import { countyProfiles } from "./counties.ts";
@@ -15,7 +16,7 @@ export type PublicPage = {
 };
 
 const staticPages: PublicPage[] = [
-  { path: "/", title: "Find Utilities and Essential Services by ZIP Code", description: "Enter a Florida ZIP code to find possible electric, water, internet, trash, and other essential service providers, then confirm your exact address.", h1: "You have the keys. Now what?", group: "main", lastModified: "2026-08-01", changeFrequency: "weekly", priority: 1 },
+  { path: "/", title: "Moving In Is Just the Beginning", description: DEFAULT_DESCRIPTION, h1: "Moving in is just the beginning.", group: "main", lastModified: "2026-10-03", changeFrequency: "weekly", priority: 1 },
   { path: "/my-move", title: "My Move: A Private Moving Checklist", description: "Create a personalized homeowner or renter moving checklist saved only in your browser. No account, email, payment, or external sync required.", h1: "Make the move feel manageable.", group: "main", lastModified: "2026-08-10", changeFrequency: "monthly", priority: .9 },
   { path: "/first-30-days", title: "First 30 Days After Moving", description: "Organize utilities, move-in day records, address updates, safety checks, renter or homeowner responsibilities, and first-month home records.", h1: "Your first 30 days, organized.", group: "main", lastModified: "2026-08-10", changeFrequency: "monthly", priority: .85 },
   { path: "/internet", title: "Find Internet Providers for Your New Address", description: "Use a ZIP code to discover and compare possible wired and wireless home Internet providers, then confirm each option for the exact address.", h1: "Find the options—not just the first provider you recognize.", group: "main", lastModified: "2026-08-10", changeFrequency: "weekly", priority: .9 },

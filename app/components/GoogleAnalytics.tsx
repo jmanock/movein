@@ -10,10 +10,20 @@ export function GoogleAnalytics({ measurementId, debug = false }: { measurementI
   const pathname = usePathname();
   const lastPage = useRef<string | null>(null);
   const initialized = useRef(false);
+  const privatePause = useRef(false);
 
   useEffect(() => {
     configureAnalyticsDebug(debug);
-    if (!measurementId || trackingIsDisabled(measurementId)) return;
+    if (!measurementId) return;
+    // Pause even a tag already loaded during an earlier public-page visit.
+    const analyticsWindow = window as unknown as Record<string, unknown>;
+    const disabledKey = `ga-disable-${measurementId}`;
+    if (["/receipts", "/my-home", "/sign-in", "/private-access"].includes(pathname)) {
+      if (!analyticsWindow[disabledKey]) { analyticsWindow[disabledKey] = true; privatePause.current = true; }
+      return;
+    }
+    if (privatePause.current) { analyticsWindow[disabledKey] = false; privatePause.current = false; }
+    if (trackingIsDisabled(measurementId)) return;
     if (!initialized.current) {
       window.dataLayer ??= [];
       window.gtag ??= (...args) => { window.dataLayer?.push(args); };
@@ -33,12 +43,13 @@ export function GoogleAnalytics({ measurementId, debug = false }: { measurementI
     trackPageView(page);
   }, [debug, measurementId, pathname]);
 
-  if (!measurementId) return null;
+  if (!measurementId || ["/receipts", "/my-home", "/sign-in", "/private-access"].includes(pathname) || process.env.NODE_ENV !== "production") return null;
   return <Script id="movein-google-analytics" src={`https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(measurementId)}`} strategy="afterInteractive" onError={() => undefined} />;
 }
 
 function trackingIsDisabled(measurementId: string) {
   if (process.env.NODE_ENV === "test") return true;
+  if (process.env.NODE_ENV !== "production") return true;
   if (navigator.doNotTrack === "1" || navigator.globalPrivacyControl === true) return true;
   return Boolean((window as unknown as Record<string, unknown>)[`ga-disable-${measurementId}`]);
 }

@@ -3,7 +3,7 @@ import { join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const baseUrl = process.env.FRONTEND_AUDIT_URL || "http://127.0.0.1:3006";
-const routes = ["/", "/homeowners", "/renters", "/learn-your-area", "/resources", "/faq", "/coverage", "/florida-utilities", "/orange-county-utilities", "/request-zip", "/resources/find-electric-company", "/resources/moving-utility-checklist", "/lookup/32757", "/lookup/32803", "/lookup/32701", "/lookup/99999", "/robots.txt", "/sitemap.xml"];
+const routes = ["/", "/receipts", "/my-home", "/homeowners", "/renters", "/learn-your-area", "/resources", "/faq", "/coverage", "/florida-utilities", "/orange-county-utilities", "/request-zip", "/resources/find-electric-company", "/resources/moving-utility-checklist", "/lookup/32757", "/lookup/32803", "/lookup/32701", "/lookup/99999", "/robots.txt", "/sitemap.xml"];
 const failures = [];
 const warnings = [];
 
@@ -41,6 +41,11 @@ for (const route of routes) {
   let response;
   try { response = await fetch(`${baseUrl}${route}`, { redirect: "follow" }); } catch { runtimeAvailable = false; break; }
   const html = await response.text();
+  if (["/receipts", "/my-home"].includes(route)) {
+    const protection = await fetch(`${baseUrl}${route}`, { redirect: "manual" });
+    if (process.env.FRONTEND_AUDIT_EXPECT_PRIVATE_REDIRECT !== "false" && (![307, 308].includes(protection.status) || protection.headers.get("location") !== `/sign-in?next=${encodeURIComponent(route)}`)) failures.push(`${route} did not enforce private access`);
+    if (!/<meta name="robots" content="noindex/.test(html)) failures.push(`${route} private page/notice is indexable`);
+  }
   if (!response.ok) failures.push(`${route} returned ${response.status}`);
   if (route.endsWith(".txt") || route.endsWith(".xml")) continue;
   for (const match of html.matchAll(/href="(\/[^"#]*)/g)) internalLinks.add(match[1]);
@@ -55,6 +60,16 @@ for (const route of routes) {
   if (!/<form|class="button|class="text-link|provider-actions|resource-columns|faq-layout/.test(html)) warnings.push(`${route} has no obvious primary action`);
 }
 if (!runtimeAvailable) warnings.push(`Runtime checks skipped: start the app or set FRONTEND_AUDIT_URL (tried ${baseUrl})`);
+if (runtimeAvailable && process.env.FRONTEND_AUDIT_EXPECT_PRIVATE_REDIRECT !== "false") {
+  for (const [path, method] of [["/api/my-home", "GET"], ["/api/receipts/process", "POST"], ["/api/receipts/save", "POST"]]) {
+    const response = await fetch(`${baseUrl}${path}`, { method, headers: { "x-household-id": "00000000-0000-4000-8000-000000000001", cookie: "session=forged" } });
+    if (response.status !== 401 || response.headers.get("cache-control") !== "no-store") failures.push(`${path} did not fail closed with an uncached unauthorized response`);
+    const data = await response.json();
+    if (Object.keys(data).some(key => key !== "error")) failures.push(`${path} returned unexpected private data without a session`);
+  }
+  const sitemap = await (await fetch(`${baseUrl}/sitemap.xml`)).text();
+  for (const path of ["/receipts", "/my-home", "/private-access", "/sign-in"]) if (sitemap.includes(`https://movein.guide${path}<`)) failures.push(`${path} is in the public sitemap`);
+}
 if (runtimeAvailable) {
   for (const target of internalLinks) {
     const cleanTarget = target.replaceAll("&amp;", "&");

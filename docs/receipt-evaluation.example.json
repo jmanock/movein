@@ -1,0 +1,31 @@
+{
+  "merchant": "Example Hardware",
+  "purchaseDate": "2026-10-01",
+  "subtotalMinor": 10299,
+  "taxMinor": 721,
+  "totalMinor": 11020,
+  "currency": "USD",
+  "receiptType": "purchase",
+  "items": [
+    {
+      "rawDescription": "RYB 18V DRL KT $99.00",
+      "normalizedName": "Ryobi Drill Kit",
+      "acceptableNames": ["Ryobi 18V Drill Kit"],
+      "quantity": 1,
+      "unitPriceMinor": 9900,
+      "totalPriceMinor": 9900,
+      "category": "tool",
+      "itemRole": "durable_asset",
+      "isHouseholdAsset": true
+    },
+    {
+      "rawDescription": "SS PAPER TOWEL 6CT $3.99",
+      "normalizedName": "Paper Towels",
+      "quantity": 1,
+      "totalPriceMinor": 399,
+      "category": "consumable",
+      "itemRole": "consumable",
+      "isHouseholdAsset": false
+    }
+  ]
+}

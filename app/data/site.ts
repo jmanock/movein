@@ -1,12 +1,10 @@
 export const primaryNavigation = [
   { label: "Home", href: "/" },
+  { label: "My Home", href: "/my-home" },
   { label: "My Move", href: "/my-move" },
   { label: "Internet", href: "/internet" },
-  { label: "Homeowners", href: "/homeowners" },
-  { label: "Renters", href: "/renters" },
-  { label: "Learn Your Area", href: "/learn-your-area" },
   { label: "Resources", href: "/resources" },
-  { label: "Coverage", href: "/coverage" },
+  { label: "Upload receipt", href: "/receipts" },
 ] as const;
 
 export const serviceTypes = [

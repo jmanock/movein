@@ -43,3 +43,7 @@ next-env.d.ts
 # local SQLite data
 /data/*.sqlite
 /data/*.sqlite-*
+
+# Private local receipt evaluation inputs and structured reports
+/receipt-lab/
+/receipt-eval-reports/

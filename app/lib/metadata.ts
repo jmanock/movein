@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 export const SITE_URL = "https://movein.guide";
 export const SITE_NAME = "MoveIn";
-export const DEFAULT_DESCRIPTION = "Enter a Florida ZIP code to find possible electric, water, internet, trash, and other essential service providers, then confirm your exact address.";
+export const DEFAULT_DESCRIPTION = "Turn receipts into useful home records: review purchases and build My Home as you go. Find possible Florida utility providers and official address checks.";
 
 export function canonicalUrl(path = "/") {
   const requested = new URL(path, SITE_URL);

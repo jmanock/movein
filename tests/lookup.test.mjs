@@ -185,10 +185,10 @@ test("data operations support duplicate checks, a research queue, and a non-writ
   assert.equal(getDatabase().prepare("SELECT COUNT(*) AS count FROM providers").get().count, before);
 });
 
-test("homepage makes accessible ZIP lookups the primary and closing actions", async () => {
+test("homepage preserves accessible ZIP lookups while introducing home organization", async () => {
   const [page, form] = await Promise.all([read("../app/page.tsx"), read("../app/components/ZipLookupForm.tsx")]);
-  assert.match(page, /You have the keys/);
-  assert.match(page, /context="homepage_hero"/);
+  assert.match(page, /Turn receipts into useful home records/);
+  assert.match(page, /href="#zip-lookup"/);
   assert.match(page, /context="homepage_footer"/);
   assert.match(form, /onSubmit=\{submit\}/);
   assert.match(form, /onKeyDown=\{submitWithEnter\}/);
@@ -202,7 +202,9 @@ test("homepage makes accessible ZIP lookups the primary and closing actions", as
 test("navigation excludes retired timeline, checklist, and Florida Guide items", async () => {
   const data = await read("../app/data/site.ts");
   const navigation = data.slice(0, data.indexOf("] as const;") + 11);
-  for (const route of ["/homeowners", "/renters", "/learn-your-area", "/resources", "/coverage"]) assert.match(navigation, new RegExp(route));
+  for (const route of ["/my-home", "/my-move", "/receipts", "/internet", "/resources"]) assert.match(navigation, new RegExp(route));
+  const chrome = await read("../app/components/SiteChrome.tsx");
+  for (const route of ["/homeowners", "/renters", "/learn-your-area", "/coverage"]) assert.match(chrome, new RegExp(route));
   assert.doesNotMatch(navigation, /timeline|checklists|Florida Guide/i);
 });
 
@@ -286,14 +288,15 @@ test("corrections use a validated form with loading and duplicate-submit protect
   assert.match(form, /correctionIssueTypes/);
 });
 
-test("homepage hero uses an optimized meaningful Next image without layout shift", async () => {
+test("homepage leads with receipt records and retains ZIP lookup below the product", async () => {
   const page = await read("../app/page.tsx");
-  assert.match(page, /from "next\/image"/);
-  assert.match(page, /width=\{1600\}/);
-  assert.match(page, /height=\{880\}/);
-  assert.match(page, /sizes="\(max-width: 760px\) 100vw, 48vw"/);
-  assert.match(page, /priority/);
-  assert.match(page, /alt="A bright home entryway/);
+  assert.match(page, /Moving in is just the beginning/);
+  assert.match(page, /href="\/receipts">Upload a receipt/);
+  assert.match(page, /Sample data/);
+  assert.match(page, /id="zip-lookup"/);
+  assert.match(page, /<ZipLookupForm context="homepage_footer"/);
+  assert.ok(page.indexOf('purchase-preview') < page.indexOf('<ZipLookupForm'));
+  assert.match(page, /SearchAction/);
 });
 
 test("standard Node scripts and dependencies have no Cloudflare coupling", async () => {

@@ -28,33 +28,44 @@
     "data:research-queue": "node scripts/generate-research-queue.mjs",
     "data:links": "node scripts/check-provider-links.mjs",
     "data:report": "node scripts/generate-data-coverage-report.mjs",
-    "health:report": "node scripts/production-health-report.mjs"
+    "health:report": "node scripts/production-health-report.mjs",
+    "receipt:test": "node scripts/receipt-test.mjs",
+    "receipt:eval": "node scripts/receipt-eval.mjs",
+    "dev:auth": "node scripts/dev-auth.mjs",
+    "db:backup": "node scripts/sqlite-backup.mjs",
+    "production:check": "node scripts/production-check.mjs",
+    "production:smoke": "node scripts/production-smoke.mjs",
+    "secrets:check": "node scripts/secret-check.mjs"
   },
   "dependencies": {
-    "@next/env": "16.2.12",
-    "better-sqlite3": "13.0.1",
+    "@next/env": "16.3.8",
+    "better-auth": "1.7.7",
+    "better-sqlite3": "13.0.3",
     "lucide-react": "^1.27.0",
-    "next": "16.2.12",
+    "next": "16.3.8",
+    "nodemailer": "10.0.14",
     "react": "19.2.8",
-    "react-dom": "19.2.8"
+    "react-dom": "19.2.8",
+    "sharp": "0.35.5"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "4.2.1",
     "@types/better-sqlite3": "7.6.13",
     "@types/node": "22.19.19",
+    "@types/nodemailer": "^8.0.2",
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
     "eslint": "9.39.5",
-    "eslint-config-next": "16.2.12",
+    "eslint-config-next": "16.3.8",
     "tailwindcss": "4.2.1",
     "typescript": "5.9.3"
   },
   "overrides": {
-    "brace-expansion": "5.0.9",
-    "js-yaml": "4.3.1",
+    "brace-expansion": "5.0.12",
+    "js-yaml": "4.3.2",
     "minimatch": "10.2.5",
     "postcss": "8.5.23",
-    "sharp": "0.35.3"
+    "sharp": "0.35.5"
   },
   "type": "module"
 }
