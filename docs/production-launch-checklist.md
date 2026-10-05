@@ -1,12 +1,12 @@
 # MoveIn production launch checklist
 
-**CODE READY — MANUAL PRODUCTION CONFIGURATION REMAINS.** [Task 10 patched-version evidence](task-10-release-readiness.md) supersedes the Tasks 8–9 blanket hold. Next 16.3.8 includes the applicable published fixes; runtime audit is zero. Historical advisory entries do not show the patched version is vulnerable. The pending-fix notice remains a watch item without a disclosed applicable ID/range, not an established actionable blocker under Task 10's release rule.
+**DEPLOYED — HEALTHY for invite-only early access.** [Task 10 patched-version evidence](task-10-release-readiness.md) supersedes the Tasks 8–9 blanket hold. Next 16.3.8 includes the applicable published fixes; runtime audit is zero. Historical advisory entries do not show the patched version is vulnerable. The pending-fix notice remains a watch item without a disclosed applicable ID/range, not an established actionable blocker under Task 10's release rule.
 
 - **Code complete for the scoped first stage:** dependency patch evidence and local auth/upload/build/runtime gates pass. Five high dev-only braces cascade findings are documented tooling risk; omit dev packages after build.
 - **Manual production configuration required:** manual account provisioning, protected stable secrets, HTTPS/proxy, persistent database/migrations/backups and target-host testing.
 - **First launch:** RECEIPT_EXTRACTOR=disabled is explicit in the fill-in environment template and PM2 defaults; no demo fallback. Auth/My Home/history/public content work with manually provisioned accounts.
 
-Use [staged-production-launch.md](staged-production-launch.md) for exact environment, SQLite/rollback commands, manual-account/proxy checks and the ten-step post-deploy test. This checklist retains the full ordered launch/operations procedure. No deployment, production migration, SMTP/DNS account/configuration or model install was performed. The verdict is not deployment authorization.
+Use [staged-production-launch.md](staged-production-launch.md) for exact environment, SQLite/rollback commands, manual-account/proxy checks and the ten-step post-deploy test. This checklist retains the full ordered launch/operations procedure. See [Task 11](task-11-release-checkpoint.md) for the completed deployment/migration/backup and live account tests. SMTP/model configuration remains disabled.
 
 Use the approved release commit and a supported Node version (project minimum 22.13; local validation used Node 24.10). The intended platform is Ubuntu/DigitalOcean, Nginx → one PM2 fork process at `127.0.0.1:3006`, one persistent SQLite database. Do not use PM2 cluster mode, ephemeral filesystem storage, shared network SQLite files, or Workers/serverless for this release. Never copy macOS node_modules to Linux.
 
@@ -100,3 +100,5 @@ npm run db:backup -- "/var/backups/movein/daily-${backup_stamp}.sqlite"
 ```
 
 Keep at least seven daily copies plus four weekly copies, and one encrypted off-host copy refreshed daily. Restrict directory 0700/files 0600, disk usage and access: backups contain private emails, sessions and purchase data. Apply retention only to verified timestamped backups and only after confirming the newest backup/offsite copy; no destructive retention script was added. Restore-test monthly and before schema releases on a disposable DB; verify integrity, foreign keys, migration ledger, row counts and representative purchase facts. Never copy a live SQLite main file alone. The helper is based on the [SQLite backup API](https://www.sqlite.org/backup.html).
+
+For the current host, source `/etc/movein/movein.env` and use the protected `/etc/movein/ecosystem.config.cjs` wrapper to preserve the explicit Node 22 interpreter and auth environment; see [Task 11 operator procedure](task-11-release-checkpoint.md#protected-production-operation).

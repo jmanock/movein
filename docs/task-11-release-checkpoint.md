@@ -1,90 +1,65 @@
-# Task 11 early-access release
+# Task 11: invite-only early-access release
 
-October 5, 2026. The manual-account launch supersedes the SMTP stop condition below. Email/password auth and operator commands are implemented; local validation passes. Production backup, pending migrations, deployment and controlled-account checks are now being resumed under the existing authorization. Final results will replace this checkpoint after verification. No email delivery will be enabled.
+October 5, 2026. **DEPLOYED — MoveIn production is HEALTHY for the early-access configuration.** Live URL: https://movein.guide. Email/password accounts are manually approved; email delivery, public signup and receipt extraction remain disabled.
 
-## Historical paused checkpoint
+## Release identity and architecture
 
-# Task 11: production release paused at email configuration
+Verified application release **73a7fca543cb6284665da5eb887681261c5d0440**, including the terminal-echo hardening, with clean local and target checkouts. Parent 212e62caa8c1ce6c99ec8d718fd4fc1261b744e9 contains the authentication implementation and carries forward the previously approved Tasks 1–10 release. Both were pushed normally to jmanock/movein main and fast-forwarded on the host. A subsequent checkpoint-only commit updates documentation without changing the verified application build.
 
-October 5, 2026. Production release was authorized, but the required live Better Auth/SMTP configuration is absent. **NOT DEPLOYED.** Per Task 11's stop condition, no production backup/migration/push/build/restart/configuration change or email request was performed. The existing site remains online. The prepared local release commit contains this checkpoint; its hash is reported in the chat and available through git log.
+Existing architecture retained: Ubuntu 162.243.4.99 → Nginx HTTPS → one root-owned PM2 MoveIn fork → Next.js 16.3.8, React 19.2.8, Better Auth 1.7.7, SQLite at /var/lib/movein/movein.sqlite. MoveIn uses the already-installed Node **22.23.1**, not the SSH shell's Node 20 default. Other PM2 applications were not restarted or reconfigured. Port 3006 now binds only **127.0.0.1**.
 
-## A. Architecture detected
+## A–N checkpoint
 
-Verified through existing known-host SSH access and live configuration: server 162.243.4.99, Ubuntu/Nginx TLS virtual host movein.guide → 127.0.0.1:3006 → one root-owned PM2 movein fork, cwd /var/www/movein. Actual live DATABASE_PATH is /var/lib/movein/movein.sqlite. GitHub repo jmanock/movein has no Actions workflows or registered deployments; the inspected established mechanism is direct SSH/PM2, not App Platform or a GitHub Actions rollout. Do not infer hidden webhook behavior from this; no push occurred.
-
-## B. Release source
-
-Production remains on main at **b8b7006be1ef13d62cbea41c57d775d6dfbe8abe**, clean checkout, manifest Next 16.2.12 with no Better Auth. Local release retains Tasks 1–10: Next 16.3.8, Sharp 0.35.5, Better Auth 1.7.7, receipt/home refresh, private household/auth foundations and safe disabled first-launch PM2 defaults. Commit title: **MoveIn Home receipt MVP and private household foundation**. Local branch main; origin https://github.com/jmanock/movein.git. Commit is local only until configuration/delivery gates are satisfied. No force push.
-
-Reviewed tracked diff/new-file manifest and heuristic secrets scan. Real env files, local SQLite/WAL, receipt images/evaluation reports, private logs, node_modules/builds/outputs are ignored/excluded. .env.example and docs/first-launch.env.example are blank-credential templates, not live configuration. Generated AGENTS/CLAUDE instructions are retained as instructed. No production credentials were printed or committed.
-
-## C. Backup
-
-**Not created**: stop condition reached before migration preparation. A timestamped online backup outside the checkout must be created and independently verified when resuming; do not migrate first. Exact backup/restore commands are in [staged launch runbook](staged-production-launch.md). No rollback backup path is claimed.
-
-## D–E. Migration level / applied
-
-Read-only live SQLite checks: integrity **ok**, foreign-key errors **0**, **50 ZIPs / 56 providers**. Applied ledger is 001–006, ending 006_retire_natural_gas.sql. Current level remains 006; **no migration applied**. Pending local files are 007_receipts_and_inventory.sql, 008_receipt_save_requests.sql, 009_receipt_intelligence.sql, 010_household_ownership.sql and 011_authentication.sql. Apply only through the existing runner after verified backup and configuration readiness. Preserve actual production public-data counts; do not seed over this DB or add fake purchases.
-
-## F–I. Release mechanism / URL / HTTPS / public checks
-
-Mechanism positively identified as direct SSH/PM2 but **not executed**. URL: https://movein.guide. Baseline HTTPS GET returned 200 with valid system-trusted TLS and nginx/1.24.0 (Ubuntu); both root/www resolve to the inspected server. Nginx virtual host proxies to the expected loopback port. This is a pre-release baseline, not successful post-deployment verification. Full public/mobile/assets/canonical/HTTP redirect release checks remain pending.
-
-## J–M. Authentication / households / My Home / extraction
-
-Live process and .env.production have no BETTER_AUTH_SECRET, BETTER_AUTH_URL, AUTH_EMAIL_MODE/FROM or AUTH_SMTP_HOST/PORT/USER/PASS. /etc/movein/movein.env is absent. No sign-in email was sent or production test account created. Therefore production authentication, new household/re-login, My Home and authenticated receipt-page behavior remain **unverified and not enabled by this release**. No auth bypass.
-
-Local staged config explicitly sets RECEIPT_EXTRACTOR=disabled and false development/debug flags. Do not install Ollama/models. When resumed, verify actual PM2 runtime receives disabled mode, then check authenticated unavailable copy/no upload form/no demo or model calls. Local isolated production-mode proof is documented in Task 10; it does not replace real HTTPS/SMTP validation.
-
-## N. Logs
-
-No new release logs exist because nothing was launched. Live environment inspection captured and summarized values in memory without dumping credentials; no tokens were requested. Post-release sanitized auth/SQLite/origin/migration/extractor/error log review remains pending.
-
-## O. Required/optional configuration and manual actions
-
-| Application setting | Requirement / detected state |
+| Item | Verified result |
 | --- | --- |
-| NODE_ENV | production required; preserve established PM2 mode and verify after restart |
-| DATABASE_PATH | Required, positively verified live /var/lib/movein/movein.sqlite |
-| BETTER_AUTH_SECRET | **Missing**; provision a stable private random secret in protected server configuration; can be generated privately when resuming |
-| BETTER_AUTH_URL | **Missing**; exact HTTPS root origin https://movein.guide |
-| Trusted origin / SITE_URL | No separate auth trusted-origin variable; library derives trustedOrigins from BETTER_AUTH_URL. Public canonical SITE_URL is code-defined as https://movein.guide |
-| AUTH_EMAIL_MODE | **Missing**; smtp, never production console |
-| AUTH_EMAIL_FROM | **Missing**; verified sender mailbox/domain, no CR/LF |
-| AUTH_SMTP_HOST | **Missing**; provider's authenticated SMTP host |
-| AUTH_SMTP_PORT / AUTH_SMTP_SECURE | **Missing**; provider port and TLS mode, usually 587/false mandatory STARTTLS or 465/true implicit TLS |
-| AUTH_SMTP_USER / AUTH_SMTP_PASS | **Missing**; private SMTP login/password or provider-issued SMTP credential |
-| NEXT_PUBLIC_GA_MEASUREMENT_ID | Existing app uses public ID G-QC9FYWHVZZ; preserve in build/PM2 and reverify actual production HTML/bundle |
-| RECEIPT_EXTRACTOR | Required first-release value disabled; absent in old process, explicit in prepared new PM2 config |
-| AUTH_DEV_LOG_MAGIC_LINKS / AUTH_DEV_HOUSEHOLD / RECEIPT_EXTRACTION_DEBUG / NEXT_PUBLIC_GA_DEBUG / NEXT_PUBLIC_GA_ENABLE_DEV | false required for this release |
-| OLLAMA_BASE_URL / OLLAMA_RECEIPT_MODEL / OLLAMA_RECEIPT_TIMEOUT_MS / RECEIPT_PROMPT_VERSION | Not needed while disabled; do not enable inference or provision models |
-| PORT | Existing 3006, keep one fork and loopback binding |
+| A. Better Auth password configuration | enabled=true, disableSignUp=true, autoSignIn=false, requireEmailVerification=true; operator approval supplies the existing verified-user invariant. Library hashing, database sessions and secure cookies retained. Password policy 12–128 characters. |
+| B. Manual provisioning | `npm run user:create`: interactive email, hidden password/confirmation; library server API creates credentials, library adapter records operator approval, transactional membership resolution creates exactly one household. Retries preserve password/household. `user:list` prints only administrative fields. |
+| C. Manual reset | `npm run user:reset-password`: hidden new password/confirmation; supported library reset flow captures its token in memory, sends nothing, consumes/cleans the token, and revokes all existing sessions. |
+| D. Public signup prevention | Better Auth disableSignUp plus route allowlist. Signup, reset, admin and magic-link HTTP routes return 404; no public signup/reset form. Operator modules are imported only by scripts. |
+| E. Sign-in behavior | Email/Password/Sign in, early-access copy; generic unknown-user/wrong-password error, existing-account sessions and destination restoration. Live sign-in, logout and re-login passed. |
+| F. SMTP/email dependency | No SMTP variables required or configured. authConfig selects disabled delivery regardless of stale mail variables. No magic-link plugin mounted and no email sent. Future isolated sender/validation retained. |
+| G. Security tests | 129/129 full tests pass locally and on target; lint, production build, runtime audit (zero vulnerabilities), health report and production preflight pass. Tests cover provisioning/retry, credentials, signup denial, rate limits, A/B isolation, forged IDs, CSRF, logout, reset/session revocation, no SMTP dependency and disabled extraction. |
+| H. Production backup | Verified online SQLite backup, mode 0600, owner-only directory, independently reopened and restore-tested; path below. |
+| I. Migrations | Only pending 007–011 applied, each via the existing transactional ledger runner. Second run was a no-op. Integrity ok, zero foreign-key errors; 50 ZIPs/56 providers preserved. |
+| J. Deployment | Verified commit installed with clean Linux dependencies and build tooling, built on target, started through protected explicit Node 22 PM2 configuration; one fork saved, HTTPS and public/private smoke pass. |
+| K. Production test user | Exactly ONE controlled account created through the interactive CLI with a generated hidden password. No additional production users created. Test credential discarded from process memory; use the manual reset command before reuse. Final sessions: zero. |
+| L. My Home | Authenticated page and API passed with empty inventory/history. One approved household and one membership; logout denied access; re-login resolved the same household. Reserved legacy household remains separate. No receipts/fake purchases added. |
+| M. Logs | Sanitized new application logs reviewed without dumping credentials, sessions or environment. No new auth/SQLite/origin/model errors or credential patterns detected. Production auth logging disabled; Nginx auth access logs disabled and client IP overwritten. |
+| N. Production health | **HEALTHY** for invite-only accounts, My Home/history and public content with receipt extraction disabled. This does not claim SMTP delivery or receipt-model readiness. |
 
-Supply provider/SMTP host, port/TLS, username, credential and verified From address; complete provider domain verification/SPF/DKIM/DMARC as required. **Do not paste secrets into chat.** Put credentials in the service-owned protected /etc/movein/movein.env (directory 0700/file 0600), or use an established secure provisioning method. Fill the documented stable secret and HTTPS auth URL too. No vendor account is created automatically. Current adapter is SMTP, not a generic HTTP-only email API.
+## Backup and database evidence
 
-Designate a controlled test mailbox. If inbox access is unavailable to automation, the human must receive/click the real link; then verify secure cookies, one household, My Home empty state, logout revocation, re-login to the same household, anonymous rejection and disabled receipt UI. No destructive real-user isolation testing.
+Backup: `/var/backups/movein/pre-manual-auth-2026-10-05T14-51-19-226Z.sqlite`. The source was checked before backup; SQLite online backup includes WAL state. A separate restored copy reopened cleanly with integrity/FK and public row-count checks before migrations. Backup directory mode 0700/file 0600; persistent database directory 0700 and SQLite/WAL/SHM files restricted to 0600. Restore procedures remain in [staged launch](staged-production-launch.md); no rollback was needed.
 
-After configuration is supplied: verify env/delivery without logging values; run target preflight; take/verify online backup; apply pending migrations; verify FKs/ledger/public counts; deploy the approved commit using the existing one-process SSH/PM2 procedure; run public/auth/disabled-extractor/log gates. Existing deployment authorization remains; no need to reauthorize routine steps unless scope changes.
+Applied: 007_receipts_and_inventory.sql, 008_receipt_save_requests.sql, 009_receipt_intelligence.sql, 010_household_ownership.sql, 011_authentication.sql. No seed/import, auth automatic migration, down migration or table deletion. Final database: 50 ZIPs, 56 providers, one auth user, one approved membership, two households (one reserved legacy + one approved), zero active sessions, zero receipts; integrity ok/FKs zero.
 
-## P. Health / local release gate
+## Protected production operation
 
-**New launch not performed; cannot label it HEALTHY.** Baseline homepage/SQLite/PM2 are healthy, and the application-code gate remains ready. Production blocker is absent email/auth configuration, not a demonstrated new code defect.
+`/etc/movein/movein.env` is root-owned, mode 0600, directory 0700. It contains a privately generated stable random 48-byte auth secret, the exact HTTPS origin, existing persistent DB path, explicit disabled email/extractor, existing public GA ID and false development/debug flags. No SMTP credentials or Ollama settings were provisioned; no model service or social login enabled. Do not print or commit this file.
 
-| Local gate | Result |
-| --- | --- |
-| npm ci | PASS, clean dependency installation |
-| npm test | **126 passed**, zero failures/skips |
-| Lint / build | PASS, no lint warnings, production Next 16.3.8 build |
-| Runtime dependency audit | PASS, zero findings |
-| Full npm audit | Five high development-only braces cascade findings, zero critical; retained as documented tooling risk |
-| Links / SEO / analytics | PASS; 110 canonical routes/139 link targets, zero SEO errors/warnings, expected public analytics ID/single tag owner/privacy gates |
-| SEO duplication | PASS, 81 pages/34 guides, zero blocking duplicates |
-| Frontend | PASS, existing 26-client-component bundle review warning retained |
-| Runtime health | PASS, all five health-report gates; health rebuild followed by clean local server restart |
-| Production smoke | PASS against local loopback production-mode build; no user/mail/upload/migration writes |
-| Local production:check | Expected FAIL because actual production SMTP/auth, owner-only provisioned storage and explicit runtime extractor choice are not supplied in local environment. This is not target-host readiness; target preflight awaits configuration |
-| Secrets/staging review | No heuristic findings; intended source/templates only, no private DB/images/env/log artifacts staged |
+The protected host wrapper `/etc/movein/ecosystem.config.cjs` loads the tracked PM2 defaults, pins the installed Node 22 npm/interpreter paths, and explicitly passes the sourced auth secret/origin into this app's PM2 environment. Use its recognized `.config.cjs` filename. For an authorized future restart:
 
-The existing provider-link snapshot is reused by health reporting, not a fresh external crawl; 21 pending/noindex ZIPs remain in the research queue. No target deployment/authentication outcome is inferred from local checks.
+```sh
+export PATH=/root/.nvm/versions/node/v22.23.1/bin:$PATH
+cd /var/www/movein
+set -a
+. /etc/movein/movein.env
+set +a
+pm2 startOrRestart /etc/movein/ecosystem.config.cjs --only movein --update-env
+pm2 save
+chmod 600 /root/.pm2/dump.pm2
+```
 
-See [Task 10 readiness](task-10-release-readiness.md), [launch checklist](production-launch-checklist.md), [staged runbook](staged-production-launch.md) and [fill-in template](first-launch.env.example). Existing source-control/deployment state is preserved until safe continuation.
+Run operator commands from this same protected shell. The saved PM2 environment retains the stable secret and disabled mode. Root PM2 dump is mode 0600. No reboot was performed or new startup service installed.
+
+Unit fixture tests must not receive live auth secrets: `env -u BETTER_AUTH_SECRET -u BETTER_AUTH_URL npm test`. Legacy fixture cases intentionally require no real auth configuration; production configuration is verified separately with `npm run production:check` and actual HTTPS sessions. Target `npm ci --include=dev` supplies build/lint tooling during validation.
+
+## Live validation
+
+HTTPS certificate verified through system trust. Root returns 200; HTTP redirects 301 to HTTPS and HTTPS www redirects 308 to the root origin. Production smoke passed homepage, ZIP 32801, lookup API, sign-in, boolean auth status, private page redirects, anonymous API rejection and read-only SQLite checks. Live frontend audit passed across 20 representative routes and 140 internal targets, with the existing client-component-count warning. The audit was paced to respect Nginx request limits: an initial rapid crawl hit the existing limiter (503); pacing passed without changing protection. Auth cookies verified Secure, HttpOnly and SameSite=Lax.
+
+Authenticated controlled-account receipt page showed unavailable copy and no file input; processing returned 503 before uploads/inference. My Home returned an empty inventory; logout invalidated the old cookie. Second sign-in kept the same household. The account was logged out again after testing. No passwords, password hashes, cookies, session tokens or reset tokens were printed or stored in test artifacts; the password existed only in memory.
+
+Protected target validation logs are under `/var/backups/movein/release-*.log`; app-log offsets were used for post-release review. Public proxy auth logging is suppressed. Nginx config backup is `/var/backups/movein/nginx-before-manual-auth.conf`; it passed nginx -t before reload. Client forwarding/identity hints are overwritten/stripped for this site. Existing household resolution still ignores browser ownership claims.
+
+The [authentication guide](authentication.md) documents manual provisioning/reset and a future reviewed magic-link/SMTP onboarding upgrade. The previous SMTP launch stop condition is superseded; no email configuration remains a release blocker.

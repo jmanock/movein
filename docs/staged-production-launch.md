@@ -1,6 +1,6 @@
 # MoveIn first staged production launch
 
-**CODE READY — MANUAL PRODUCTION CONFIGURATION REMAINS.** See [Task 10 advisory evidence](task-10-release-readiness.md). No deployment, production migration, DNS/email account configuration or model installation was performed. These are operator commands for a later authorized launch.
+**DEPLOYED — HEALTHY for invite-only early access.** See [Task 11 release results](task-11-release-checkpoint.md) and [Task 10 advisory evidence](task-10-release-readiness.md). This runbook remains the repeatable backup/migration/rollback procedure. No SMTP or model configuration is required.
 
 ## First-launch mode
 
@@ -122,7 +122,7 @@ Compare ZIP/provider and purchase counts/facts with baseline/backup. Auth tables
 
 ### 8. Health/build and separately authorized restart
 
-Run npm ci/test/lint, full/runtime npm audit (dev-only braces documented separately), data/SEO/analytics gates and npm run build with public config + explicit DB path. Build before pruning dev dependencies. `health:report` also runs tests/build and needs development tooling; run during maintenance, then restart afterwards. `npm prune --omit=dev` is after all build-time checks. Verify the actual target Linux install, not copied macOS node_modules.
+Run npm ci/test/lint, full/runtime npm audit (dev-only braces documented separately), data/SEO/analytics gates and npm run build with public config + explicit DB path. Build before pruning dev dependencies. Unit fixtures must not inherit live auth secrets: run `env -u BETTER_AUTH_SECRET -u BETTER_AUTH_URL npm test` and likewise for `health:report`; production preflight/live sessions verify real configuration separately. Use `npm ci --include=dev` during validation. `health:report` also runs tests/build and needs development tooling; run during maintenance, then restart afterwards. `npm prune --omit=dev` is after all build-time checks. Verify the actual target Linux install, not copied macOS node_modules.
 
 Only at a separately authorized launch: start the one-fork PM2 config or restart movein with `--update-env`, save/review reboot environment, then use `SMOKE_BASE_URL=https://<approved-host> npm run production:smoke` on the host. Run link/SEO/frontend/analytics audits against that target. Smoke makes no user, mail, upload or migration writes.
 
@@ -177,3 +177,5 @@ Set upload location client_max_body_size 9m (app file limit 8 MB + multipart cap
 10. Signed in, receipt page honestly says reading unavailable, no upload form; no demo purchases, My Home/history still work.
 
 This manual test creates only the explicitly controlled sign-in account/membership. Automated production:smoke creates none. No user records were created on production during this task.
+
+For the current host, source `/etc/movein/movein.env` and use the protected `/etc/movein/ecosystem.config.cjs` wrapper to preserve the explicit Node 22 interpreter and auth environment; see [Task 11 operator procedure](task-11-release-checkpoint.md#protected-production-operation).
