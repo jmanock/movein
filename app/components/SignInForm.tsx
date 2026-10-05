@@ -1,18 +1,19 @@
 'use client';
 import { useState } from 'react';
 import Link from 'next/link';
-import { requestMagicLink } from '../lib/auth/client';
-export function SignInForm({ destination, linkError }: { destination: string; linkError: 'invalid' | 'failed' | null }) {
+import { signIn } from '../lib/auth/client';
+export function SignInForm({ destination }: { destination: string }) {
   const [email, setEmail] = useState('');
-  const [state, setState] = useState<'ready' | 'sending' | 'sent'>('ready');
-  const [error, setError] = useState(linkError === 'failed' ? 'We could not finish signing you in. Request a new link or try again later.' : linkError ? 'This sign-in link is invalid, expired, or already used. Request a new link below.' : '');
+  const [password, setPassword] = useState('');
+  const [pending, setPending] = useState(false);
+  const [error, setError] = useState('');
   async function submit(event: React.FormEvent) {
-    event.preventDefault(); setError(''); setState('sending');
-    try { await requestMagicLink(email.trim(), destination); setState('sent'); }
-    catch (error) { setError(error instanceof Error ? error.message : 'Please try again later.'); setState('ready'); }
+    event.preventDefault(); setError(''); setPending(true);
+    try { await signIn(email.trim(), password); setPassword(''); window.location.assign(destination); }
+    catch (error) { setPassword(''); setError(error instanceof Error ? error.message : 'Please try again later.'); setPending(false); }
   }
-  return <section className="receipt-card sign-in-card"><h2>Sign in with your email</h2><p>We’ll send a private link to open your household’s receipts and My Home. No password needed.</p>
+  return <section className="receipt-card sign-in-card"><h2>Sign in</h2><p>MoveIn is currently in early access. Use the credentials provided to you.</p>
     {error && <p role="alert" className="receipt-error">{error}</p>}
-    {state === 'sent' ? <div role="status"><h3>Check your email</h3><p>Your link expires in 10 minutes and works once. Open the newest link to finish signing in.</p><button className="button button-secondary" onClick={() => setState('ready')}>Send another link</button></div> : <form onSubmit={submit}><label htmlFor="sign-in-email">Email address</label><input id="sign-in-email" type="email" name="email" autoComplete="email" required maxLength={254} value={email} onChange={(event) => setEmail(event.target.value)} disabled={state === 'sending'} /><button className="button" type="submit" disabled={state === 'sending'}>{state === 'sending' ? 'Sending link…' : 'Email me a sign-in link'}</button></form>}
+    <form onSubmit={submit}><label htmlFor="sign-in-email">Email</label><input id="sign-in-email" type="email" name="email" autoComplete="username" required maxLength={254} value={email} onChange={(event) => setEmail(event.target.value)} disabled={pending} /><label htmlFor="sign-in-password">Password</label><input id="sign-in-password" type="password" name="password" autoComplete="current-password" required maxLength={128} value={password} onChange={(event) => setPassword(event.target.value)} disabled={pending} /><button className="button" type="submit" disabled={pending}>{pending ? 'Signing in…' : 'Sign in'}</button></form>
     <p className="small-text">Your email is used for account access, not marketing. <Link href="/privacy">Privacy</Link></p></section>;
 }

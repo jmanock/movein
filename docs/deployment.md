@@ -1,6 +1,6 @@
 # Deployment
 
-For the current receipts/authentication MVP, follow [production launch checklist](production-launch-checklist.md) and [Task 10 readiness report](task-10-release-readiness.md), with the [staged launch runbook](staged-production-launch.md). They include migrations, backups, SMTP, HTTPS, private features and extractor gating.
+For the current receipts/authentication MVP, follow [production launch checklist](production-launch-checklist.md) and [Task 10 readiness report](task-10-release-readiness.md), with the [staged launch runbook](staged-production-launch.md). They include migrations, backups, manual accounts, HTTPS, private features and extractor gating.
 
 The historical Internet-sprint commands below do not describe the current schema/auth release; do not use their “no migration” or rollback assumptions for this release.
 

@@ -1,24 +1,24 @@
 import type Database from 'better-sqlite3';
-import { betterAuth } from 'better-auth';
-import { magicLink } from 'better-auth/plugins';
+import { betterAuth, type BetterAuthOptions } from 'better-auth';
 import { getDatabase } from '../../../db/index.ts';
 import { authConfig, type AuthConfig } from './config.ts';
-import { authEmailSender, type AuthEmailSender } from './email.ts';
 import { ensureUserHousehold } from './membership.ts';
 
-export function createMoveInAuth(database: Database.Database, config: AuthConfig, sender: AuthEmailSender = authEmailSender(config)) {
-  return betterAuth({
+export function moveInAuthOptions(database: Database.Database, config: AuthConfig): BetterAuthOptions {
+  return {
     appName: 'MoveIn', database, secret: config.secret, baseURL: config.origin,
     trustedOrigins: [config.origin], telemetry: { enabled: false }, logger: { disabled: true },
     user: { modelName: 'auth_user' }, account: { modelName: 'auth_account' },
     session: { modelName: 'auth_session', expiresIn: 60 * 60 * 24 * 7, updateAge: 60 * 60 * 24, cookieCache: { enabled: false }, storeSessionInDatabase: true },
     verification: { modelName: 'auth_verification' },
-    emailAndPassword: { enabled: false },
+    emailAndPassword: { enabled: true, disableSignUp: true, autoSignIn: false, requireEmailVerification: true, minPasswordLength: 12, maxPasswordLength: 128, revokeSessionsOnPasswordReset: true },
     advanced: { useSecureCookies: config.production, defaultCookieAttributes: { httpOnly: true, sameSite: 'lax', secure: config.production }, ipAddress: { ipAddressHeaders: ['x-real-ip'] } },
-    rateLimit: { enabled: true, storage: 'database', modelName: 'auth_rate_limit', window: 60, max: 100 },
+    rateLimit: { enabled: true, storage: 'database', modelName: 'auth_rate_limit', window: 60, max: 100, customRules: { '/sign-in/email': { window: 60, max: 5 } } },
     databaseHooks: { session: { create: { before: async (session) => { ensureUserHousehold(database, session.userId); return { data: session }; } } } },
-    plugins: [magicLink({ expiresIn: 600, storeToken: 'hashed', rateLimit: { window: 60, max: 5 }, sendMagicLink: async ({ email, url }) => sender({ email, url }) })],
-  });
+  };
+}
+export function createMoveInAuth(database: Database.Database, config: AuthConfig) {
+  return betterAuth(moveInAuthOptions(database, config));
 }
 let cached: { database: Database.Database; key: string; auth: ReturnType<typeof createMoveInAuth> } | undefined;
 export function getAuth(database = getDatabase()) {

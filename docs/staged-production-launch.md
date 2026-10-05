@@ -4,7 +4,7 @@
 
 ## First-launch mode
 
-Use the existing DigitalOcean Ubuntu → Nginx → one PM2 fork → Next `127.0.0.1:3006` architecture. Use service-owned persistent local SQLite, never an ephemeral or network-shared DB. Keep real scanning explicitly **off**: `RECEIPT_EXTRACTOR=disabled`. Public homepage/ZIP/providers/guides/resources and sign-in remain available. Configured SMTP/auth provisions private households, My Home and receipt history. The receipt page shows “Receipt reading is unavailable.” and processing returns 503 for an authenticated request. Saved records remain usable. Production demo mode fails closed; no fake extraction or provider fallback.
+Use the existing DigitalOcean Ubuntu → Nginx → one PM2 fork → Next `127.0.0.1:3006` architecture. Use service-owned persistent local SQLite, never an ephemeral or network-shared DB. Keep real scanning explicitly **off**: `RECEIPT_EXTRACTOR=disabled`. Public homepage/ZIP/providers/guides/resources and sign-in remain available. Manually provisioned email/password accounts resolve private households, My Home and receipt history. The receipt page shows “Receipt reading is unavailable.” and processing returns 503 for an authenticated request. Saved records remain usable. Production demo mode fails closed; no fake extraction or provider fallback.
 
 ## Exact manual variables
 
@@ -17,12 +17,7 @@ Fill [first-launch.env.example](first-launch.env.example), copy privately to `/e
 | DATABASE_PATH | Existing approved absolute persistent path; default PM2 target /var/lib/movein/movein.sqlite |
 | BETTER_AUTH_SECRET | Private stable random secret, at least 32 characters; recommended 48 random bytes as base64url; preserve across restarts |
 | BETTER_AUTH_URL | Exact actual HTTPS root origin (no path/query/credentials), matching browser/proxy origin; use the staging HTTPS host if this is a separate stage |
-| AUTH_EMAIL_MODE | smtp; console prohibited in production |
-| AUTH_EMAIL_FROM | Verified sender mailbox or quoted display name + mailbox; no CR/LF |
-| AUTH_SMTP_HOST | Provider's authenticated SMTP hostname |
-| AUTH_SMTP_PORT | Usually 587 STARTTLS, or 465 implicit TLS; provider-specified |
-| AUTH_SMTP_SECURE | false for mandatory STARTTLS / true for implicit TLS; certificate verification remains on |
-| AUTH_SMTP_USER / AUTH_SMTP_PASS | Private provider login / password or provider-issued SMTP API credential |
+| AUTH_EMAIL_MODE | disabled; optional, no delivery is enabled |
 | RECEIPT_EXTRACTOR | **disabled** for the first stage |
 | NEXT_PUBLIC_GA_MEASUREMENT_ID | Public approved MoveIn ID G-QC9FYWHVZZ before build, matching audit/PM2; not a secret |
 | NEXT_PUBLIC_GA_DEBUG / NEXT_PUBLIC_GA_ENABLE_DEV | false |
@@ -34,11 +29,9 @@ Only if later enabling a provisioned real extractor: `RECEIPT_EXTRACTOR=ollama`,
 
 PM2 currently pins DB path/port/public analytics, disabled extraction and false debug/development flags in ecosystem.config.cjs. Verify those match the supplied values before a future launch; preserve the exported private environment in PM2/reboot setup. Public NEXT_PUBLIC_ values are frozen into builds; runtime PM2 changes cannot repair an incorrectly built analytics bundle. Read the installed Next self-hosting/environment guide when making deployment-code changes.
 
-## SMTP and delivery requirements
+## Early-access manual accounts
 
-Choose the provider manually. Current adapter uses **Nodemailer SMTP**, not a generic HTTP email API. A provider “API key” works only if its SMTP service accepts that credential; an HTTP-only API requires separate work and is not configured here. Supply host/port/auth/TLS plus a verified From mailbox/domain. Configure the provider's sender/domain verification, SPF (avoid duplicate SPF records), DKIM selectors and DMARC policy/alignment as instructed by that provider. Ensure outbound SMTP is permitted from the droplet. No external account or DNS record was created.
-
-Transport requires TLS/certificate verification, has 10s connect/greeting and 20s socket bounds, no body/token debug logging. Development console links cannot activate in production. Test through the actual HTTPS sign-in page using a mailbox you control: request once, receive in inbox/spam, inspect expected sender/domain and exact HTTPS link origin, open within ten minutes, confirm sign-in, then confirm reuse is rejected. Test expired links and a controlled staging delivery failure; users should receive safe errors and no account-access fallback. Do not log tokens or paste links into monitoring.
+SMTP and email delivery are disabled. Use `npm run user:create` and `npm run user:reset-password` in a protected terminal; see [authentication](authentication.md). No public signup or password reset.
 
 ## Exact SQLite sequence (manual, not executed)
 
@@ -125,7 +118,7 @@ npm run data:validate
 npm run production:check
 ```
 
-Compare ZIP/provider and purchase counts/facts with baseline/backup. Auth tables may be empty for a genuinely new stage; their existence/FKs and controlled sign-in prove readiness, not fabricated users. `production:check` verifies shapes/permissions/DB/extractor choice but does not prove SMTP delivery, public certificate, proxy, disk capacity or backups.
+Compare ZIP/provider and purchase counts/facts with baseline/backup. Auth tables may be empty for a genuinely new stage; their existence/FKs and controlled sign-in prove readiness, not fabricated users. `production:check` verifies shapes/permissions/DB/extractor choice but does not prove manual account authentication, public certificate, proxy, disk capacity or backups.
 
 ### 8. Health/build and separately authorized restart
 
@@ -166,7 +159,7 @@ Keep the current DB and WAL/SHM companions together in quarantine; never leave s
 
 ## HTTPS / Nginx / secure sessions
 
-Verify real DNS/certificate, HTTP→HTTPS, reject unknown hosts, preserve the actual approved Host and Origin, overwrite X-Forwarded-Proto with https, overwrite X-Real-IP from a trusted client source; strip untrusted incoming forwarding/identity headers. If another proxy precedes Nginx, trust only its configured network. Bind Node/Ollama to loopback; block direct 3006/11434 access. Use exact BETTER_AUTH_URL trusted origin, HttpOnly + Secure + SameSite=Lax cookie, ten-minute hashed single-use link and seven-day database session. No auth/private proxy caching. Redact query tokens/Cookie/Authorization/body logs and do not serve repository, env, SQLite or backups.
+Verify real DNS/certificate, HTTP→HTTPS, reject unknown hosts, preserve the actual approved Host and Origin, overwrite X-Forwarded-Proto with https, overwrite X-Real-IP from a trusted client source; strip untrusted incoming forwarding/identity headers. If another proxy precedes Nginx, trust only its configured network. Bind Node/Ollama to loopback; block direct 3006/11434 access. Use exact BETTER_AUTH_URL trusted origin, HttpOnly + Secure + SameSite=Lax cookie, operator-provisioned passwords and seven-day database sessions. No auth/private proxy caching. Redact query tokens/Cookie/Authorization/body logs and do not serve repository, env, SQLite or backups.
 
 Set upload location client_max_body_size 9m (app file limit 8 MB + multipart cap), client_body_timeout 30s, proxy_request_buffering off to avoid raw receipt spill, and connection/request bounds. For later extraction, proxy_read_timeout/proxy_send_timeout exceed model deadline: 210s for 180s default; 630s for 600s maximum. Disabled scanning needs no model service. Inspect cookie flags through actual HTTPS, not plain loopback tests. Review HSTS only after certificate/host correctness. Existing app security headers remain.
 
@@ -174,9 +167,9 @@ Set upload location client_max_body_size 9m (app file limit 8 MB + multipart cap
 
 1. Homepage loads; navigation works.
 2. ZIP 32801 lookup shows reviewed providers/official links.
-3. Open sign-in and request one link for a controlled test mailbox.
-4. Receive it; verify sender and exact approved HTTPS origin.
-5. Open within ten minutes; sign in and confirm secure cookie flags.
+3. Manually provision ONE controlled production test account with a hidden password.
+4. Open /sign-in over the approved HTTPS origin and enter email/password.
+5. Sign in and verify HttpOnly, Secure and SameSite=Lax cookie flags.
 6. My Home shows the new household's empty inventory/history.
 7. Sign out; private APIs return 401.
 8. Sign in again to the same email; verify the same household/membership, not a newly created one (operator read-only membership comparison, no IDs in shared logs).

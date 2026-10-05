@@ -35,7 +35,10 @@
     "db:backup": "node scripts/sqlite-backup.mjs",
     "production:check": "node scripts/production-check.mjs",
     "production:smoke": "node scripts/production-smoke.mjs",
-    "secrets:check": "node scripts/secret-check.mjs"
+    "secrets:check": "node scripts/secret-check.mjs",
+    "user:create": "node scripts/operator-users.mjs create",
+    "user:list": "node scripts/operator-users.mjs list",
+    "user:reset-password": "node scripts/operator-users.mjs reset-password"
   },
   "dependencies": {
     "@next/env": "16.3.8",

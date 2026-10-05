@@ -1,52 +1,43 @@
-# MoveIn authentication
+# MoveIn early-access authentication
 
-Better Auth **1.7.7** (exact pin) supplies magic-link-only login and signed, database-backed sessions. Verified against the installed implementation and current official [Next.js](https://better-auth.com/docs/integrations/next), [SQLite](https://better-auth.com/docs/adapters/sqlite), [magic-link](https://better-auth.com/docs/plugins/magic-link), and [rate-limit](https://better-auth.com/docs/concepts/rate-limit) documentation. The existing better-sqlite3 connection is passed directly to Better Auth; its internal SQL adapter is isolated within auth. MoveIn has no new application ORM or migration runner. Nodemailer 10.0.14 is the isolated, provider-neutral TLS SMTP sender.
+Better Auth 1.7.7 supplies email/password login, its own password hashing, and signed database sessions. Email is a login identifier. No email delivery, verification message, reset message, social login or public registration is enabled. Reviewed against the installed implementation and [official password documentation](https://better-auth.com/docs/authentication/email-password).
 
-## Local sign-in
+## Operator commands
 
-From the repository root, stop an older server occupying port 3007, then:
+Run from the release checkout with Node >=22.13, applied migrations, and the same protected DATABASE_PATH, BETTER_AUTH_SECRET and BETTER_AUTH_URL as the app. Production examples:
 
 ```sh
-# Apply additive migrations to the LOCAL database. This loads .env.local consistently with Next.
-node --input-type=module -e "import nextEnv from '@next/env'; nextEnv.loadEnvConfig(process.cwd(), true); await import('./scripts/db-migrate.mjs')"
-npm run dev:auth
+cd /var/www/movein
+set -a
+. /etc/movein/movein.env
+set +a
+npm run user:create
+npm run user:list
+npm run user:reset-password
 ```
 
-Open `http://127.0.0.1:3007/receipts` or `/my-home`. Enter a test email on the sign-in page; the terminal prints the **private, single-use** URL. Open it using the same browser and the same `127.0.0.1` hostname. New users see an empty household. Receipt reading uses the existing extractor configuration: follow `docs/receipts.md` to select a locally installed Ollama model. For a labeled fixture-only development flow, start with `RECEIPT_EXTRACTOR=demo npm run dev:auth`. The auth helper does not choose or change the extractor. Repeat with a different email in a separate browser to check isolation. Sign out and confirm private pages return to sign-in. Reopen a consumed link to see its error. Links expire in 10 minutes.
+Create prompts for email, a hidden initial password and hidden confirmation. Passwords must contain 12–128 characters. Never put passwords in arguments, shell history, environment variables, chat or logs. Deliver credentials manually through an approved private channel. Create uses Better Auth's supported server signUpEmail API in a separate operator instance, with auto-sign-in disabled; it does not create a session. Operator approval marks the identifier approved using the library adapter, preserving the existing verified-user resolver. This approval does not claim inbox verification occurred.
 
-`dev:auth` opts in to console delivery and disables legacy fallback. It generates a secret in memory if none is supplied; restarting then invalidates older signed cookies. Set a private, stable `BETTER_AUTH_SECRET` in .env.local if persistent local sessions are wanted. Do not share terminal links or logs. `AUTH_DEV_PORT=3008 npm run dev:auth` changes both port and callback origin. If `DATABASE_PATH` is set, it must be absolute. Migration and app must target the same database.
+Provisioning creates a household and membership in the existing idempotent SQLite transaction. Retry preserves the account password and household. If interrupted after auth creation, rerun to finish membership. An incomplete account without credentials needs an operator reset first. Listing emits only email, creation date, household ID and approved/incomplete state.
 
-Legacy receipt fixtures remain available with `NODE_ENV=development`, `AUTH_DEV_HOUSEHOLD=true`, and **no** `BETTER_AUTH_SECRET` or `BETTER_AUTH_URL`. This remains a shared loopback test mode, not an account. Real auth configuration always takes precedence, including invalid/revoked sessions. Existing legacy records are preserved; no automatic reassignment or migration of their ownership occurs.
+Reset prompts for email and hidden new password/confirmation. It uses Better Auth requestPasswordReset/resetPassword; the callback captures the token only in process memory and sends nothing. The token is consumed/cleaned, the library hashes the new password, and **all existing sessions are revoked**. Deliver replacement credentials manually. Reset does not change household ownership. There is no public reset route or form. Commands require local OS/database access, are never web endpoints, reject credential arguments, and require an interactive TTY for password entry.
 
-## Schema and household lifecycle
+For local testing, set a stable private secret and BETTER_AUTH_URL=http://127.0.0.1:3007 in .env.local, apply local migrations, run user:create, then dev:auth. Both commands must use the same database/secret/origin. Without a stable secret dev:auth uses an ephemeral one and restarting signs out sessions. The helper never enables mail. Legacy fixtures remain restricted to explicit loopback development with no real auth configuration.
 
-Migration 011 adds the five library tables and a membership table keyed by user ID. Required library name/image/account-token/password columns follow the generated base schema; no profile UI, avatars, passwords, or social providers are enabled. Unused optional fields remain null. Session rows may contain IP/user-agent information. Verification identifiers are hashed; verification records are consumed atomically by Better Auth.
+## Public sign-in and security
 
-Before the first verified session is created, a SQLite transaction checks email verification, finds an existing membership, or creates a fresh UUID household and its membership. The unique user key makes repeat login idempotent. Receipt business code still receives only a household context; it has no Better Auth dependency. The reserved legacy household never grants authenticated access. No fake inventory is seeded.
+/sign-in has Email and Password fields and a Sign in button, plus “MoveIn is currently in early access.” Invalid credentials receive the same generic message for unknown email and wrong password. No signup form or account recovery emails exist.
 
-The central resolver verifies the Better Auth session against SQLite on every private request (cookie cache disabled), requires a verified user and a real household membership, and ignores query/body/header ownership claims. Unsafe private requests also require the configured exact Origin and reject cross-site fetches. Receipts/My Home redirect to `/sign-in?next=...`; destinations are restricted to those two pages. Private APIs return 401 with no-store before parsing uploads or bodies. Public content stays anonymous. The catch-all auth handler exposes only magic-link request/verification, current session, and sign-out. Navigation status returns only a boolean, not identity or membership IDs.
+The web auth instance sets enabled=true, disableSignUp=true, autoSignIn=false and requireEmailVerification=true. Its catch-all route permits only POST /sign-in/email, GET /get-session and POST /sign-out. All signup/reset/admin/magic-link paths return 404. The separate operator instance is imported only by scripts. No custom hashing or plaintext password storage is used.
 
-## Sessions, abuse, and delivery
+Session/household protection is retained: seven-day database sessions, daily refresh, no cookie cache, HttpOnly/SameSite=Lax/Secure production cookies, exact HTTPS trusted origin, server-side membership resolution and private mutation Origin checks. Browser user/household IDs never grant access. Logout deletes its session; manual reset revokes every session. The reserved legacy household is never authenticated access. No schema change is required beyond existing migration 011's password column.
 
-Sessions expire after seven days, refresh at most daily, use HttpOnly and SameSite=Lax cookies, and require Secure cookies in production. Sign-out deletes the current database session. Other independently signed-in sessions remain active. Better Auth checks auth endpoint origins; the household resolver separately protects receipt mutations.
+Database rate limiting allows five email/password attempts per minute per IP and 100 general auth requests per minute per IP. Nginx must overwrite X-Real-IP and Node must stay loopback-only. Auth logging is disabled; proxy logs must omit bodies, cookies, credentials and auth query strings. Analytics remain excluded from private/sign-in pages.
 
-Database rate limiting is enabled in development and production: magic-link requests allow **5 per 60 seconds per IP**; other auth endpoints allow **100 per 60 seconds per IP**. These limits apply to the HTTP handler, not direct library API calls. Private APIs never call a sign-in library API. This is basic abuse prevention, not a distributed anti-abuse system. One SQLite database is shared by this app instance.
+## Production configuration and future upgrade
 
-Development console delivery requires both `NODE_ENV=development` and `AUTH_DEV_LOG_MAGIC_LINKS=true`. Production console mode is rejected even with that flag. SMTP mode requires every sender/credential variable; it enforces TLS (implicit TLS or STARTTLS) and disables mail transport logging. Missing configuration gives a clear 503 sign-in response and no private access. No email service account was created. SMTP connectivity/deliverability must be tested by the operator before release; presence of config is not proof of delivery.
+Only a protected stable random BETTER_AUTH_SECRET, exact HTTPS BETTER_AUTH_URL and persistent DATABASE_PATH are required for auth. authConfig always selects disabled mail, ignoring stale SMTP variables. Production still rejects weak secrets, non-HTTPS/loopback origins and development flags. Keep RECEIPT_EXTRACTOR=disabled.
 
-Ordinary auth logging is disabled; Next development request logging omits the token-bearing verification route. Production reverse-proxy and monitoring logs must omit query strings on auth routes, redact cookies/Authorization, and never capture email bodies. Sign-in, receipt, and My Home pages do not initialize analytics or emit page views. Raw receipt images remain in-memory and discarded; the extraction pipeline is unchanged.
+The provider-neutral email sender and futureAuthEmailConfig validation remain isolated for a later upgrade. Setting SMTP variables alone cannot enable magic links. Future activation requires a deliberate reviewed plugin/endpoint/UI change, delivery configuration and invite policy testing. It reuses the same auth users, sessions and household resolver without rewriting receipt/ownership logic. Do not configure SMTP now.
 
-## Eventual production checklist — not performed
-
-1. Review the full checkpoint and release diff. Address dependency audit findings before exposing the service (see checkpoint). Provision a trusted SMTP service and sender domain; configure SPF/DKIM/DMARC and verify delivery. No automatic provider signup is included.
-2. Set `NODE_ENV=production`, a private stable random `BETTER_AUTH_SECRET` (at least 32 characters, generate 48 random bytes), and `BETTER_AUTH_URL=https://YOUR_REAL_HOST` with no path/query. Never use development console delivery or the legacy flag.
-3. Set `AUTH_EMAIL_MODE=smtp`, `AUTH_EMAIL_FROM`, `AUTH_SMTP_HOST`, `AUTH_SMTP_PORT`, `AUTH_SMTP_SECURE`, `AUTH_SMTP_USER`, `AUTH_SMTP_PASS`. Store secrets outside Git. `AUTH_SMTP_SECURE=true` uses implicit TLS; otherwise STARTTLS is mandatory. Set dev flags false. Configure the receipt extractor separately using its existing documented settings.
-4. Serve HTTPS through a trusted reverse proxy. Bind Node to loopback; overwrite `X-Real-IP` with the real client address, strip untrusted forwarded identity headers, preserve Host and Origin, and configure auth logs without query strings or credentials. Direct access to Node must be blocked so clients cannot spoof the IP used for rate limiting. This app does not trust browser household/user headers.
-5. Stop writers, take a SQLite backup including WAL state with restrictive permissions, verify the copy, set the absolute production `DATABASE_PATH`, and **only with separate production authorization** apply the checked-in SQL migrations using the existing runner. Verify foreign keys, integrity, receipt counts, and legacy preservation. Do not use Better Auth automatic migrations.
-6. Run tests/lint/build and local runtime/link/SEO/frontend checks with release configuration; deploy only when separately authorized. Verify HTTPS cookie flags, real delivered single-use links, two-user isolation, empty first household, destination restoration, logout, and rate limits. Keep a database rollback/backup plan; do not remove additive tables over existing user data.
-
-No production deployment, production database migration, DNS change, external signup, or Task 8 work was performed. Recommended Task 8: production release readiness and explicitly approved staged authentication rollout, including dependency patches, email delivery, backups, proxy hardening, and live smoke checks.
-
-## Task 8 production hardening
-
-Use the [current launch checklist](production-launch-checklist.md). Production now requires an explicit absolute DATABASE_PATH and an existing database; it cannot silently create a checkout-local DB. Production auth rejects trivially weak/whitespace secrets and loopback public origins. SMTP validates sender/TLS mode and uses bounded timeouts. HTTP auth errors are normalized into safe consumer messages. Secure session/origin/CSRF behavior and built-in limits remain unchanged.
+Follow [staged launch](staged-production-launch.md) and [release checkpoint](task-11-release-checkpoint.md) for backup, pending migrations, release verification and HTTPS smoke tests.

@@ -2,6 +2,7 @@ import nodemailer from 'nodemailer';
 import type { AuthConfig } from './config.ts';
 export type AuthEmailSender = (message: { email: string; url: string }) => Promise<void>;
 export function authEmailSender(config: AuthConfig): AuthEmailSender {
+  if (config.emailMode === 'disabled') return async () => { throw new Error('Authentication email delivery is disabled.'); };
   if (config.emailMode === 'console') {
     if (config.production || process.env.NODE_ENV !== 'development' || process.env.AUTH_DEV_LOG_MAGIC_LINKS !== 'true') throw new Error('Development email cannot run in production.');
     return async ({ url }) => {

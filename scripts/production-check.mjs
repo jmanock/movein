@@ -9,7 +9,7 @@ process.env.NODE_ENV = 'production';
 loadNextEnvironment(process.cwd());
 let failed = false;
 async function check(label, fn) { try { const result = await fn(); if (result === false) throw new Error(); console.log(`PASS ${label}`); } catch { failed = true; console.log(`FAIL ${label}`); } }
-await check('HTTPS auth origin, secret requirements, SMTP sender and TLS configuration (delivery still needs manual verification)', () => { authConfig(); });
+await check('HTTPS auth origin, secret requirements and disabled authentication email', () => { if (authConfig().emailMode !== 'disabled') throw new Error(); });
 await check('development flags and analytics debug disabled', () => !['AUTH_DEV_LOG_MAGIC_LINKS','AUTH_DEV_HOUSEHOLD','RECEIPT_EXTRACTION_DEBUG','NEXT_PUBLIC_GA_DEBUG','NEXT_PUBLIC_GA_ENABLE_DEV'].some(key => process.env[key] === 'true'));
 await check('explicit persistent database, owner-only directory/file permissions, integrity, foreign keys and migrations', async () => {
   const path = resolveDatabasePath();

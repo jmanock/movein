@@ -41,7 +41,7 @@ Generated: ${new Date().toISOString()}
 
 ## Overall status
 
-This report measures functional and content health. It does not clear security advisories or verify target-host SMTP, HTTPS, backups or private feature configuration. Consult [the production-readiness checkpoint](../docs/task-8-production-readiness.md) and [launch checklist](../docs/production-launch-checklist.md) for the release verdict and required manual checks.
+This report measures functional and content health. It does not clear security advisories or verify target-host HTTPS, backups or private feature configuration. Consult [the production-readiness checkpoint](../docs/task-8-production-readiness.md) and [launch checklist](../docs/production-launch-checklist.md) for the release verdict and required manual checks.
 
 **${failed.length || brokenLinks.length || missingVerified.length ? "Attention required" : "Healthy for the five-county pilot"}.**
 

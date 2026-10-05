@@ -11,7 +11,7 @@ import { createOllamaExtractor } from '../app/lib/receipts/ollama.ts';
 import { receiptExtractorConfig } from '../app/lib/receipts/config.ts';
 import { receiptReadiness } from '../app/lib/receipts/readiness.ts';
 import { createReceiptAdmission } from '../app/lib/receipts/admission.ts';
-import { authConfig } from '../app/lib/auth/config.ts';
+import { authConfig, futureAuthEmailConfig } from '../app/lib/auth/config.ts';
 const image = sharp({create:{width:2,height:2,channels:3,background:'white'}});
 const png=await image.png().toBuffer(), jpeg=await image.jpeg().toBuffer();
 const env={NODE_ENV:'production',RECEIPT_EXTRACTOR:'ollama',OLLAMA_RECEIPT_MODEL:'vision:local'};
@@ -57,8 +57,8 @@ test('readiness is a bounded metadata-only probe, rejects remote/non-vision mode
 test('production rejects weak secrets, loopback origins, invalid TLS modes and header injection; local console remains opt-in',()=>{
   const base={NODE_ENV:'production',BETTER_AUTH_SECRET:'test-secret-with-sufficient-distinct-characters-123',BETTER_AUTH_URL:'https://movein.example',AUTH_EMAIL_MODE:'smtp',AUTH_SMTP_HOST:'smtp.example',AUTH_SMTP_PORT:'587',AUTH_SMTP_USER:'test',AUTH_SMTP_PASS:'test',AUTH_EMAIL_FROM:'signin@movein.example'};
   assert.equal(authConfig(base).production,true);
-  for(const patch of [{BETTER_AUTH_SECRET:'x'.repeat(48)},{BETTER_AUTH_URL:'https://127.0.0.1'},{BETTER_AUTH_URL:'http://movein.example'},{AUTH_SMTP_SECURE:'anything'},{AUTH_EMAIL_FROM:'a@example.com\r\nBcc: b@example.com'},{AUTH_EMAIL_FROM:'missing-address'}])assert.throws(()=>authConfig({...base,...patch}));
-  assert.equal(authConfig({...base,NODE_ENV:'development',BETTER_AUTH_SECRET:'x'.repeat(32),BETTER_AUTH_URL:'http://localhost:3007',AUTH_EMAIL_MODE:'console',AUTH_DEV_LOG_MAGIC_LINKS:'true'}).emailMode,'console');
+  for(const patch of [{BETTER_AUTH_SECRET:'x'.repeat(48)},{BETTER_AUTH_URL:'https://127.0.0.1'},{BETTER_AUTH_URL:'http://movein.example'},{AUTH_SMTP_SECURE:'anything'},{AUTH_EMAIL_FROM:'a@example.com\r\nBcc: b@example.com'},{AUTH_EMAIL_FROM:'missing-address'}])assert.throws(()=>futureAuthEmailConfig({...base,...patch}));
+  assert.equal(futureAuthEmailConfig({...base,NODE_ENV:'development',BETTER_AUTH_SECRET:'x'.repeat(32),BETTER_AUTH_URL:'http://localhost:3007',AUTH_EMAIL_MODE:'console',AUTH_DEV_LOG_MAGIC_LINKS:'true'}).emailMode,'console');
 });
 
 test('controlled migrations 007–011 preserve populated purchase data; online WAL backup restores and refuses overwrite',async()=>{

@@ -1,3 +1,9 @@
+# Task 11 early-access release
+
+October 5, 2026. The manual-account launch supersedes the SMTP stop condition below. Email/password auth and operator commands are implemented; local validation passes. Production backup, pending migrations, deployment and controlled-account checks are now being resumed under the existing authorization. Final results will replace this checkpoint after verification. No email delivery will be enabled.
+
+## Historical paused checkpoint
+
 # Task 11: production release paused at email configuration
 
 October 5, 2026. Production release was authorized, but the required live Better Auth/SMTP configuration is absent. **NOT DEPLOYED.** Per Task 11's stop condition, no production backup/migration/push/build/restart/configuration change or email request was performed. The existing site remains online. The prepared local release commit contains this checkpoint; its hash is reported in the chat and available through git log.
